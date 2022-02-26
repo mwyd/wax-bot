@@ -1,0 +1,30 @@
+{
+    "manifest_version": 3,
+    "name": "WAX-BOT",
+    "version": "1.0.0",
+    "description": "",
+    "content_scripts": [{
+        "js": [
+            "/js/chunk-vendors.js",
+            "/js/app.js"
+        ],
+        "css": [
+            "/css/app.css"
+        ],
+        "matches": ["https://waxpeer.com/*"]
+    }],
+    "background": {
+        "service_worker": "/js/background.js"
+    },
+    "permissions": [
+        "storage"
+    ],
+    "host_permissions": [
+        "https://api.csgofloat.com/*"
+    ],
+    "web_accessible_resources": [{
+        "resources": ["/assets/*"],
+        "matches": ["https://waxpeer.com/*"],
+        "extension_ids": []
+    }]
+}

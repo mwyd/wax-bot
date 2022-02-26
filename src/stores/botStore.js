@@ -1,0 +1,174 @@
+import { reactive, ref, watch } from 'vue'
+import { waxpeerDate, WXB_LOG } from '@/utils'
+import { user, market as waxpeerMarket } from '@/api/waxpeer'
+import { updateTradesDelay, tradesResultLimit, notificationSound } from '@/config'
+import useProcess from '@/composables/useProcess'
+import processStateEnum from '@/enums/processStateEnum'
+import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
+
+let timestamp = waxpeerDate()
+
+let timeoutId = null
+
+const process = useProcess()
+
+const config = reactive({
+    deal: 0,
+    dealMargin: 100,
+    minPrice: 50,
+    maxPrice: 500,
+    limit: 500,
+    search: '',
+    pages: 1,
+    steamVolume: 10,
+    updateDelay: 4
+})
+
+const pendingItems = reactive(new Map())
+
+const finishedItems = ref([])
+
+const moneySpent = ref(0)
+
+const moneyFrozen = ref(0)
+
+watch(config, () => {
+    localStorage.setItem('wxb-config', JSON.stringify(config))
+})
+
+const loadConfig = () => {
+    Object.assign(config, JSON.parse(localStorage.getItem('wxb-config')))
+}
+
+const getPage = async (pageNumber) => {
+    let trades = []
+
+    try {
+        const query = new URLSearchParams({
+            skip: pageNumber * tradesResultLimit,
+            page: 'steam_trades',
+            start: timestamp.format('YYYY-MM-DD HH:mm:ss')
+        })
+
+        const { success, data } = await user.getTrades(query)
+
+        if(success) {
+            trades = data[0]
+        }
+    } catch(err) {
+        WXB_LOG('Cannot load trades page', err)
+    }
+
+    return trades
+}
+
+const deletePendingItem = (item) => {
+    pendingItems.delete(item.item_id)
+
+    moneyFrozen.value -= item.$price
+}
+
+const updatePendingItems = async () => {
+    process.update(processStateEnum.RUNNING)
+
+    let page = 1
+    let trades = []
+
+    for(let i = 0; i < page; i++) {
+        const pageTrades = await getPage(i)
+
+        trades = [...trades, ...pageTrades]
+
+        if(pageTrades.length < tradesResultLimit) {
+            break
+        }
+
+        page++
+    }
+
+    pendingItems.forEach(item => {
+        const tradeItem = trades.find(trade => trade.id === item.$trade_id)
+
+        if(!tradeItem) {
+            return
+        }
+
+        if([waxpeerCsItemStatusEnum.CANCELED, waxpeerCsItemStatusEnum.ACCEPTED, waxpeerCsItemStatusEnum.DECLINED].indexOf(tradeItem.status) > -1) {
+            item.$status = tradeItem.status
+            
+            deletePendingItem(item)
+
+            finishedItems.value.push(item)
+
+            if(tradeItem.status == waxpeerCsItemStatusEnum.ACCEPTED) {
+                moneySpent.value += item.$price
+            }
+        }
+    })
+
+    if(pendingItems.size == 0) {
+        process.update(processStateEnum.TERMINATED)
+
+        clearTimeout(timeoutId)
+
+        return
+    }
+
+    timeoutId = setTimeout(updatePendingItems, updateTradesDelay * 1000)
+
+    process.update(processStateEnum.IDLE)
+}
+
+const buyItem = (item) => {
+    if(pendingItems.has(item.item_id) || item.$price + moneySpent.value + moneyFrozen.value > config.limit) return
+
+    item.$status = waxpeerCsItemStatusEnum.PENDING
+    item.$trade_id = null
+    item.$bought_at = Date.now()
+    
+    pendingItems.set(item.item_id, item)
+
+    moneyFrozen.value += item.$price
+
+    waxpeerMarket.buyItem({
+        id: item.item_id,
+        image: item.image,
+        name: item.name,
+        price: item.price,
+        shop: null
+    })
+        .then(data => {
+            const { success, id } = data
+
+            if(success) {
+                item.$trade_id = id
+
+                if(process.is(processStateEnum.TERMINATED)) {
+                    timestamp = waxpeerDate()
+
+                    updatePendingItems()
+                }
+
+                notificationSound.play()
+            } else {
+                deletePendingItem(item)
+            }
+
+            WXB_LOG('Buy info', data)
+        })
+        .catch(err => {
+            deletePendingItem(item)
+
+            WXB_LOG('Cannot buy item', err)
+        })
+}
+
+export {
+    config,
+    pendingItems,
+    finishedItems,
+    moneySpent,
+    moneyFrozen,
+    loadConfig,
+    buyItem
+}

@@ -1,0 +1,16 @@
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
+.wxb {
+    --bg-c-1: #2b313a;
+    --bg-c-2: #272a31;
+    --bg-c-3: #333a44;
+    --p-m: 8px;
+}
+
+.wxb-btn-big {
+    font-size: 12px;
+    width: 100%;
+    height: 30px;
+}

@@ -1,26 +1,97 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div :class="appClass">
+        <AppHeader 
+            :tabs="Object.keys(tabs)"
+            :active-tab="activeTab"
+            @tabChange="tab => activeTab = tab"
+        />
+        <KeepAlive>
+            <component :is="tabs[activeTab]" />
+        </KeepAlive>
+        <AppButton
+            class="wxb-app__open-btn"
+            @click="isHidden = !isHidden"
+        >
+            {{ isHidden ? '›' : '‹' }}
+        </AppButton>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, computed } from 'vue'
+import { loadConfig } from '@/stores/botStore'
+import { loadToken, authenticate } from '@/stores/userStore'
+import AppHeader from '@/components/AppHeader.vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import useTabs from '@/composables/useTabs'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+    components: {
+        AppHeader,
+        AppButton
+    },
+    setup() {
+        loadConfig()
+        loadToken()
+        
+        authenticate()
+
+        const isHidden = ref(true)
+
+        const appClass = computed(() => [
+            'wxb-shadow-md',
+            'wxb-app',
+            isHidden.value ? 'wxb-app--hidden' : ''
+        ])
+
+        return {
+            ...useTabs(),
+            isHidden,
+            appClass
+        }
+    }
 }
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+#wxb-root {
+    width: 100vw;
+    max-width: 1280px;
+    height: 100vh;
+    max-height: 720px;
+    position: fixed;
+    top: 0;
+    left: -1280px;
+    z-index: 1000;
+    color: white;
+    font-family: Montserrat, sans-serif;
+}
+
+#wxb-root * {
+    box-sizing: border-box;
+}
+
+.wxb-app {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-c-1);
+    position: relative;
+    transform: translateX(100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.wxb-app--hidden {
+    transform: translateX(0%);
+}
+
+.wxb-app__open-btn {
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 20px;
+    height: 70px;
+    font-size: 20px;
 }
 </style>
