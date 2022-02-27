@@ -13,15 +13,17 @@ const config = reactive({
 const items = ref(new Map())
 
 watch(config, () => {
-    localStorage.setItem('wxb-guard-config', JSON.stringify(config))
+    chrome.storage.sync.set({ wxbGuardConfig: config })
 })
 
 const loadConfig = () => {
-    const savedConfig = JSON.parse(localStorage.getItem('wxb-guard-config'))
+    chrome.storage.sync.get(['wxbGuardConfig'], (result) => {
+        const { wxbGuardConfig } = result
 
-    if(savedConfig instanceof Object) {
-        Object.assign(config, savedConfig)
-    }
+        if(wxbGuardConfig instanceof Object) {
+            Object.assign(config, wxbGuardConfig)
+        }
+    })
 }
 
 const getPage = async (pageNumber) => {

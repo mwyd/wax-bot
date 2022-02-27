@@ -9,13 +9,15 @@ const session = reactive({
 })
 
 const loadToken = () => {
-    session.token = localStorage.getItem('wxb-token')
+    chrome.storage.sync.get(['wxbToken'], (result) => {
+        session.token = result.wxbToken
+    })
 }
 
 const saveToken = (token) => {
     session.token = token
 
-    localStorage.setItem('wxb-token', token)
+    chrome.storage.sync.set({ wxbToken: token })
 } 
 
 const authenticateConduit = async () => {

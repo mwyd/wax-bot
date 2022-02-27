@@ -33,15 +33,17 @@ const moneySpent = ref(0)
 const moneyFrozen = ref(0)
 
 watch(config, () => {
-    localStorage.setItem('wxb-bot-config', JSON.stringify(config))
+    chrome.storage.sync.set({ wxbBotConfig: config })
 })
 
 const loadConfig = () => {
-    const savedConfig = JSON.parse(localStorage.getItem('wxb-bot-config'))
+    chrome.storage.sync.get(['wxbBotConfig'], (result) => {
+        const { wxbBotConfig } = result
 
-    if(savedConfig instanceof Object) {
-        Object.assign(config, savedConfig)
-    }
+        if(wxbBotConfig instanceof Object) {
+            Object.assign(config, wxbBotConfig)
+        }
+    })
 }
 
 const getPage = async (pageNumber) => {
