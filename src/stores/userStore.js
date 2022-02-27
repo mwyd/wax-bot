@@ -1,11 +1,11 @@
 import { user as conduitUser } from '@/api/conduit'
+import { user as waxpeerUser } from '@/api/waxpeer'
 import { reactive } from 'vue'
 
 const session = reactive({
-    name: null,
-    authenticated: false,
+    conduitName: null,
     token: null,
-    shop: null
+    waxpeerId: null
 })
 
 const loadToken = () => {
@@ -18,12 +18,25 @@ const saveToken = (token) => {
     localStorage.setItem('wxb-token', token)
 } 
 
-const authenticate = async () => {
-    const { success, data } = conduitUser.authenticate(session.token)
+const authenticateConduit = async () => {
+    const { success, data } = await conduitUser.authenticate(session.token)
 
     if(success) {
-        session.name = data.name
+        session.conduitName = data.name
+    } 
+}
+
+const authenticateWaxpeer = async () => {
+    const { success, user } = await waxpeerUser.authenticate()
+
+    if(success) {
+        session.waxpeerId = user.id
     }
+}
+
+const authenticate = () => {
+    authenticateConduit()
+    authenticateWaxpeer()
 }
 
 export {

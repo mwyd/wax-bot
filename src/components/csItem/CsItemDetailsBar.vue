@@ -1,5 +1,5 @@
 <template>
-    <div class="wxb-cs-item-details-bar wxb-w-full wxb-p-[4px] wxb-flex wxb-items-center">
+    <div class="wxb-cs-item-details-bar wxb-w-full wxb-p-[4px] wxb-flex wxb-flex-wrap wxb-items-center">
         <span
             class="wxb-px-[8px] wxb-py-[4px]"
             v-for="(detail, i) in existingDetails"

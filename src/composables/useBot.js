@@ -4,6 +4,8 @@ import { market as waxpeeerMarket } from '@/api/waxpeer'
 import { steamMarket } from '@/api/conduit'
 import { updateItemPrice, updateItemDiscount, updateItemDetails } from '@/resources/csItem'
 import { config, moneySpent, buyItem } from '@/stores/botStore'
+import { session } from '@/stores/userStore'
+import { marketResultLimit } from '@/config'
 import processStateEnum from '@/enums/processStateEnum'
 import useProcess from './useProcess'
 
@@ -22,6 +24,10 @@ export default function useBot() {
     ], () => tryBuyItems())
 
     const tryBuyItems = () => {
+        if(process.is(processStateEnum.TERMINATING) || process.is(processStateEnum.TERMINATED)) {
+            return
+        }
+
         items.forEach(item => {
             if(itemFulfillCriteria(item)) {
                 buyItem(item)
@@ -40,7 +46,7 @@ export default function useBot() {
 
         try {
             const query = new URLSearchParams({
-                skip: pageNumber * 50,
+                skip: pageNumber * marketResultLimit,
                 sort: 'DESC',
                 order: 'deals',
                 game: 'csgo',
@@ -103,15 +109,19 @@ export default function useBot() {
             const pageItems = await getPage(i)
 
             marketItems = [...marketItems, ...pageItems]
-        }
 
-        //TO DO: filter self items
+            if(pageItems.length < marketResultLimit) {
+                break
+            }
+        }
 
         for(const marketItem of marketItems) {
             updateItemDiscount(marketItem)
         }
 
-        marketItems = marketItems.filter(marketItem => marketItem.$discount >= config.deal)
+        marketItems = marketItems.filter(marketItem => marketItem.$discount >= config.deal && marketItem.by != session.waxpeerId)
+
+        updateItems(marketItems)
 
         for(const marketItem of marketItems) {
             if(items.has(marketItem.item_id)) {
@@ -136,8 +146,6 @@ export default function useBot() {
 
             items.set(marketItem.item_id, marketItem)
         }
-
-        updateItems(marketItems)
 
         //await new Promise(r => setTimeout(r, 10 * 1000))
 

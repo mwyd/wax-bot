@@ -33,11 +33,15 @@ const moneySpent = ref(0)
 const moneyFrozen = ref(0)
 
 watch(config, () => {
-    localStorage.setItem('wxb-config', JSON.stringify(config))
+    localStorage.setItem('wxb-bot-config', JSON.stringify(config))
 })
 
 const loadConfig = () => {
-    Object.assign(config, JSON.parse(localStorage.getItem('wxb-config')))
+    const savedConfig = JSON.parse(localStorage.getItem('wxb-bot-config'))
+
+    if(savedConfig instanceof Object) {
+        Object.assign(config, savedConfig)
+    }
 }
 
 const getPage = async (pageNumber) => {
@@ -120,7 +124,9 @@ const updatePendingItems = async () => {
 }
 
 const buyItem = (item) => {
-    if(pendingItems.has(item.item_id) || item.$price + moneySpent.value + moneyFrozen.value > config.limit) return
+    if(pendingItems.has(item.item_id) || item.$price + moneySpent.value + moneyFrozen.value > config.limit) {
+        return
+    }
 
     item.$status = waxpeerCsItemStatusEnum.PENDING
     item.$trade_id = null

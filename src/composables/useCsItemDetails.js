@@ -2,9 +2,9 @@ import { computed } from 'vue'
 
 export default function useCsItemDetails(item) {
     const details = computed(() => [
+        { name: 'Variant', value: item.value.$variant },
         { name: 'Float', value: item.value.$float },
         { name: 'Paint seed', value: item.value.$paint_seed },
-        { name: 'Variant', value: item.value.$variant },
         { name: 'Phase', value: item.value.$phase },
         { name: 'Suggested price $', value: item.value.$price },
         { name: 'Steam price $', value: item.value.$steam?.price },

@@ -19,8 +19,7 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { loadConfig } from '@/stores/botStore'
-import { loadToken, authenticate } from '@/stores/userStore'
+import { setupStores } from '@/stores'
 import AppHeader from '@/components/AppHeader.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import useTabs from '@/composables/useTabs'
@@ -31,10 +30,7 @@ export default {
         AppButton
     },
     setup() {
-        loadConfig()
-        loadToken()
-        
-        authenticate()
+        setupStores()
 
         const isHidden = ref(true)
 
@@ -62,7 +58,8 @@ export default {
     max-height: 720px;
     position: fixed;
     top: 0;
-    left: -1280px;
+    left: 0;
+    transform: translateX(-100%);
     z-index: 1000;
     color: white;
     font-family: Montserrat, sans-serif;
