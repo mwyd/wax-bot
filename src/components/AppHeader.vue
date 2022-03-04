@@ -6,12 +6,13 @@
         </div>
         <div class="wxb-flex wxb-h-full">
             <div 
-                v-for="tab of tabs"
-                :key="tab"
-                :class="tabClass(tab)"
-                @click="$emit('tabChange', tab)"
+                v-for="[key, tab] of Object.entries(tabs)"
+                :key="key"
+                :class="tabClass(key)"
+                @click="$emit('tabChange', key)"
             >
-                {{ tab }}
+                <div :class="tabStatusClass(tab.state)"></div>
+                {{ key }}
             </div>
         </div>
         <div 
@@ -35,7 +36,7 @@ export default {
     },
     props: {
         tabs: {
-            type: Array,
+            type: Object,
             required: true
         },
         activeTab: {
@@ -50,6 +51,7 @@ export default {
         const showSettings = ref(false)
 
         const tabClass = (tab) => [
+            'wxb-relative',
             'wxb-px-[10px]',
             'wxb-flex',
             'wxb-items-center',
@@ -60,9 +62,20 @@ export default {
             tab == activeTab.value ? 'wxb-active-tab' : ''
         ]
 
+        const tabStatusClass = (status) => [
+            'wxb-absolute',
+            'wxb-top-[4px]',
+            'wxb-left-[4px]',
+            'wxb-h-[8px]',
+            'wxb-w-[8px]',
+            'wxb-rounded-[4px]',
+            `wxb-tab-status-${status}`
+        ]
+
         return {
             showSettings,
-            tabClass
+            tabClass,
+            tabStatusClass
         }
     }
 }
@@ -79,5 +92,21 @@ export default {
 
 .wxb-settings-btn {
     background-image: url('chrome-extension://__MSG_@@extension_id__/assets/img/settings.png');
+}
+
+.wxb-tab-status-idle {
+    background-color: blue;
+}
+
+.wxb-tab-status-running {
+    background-color: green;
+}
+
+.wxb-tab-status-terminating {
+    background-color: grey;
+}
+
+.wxb-tab-status-terminated {
+    background-color: black;
 }
 </style>

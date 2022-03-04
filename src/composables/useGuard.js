@@ -78,7 +78,7 @@ export default function useGuard() {
 
         let marketItems = await getSimilarMarketItems(observedItem.name, minPrice, maxPrice)
 
-        let newPrice = maxPrice
+        let newPrice = maxPrice * 1000
 
         for(const marketItem of marketItems) {
             if(marketItem.by == session.waxpeerId) {

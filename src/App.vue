@@ -1,12 +1,12 @@
 <template>
     <div :class="appClass">
         <AppHeader 
-            :tabs="Object.keys(tabs)"
+            :tabs="tabs"
             :active-tab="activeTab"
             @tabChange="tab => activeTab = tab"
         />
         <KeepAlive>
-            <component :is="tabs[activeTab]" />
+            <component :is="tabs[activeTab].componentName" />
         </KeepAlive>
         <AppButton
             class="wxb-app__open-btn"
@@ -20,12 +20,18 @@
 <script>
 import { ref, computed } from 'vue'
 import { setupStores } from '@/stores'
+import GuardTab from '@/components/tabs/GuardTab.vue'
+import MarketTab from '@/components/tabs/MarketTab.vue'
+import TradesTab from '@/components/tabs/TradesTab.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppButton from '@/components/ui/AppButton.vue'
-import useTabs from '@/composables/useTabs'
+import { tabs, activeTab } from '@/stores/appStore'
 
 export default {
     components: {
+        GuardTab,
+        MarketTab,
+        TradesTab,
         AppHeader,
         AppButton
     },
@@ -41,7 +47,8 @@ export default {
         ])
 
         return {
-            ...useTabs(),
+            tabs,
+            activeTab,
             isHidden,
             appClass
         }

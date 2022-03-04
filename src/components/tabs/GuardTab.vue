@@ -73,7 +73,7 @@
             <div class="wxb-text-[12px] wxb-text-right">
                 <span 
                     class="wxb-px-[4px] wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
-                    @click="loadGuardItemsData"
+                    @click="loadGuardItems"
                 >
                     refresh
                 </span>
@@ -91,7 +91,8 @@ import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsGuardItem from '@/components/csItem/CsGuardItem.vue'
 import useGuard from '@/composables/useGuard'
 import processStateEnum from '@/enums/processStateEnum'
-import { config, guardItems, loadGuardItemsData } from '@/stores/guardStore'
+import { config, guardItems, loadGuardItems } from '@/stores/guardStore'
+import { updateTabState } from '@/stores/appStore'
 
 export default {
     components: {
@@ -108,12 +109,14 @@ export default {
 
         const isTerminated = computed(() => process.is(processStateEnum.TERMINATED))
 
+        process.subscribe((state) => updateTabState('Guard', state))
+
         return {
             isTerminating,
             isTerminated,
             guardItems,
             config,
-            loadGuardItemsData,
+            loadGuardItems,
             toggle
         }
     }

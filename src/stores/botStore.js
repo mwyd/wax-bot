@@ -172,6 +172,7 @@ const buyItem = (item) => {
 }
 
 export {
+    process,
     config,
     pendingItems,
     finishedItems,

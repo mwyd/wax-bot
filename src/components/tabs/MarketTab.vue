@@ -125,6 +125,7 @@ import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsMarketItem from '@/components/csItem/CsMarketItem.vue'
 import useBot from '@/composables/useBot'
 import processStateEnum from '@/enums/processStateEnum'
+import { updateTabState } from '@/stores/appStore'
 
 export default {
     components: {
@@ -145,6 +146,8 @@ export default {
             return [...items.values()]
                 .sort((a, b) => (b.$steam?.discount || b.$discount) - (a.$steam?.discount || a.$discount))
         })
+
+        process.subscribe((state) => updateTabState('Market', state))
 
         return {
             isTerminating,

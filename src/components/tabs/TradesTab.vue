@@ -32,10 +32,12 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsTradeItem from '@/components/csItem/CsTradeItem.vue'
 import { pendingItems, finishedItems, moneyFrozen, moneySpent, config } from '@/stores/botStore'
-import { computed } from '@vue/runtime-core'
+import { process } from '@/stores/botStore'
+import { updateTabState } from '@/stores/appStore'
 
 export default {
     components: {
@@ -50,6 +52,8 @@ export default {
         const limit = computed(() => config.limit)
 
         const itemsCount = computed(() => pendingItems.size + finishedItems.value.length)
+
+        process.subscribe((value) => updateTabState('Trades', value))
 
         return {
             pendingItems,
