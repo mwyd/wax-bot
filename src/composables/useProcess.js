@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import processStateEnum from '@/enums/processStateEnum'
 
 export default function useProcess() {
@@ -8,8 +8,13 @@ export default function useProcess() {
 
     const update = (processState) => state.value = processState
 
+    const subscribe = (callback) => {
+        return watchEffect(() => callback(state.value)) 
+    }
+
     return {
         is,
-        update
+        update,
+        subscribe
     }
 }

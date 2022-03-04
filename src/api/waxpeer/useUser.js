@@ -21,11 +21,28 @@ export default function useUser({ baseUrl, credentials, headers }) {
         const data = await response.json()
 
         return data
-    } 
+    }
+
+    const editSellOffer = async (body) => {
+        const response = await fetch(`${baseUrl}/edit-sell-offer`, {
+            method: 'POST',
+            credentials,
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers
+            },
+            body: JSON.stringify(body)
+        })
+
+        const data = await response.json()
+
+        return data
+    }
 
     return {
         authenticate,
         getTrades,
-        getItems
+        getItems,
+        editSellOffer
     }
 }

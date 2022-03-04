@@ -11,7 +11,6 @@
                 v-model="token"
                 type="password"
                 placeholder="Api key..."
-                :onUpdate="authenticate"
             />
         </div>
         <AppButton 

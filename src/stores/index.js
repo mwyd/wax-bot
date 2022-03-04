@@ -1,15 +1,19 @@
-import { loadConfig as loadBotConfig } from './botStore'
-import { loadConfig as loadGuardConfig, loadOrders } from './guardStore'
-import { authenticate, loadToken } from './userStore'
+import * as botStore from './botStore'
+import * as guardStore from './guardStore'
+import * as userStore from './userStore'
 
 const setupStores = () => {
-    authenticate()
-
-    loadBotConfig()
-    loadToken()
+    userStore.authenticate()
     
-    loadGuardConfig()
-    loadOrders()
+    userStore.loadToken()
+
+    botStore.loadConfig()
+    
+    guardStore.loadConfig()
+
+    guardStore.loadGuardItemsData()
+
+    guardStore.loadGuardItems()
 }
 
 export {
