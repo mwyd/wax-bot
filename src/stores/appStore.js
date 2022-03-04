@@ -1,6 +1,8 @@
 import { ref, reactive } from 'vue'
 import processStateEnum from '@/enums/processStateEnum'
 
+const version = '1.0.0'
+
 const tabs = reactive({
     'Market': {
         componentName: 'MarketTab',
@@ -18,12 +20,22 @@ const tabs = reactive({
 
 const activeTab = ref('Market')
 
-const updateTabState = (key, newState) => {
-    tabs[key].state = newState
+const updateTabState = (key, state) => {
+    tabs[key].state = state
+}
+
+const initializeTradeTabCache = () => {
+    const initialTab = activeTab.value
+
+    activeTab.value = 'Trades'
+
+    setTimeout(() => activeTab.value = initialTab, 0.1 * 1000)
 }
 
 export {
+    version,
     tabs,
     activeTab,
-    updateTabState
+    updateTabState,
+    initializeTradeTabCache
 }

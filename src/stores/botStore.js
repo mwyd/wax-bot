@@ -33,33 +33,42 @@ const moneySpent = ref(0)
 const moneyFrozen = ref(0)
 
 watch(config, () => {
-    chrome.storage.sync.set({ wxbBotConfig: config })
+    chrome.storage.sync.set({ botConfig: config })
 })
 
 const loadConfig = () => {
-    chrome.storage.sync.get(['wxbBotConfig'], (result) => {
-        const { wxbBotConfig } = result
+    chrome.storage.sync.get(['botConfig'], (result) => {
+        const { botConfig } = result
 
-        if(wxbBotConfig instanceof Object) {
-            Object.assign(config, wxbBotConfig)
+        if(botConfig instanceof Object) {
+            Object.assign(config, botConfig)
         }
     })
 }
 
-const getPage = async (pageNumber) => {
+const getTrades = async () => {
+    let page = 1
     let trades = []
 
     try {
-        const query = new URLSearchParams({
-            skip: pageNumber * tradesResultLimit,
-            page: 'steam_trades',
-            start: timestamp.format('YYYY-MM-DD HH:mm:ss')
-        })
-
-        const { success, data } = await user.getTrades(query)
-
-        if(success) {
-            trades = data[0]
+        for(let i = 0; i < page; i++) {
+            const query = new URLSearchParams({
+                skip: i * tradesResultLimit,
+                page: 'steam_trades',
+                start: timestamp.format('YYYY-MM-DD HH:mm:ss')
+            })
+    
+            const { success, data } = await user.getTrades(query)
+    
+            if(success) {
+                trades = [...trades, ...data[0]]
+            }
+    
+            if(!success || data[0].length < tradesResultLimit) {
+                break
+            }
+    
+            page++
         }
     } catch(err) {
         WXB_LOG('Cannot load trades page', err)
@@ -77,20 +86,7 @@ const deletePendingItem = (item) => {
 const updatePendingItems = async () => {
     process.update(processStateEnum.RUNNING)
 
-    let page = 1
-    let trades = []
-
-    for(let i = 0; i < page; i++) {
-        const pageTrades = await getPage(i)
-
-        trades = [...trades, ...pageTrades]
-
-        if(pageTrades.length < tradesResultLimit) {
-            break
-        }
-
-        page++
-    }
+    const trades = await getTrades()
 
     pendingItems.forEach(item => {
         const tradeItem = trades.find(trade => trade.id === item.$trade_id)

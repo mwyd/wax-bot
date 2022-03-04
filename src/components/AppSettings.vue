@@ -13,25 +13,17 @@
                 placeholder="Api key..."
             />
         </div>
-        <AppButton 
-            class="wxb-btn-big wxb-mt-[8px]"
-            @click="authenticate"
-        >
-            Save
-        </AppButton>
     </div>
 </template>
 
 <script>
+import { computed } from 'vue'
+import { session } from '@/stores/userStore'
 import AppInput from '@/components/ui/AppInput.vue'
-import AppButton from '@/components/ui/AppButton.vue'
-import { computed } from '@vue/runtime-core'
-import { saveToken, session, authenticate } from '@/stores/userStore'
 
 export default {
     components: {
-        AppInput,
-        AppButton
+        AppInput
     },
     setup() {
         const token = computed({
@@ -39,13 +31,12 @@ export default {
                 return session.token || ''
             },
             set(value) {
-                saveToken(value)
+                session.token = value
             }
         })
 
         return {
-            token,
-            authenticate
+            token
         }
     }
 }

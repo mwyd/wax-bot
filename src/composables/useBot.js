@@ -2,7 +2,7 @@ import { reactive, watch } from 'vue'
 import { calculateDiscount, WXB_LOG } from '@/utils'
 import { market as waxpeeerMarket } from '@/api/waxpeer'
 import { steamMarket } from '@/api/conduit'
-import { updateItemPrice, updateItemDiscount, updateItemDetails } from '@/resources/csItem'
+import { updateItemDiscount, updateItemDetails } from '@/resources/csItem'
 import { config, moneySpent, buyItem } from '@/stores/botStore'
 import { session } from '@/stores/userStore'
 import { marketResultLimit } from '@/config'
@@ -14,7 +14,7 @@ export default function useBot() {
 
     const process = useProcess()
 
-    const items = reactive(new Map())
+    const activeItems = reactive(new Map())
 
     watch([
         () => config.deal, 
@@ -28,39 +28,45 @@ export default function useBot() {
             return
         }
 
-        items.forEach(item => {
-            if(itemFulfillCriteria(item)) {
-                buyItem(item)
+        activeItems.forEach(activeItem => {
+            if(itemFulfillCriteria(activeItem)) {
+                buyItem(activeItem)
             }
         })
     }
 
-    const itemFulfillCriteria = (item) => {
-        return item.$steam instanceof Object
-            && item.$steam.volume >= config.steamVolume 
-            && item.$steam.discount >= config.deal + config.dealMargin
+    const itemFulfillCriteria = (activeItem) => {
+        return activeItem.$steam instanceof Object
+            && activeItem.$steam.volume >= config.steamVolume 
+            && activeItem.$steam.discount >= config.deal + config.dealMargin
     }
 
-    const getPage = async (pageNumber) => {
+    const getMarketItems = async () => {
         let marketItems = []
 
         try {
-            const query = new URLSearchParams({
-                skip: pageNumber * marketResultLimit,
-                sort: 'DESC',
-                order: 'deals',
-                game: 'csgo',
-                all: 0,
-                min_price: config.minPrice * 1000,
-                max_price: config.maxPrice * 1000,
-                search: config.search,
-                exact: 0
-            })
-
-            const { success, items } = await waxpeeerMarket.getItems(query)
-
-            if(success) {
-                marketItems = items
+            for(let i = 0; i < config.pages; i++) {
+                const query = new URLSearchParams({
+                    skip: i * marketResultLimit,
+                    sort: 'DESC',
+                    order: 'deals',
+                    game: 'csgo',
+                    all: 0,
+                    min_price: config.minPrice * 1000,
+                    max_price: config.maxPrice * 1000,
+                    search: config.search,
+                    exact: 0
+                })
+    
+                const { success, items } = await waxpeeerMarket.getItems(query)
+    
+                if(success) {
+                    marketItems = [...marketItems, ...items]
+                }
+    
+                if(!success || items.length < marketResultLimit) {
+                    break
+                }
             }
         } catch(err) {
             WXB_LOG('Cannot load item page', err)
@@ -70,25 +76,27 @@ export default function useBot() {
     }
 
     const updateItems = (marketItems) => {
-        for(const [id, item] of items) {
+        for(const [id, activeItem] of activeItems) {
             const marketItem = marketItems.find(marketItem => marketItem.item_id == id)
 
             if(!marketItem) {
-                items.delete(id)
+                activeItems.delete(id)
 
                 continue
             }
 
-            if(marketItem.price != item.price) {
-                updateItemPrice(item, marketItem.price, marketItem.steam_price_number)
-                updateItemDiscount(item)
+            if(marketItem.price != activeItem.price) {
+                activeItem.price = marketItem.price
+                activeItem.steam_price_number = marketItem.steam_price_number
 
-                if(item.$steam instanceof Object) {
-                    item.$steam.discount = calculateDiscount(item.$price, item.$steam.price)
+                updateItemDiscount(activeItem)
+
+                if(activeItem.$steam instanceof Object) {
+                    activeItem.$steam.discount = calculateDiscount(activeItem.$price, activeItem.$steam.price)
                 }
 
-                if(itemFulfillCriteria(item)) {
-                    buyItem(item)
+                if(itemFulfillCriteria(activeItem)) {
+                    buyItem(activeItem)
                 }
             }
         }
@@ -103,17 +111,7 @@ export default function useBot() {
             toggle()
         }
 
-        let marketItems = []
-
-        for(let i = 0; i < config.pages; i++) {
-            const pageItems = await getPage(i)
-
-            marketItems = [...marketItems, ...pageItems]
-
-            if(pageItems.length < marketResultLimit) {
-                break
-            }
-        }
+        let marketItems = await getMarketItems()
 
         for(const marketItem of marketItems) {
             updateItemDiscount(marketItem)
@@ -124,7 +122,7 @@ export default function useBot() {
         updateItems(marketItems)
 
         for(const marketItem of marketItems) {
-            if(items.has(marketItem.item_id)) {
+            if(activeItems.has(marketItem.item_id)) {
                 continue
             }
             
@@ -144,10 +142,8 @@ export default function useBot() {
                 }
             }
 
-            items.set(marketItem.item_id, marketItem)
+            activeItems.set(marketItem.item_id, marketItem)
         }
-
-        //await new Promise(r => setTimeout(r, 10 * 1000))
 
         if(process.is(processStateEnum.TERMINATING)) {
             toggle()
@@ -175,15 +171,14 @@ export default function useBot() {
 
         clearTimeout(timeoutId)
         
-        items.clear()
+        activeItems.clear()
 
         process.update(processStateEnum.TERMINATED)
     }
 
     return {
         process,
-        config,
-        items,
+        activeItems,
         toggle 
     }
 }

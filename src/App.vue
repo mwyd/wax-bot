@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { setupStores } from '@/stores'
+import { tabs, activeTab, initializeTradeTabCache } from '@/stores/appStore'
 import GuardTab from '@/components/tabs/GuardTab.vue'
 import MarketTab from '@/components/tabs/MarketTab.vue'
 import TradesTab from '@/components/tabs/TradesTab.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppButton from '@/components/ui/AppButton.vue'
-import { tabs, activeTab } from '@/stores/appStore'
 
 export default {
     components: {
@@ -45,6 +45,8 @@ export default {
             'wxb-app',
             isHidden.value ? 'wxb-app--hidden' : ''
         ])
+
+        onMounted(initializeTradeTabCache)
 
         return {
             tabs,

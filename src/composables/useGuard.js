@@ -36,7 +36,7 @@ export default function useGuard() {
                     marketItems = [...marketItems, ...items]
                 }
     
-                if(items.length < marketResultLimit) {
+                if(!success || items.length < marketResultLimit) {
                     break
                 }
             }

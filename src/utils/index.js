@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 const WXB_LOG = (message, data) => {
-    console.log(`[WAX-BOT] ${message}`, data)
+    console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] [WAX-BOT] ${message}`, data)
 }
 
 const fetchBackground = (message) => {

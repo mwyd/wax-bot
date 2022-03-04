@@ -86,7 +86,7 @@ const getSellItems = async () => {
                 sellItems = [...sellItems, ...items]
             }
     
-            if(items.length < ordersResultLimit) {
+            if(!success || items.length < ordersResultLimit) {
                 break
             }
     

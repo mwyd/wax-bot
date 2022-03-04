@@ -2,7 +2,7 @@
     <div class="wxb-header wxb-flex wxb-flex-[0_0_70px] wxb-justify-between wxb-items-center wxb-px-[10px] wxb-w-full">
         <div class="wxb-uppercase">
             <span class="wxb-font-bold">wax-bot</span>
-            <sup class="wxb-pl-[4px]">1.0.0</sup>
+            <sup class="wxb-pl-[4px]">{{ version }}</sup>
         </div>
         <div class="wxb-flex wxb-h-full">
             <div 
@@ -28,6 +28,7 @@
 
 <script>
 import { toRefs, ref } from 'vue'
+import { version } from '@/stores/appStore'
 import AppSettings from '@/components/AppSettings.vue'
 
 export default {
@@ -73,6 +74,7 @@ export default {
         ]
 
         return {
+            version,
             showSettings,
             tabClass,
             tabStatusClass

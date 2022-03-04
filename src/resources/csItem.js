@@ -55,11 +55,6 @@ const decodeInspectId = (id) => {
     }
 }
 
-const updateItemPrice = (item, waxpeerPrice, suggestedPrice) => {
-    item.price = waxpeerPrice,
-    item.steam_price_number = suggestedPrice
-}
-
 const updateItemDiscount = (item) => {
     item.$price = item.price / 1000
     item.$discount = calculateDiscount(item.price, item.steam_price_number)
@@ -113,7 +108,6 @@ const updateItemDetails = async (item) => {
 }
 
 export {
-    updateItemPrice,
     updateItemDiscount,
     updateItemDetails
 }

@@ -118,6 +118,8 @@
 
 <script>
 import { computed } from 'vue'
+import { config } from '@/stores/botStore'
+import { updateTabState } from '@/stores/appStore'
 import AppTabLayout from '@/components/ui/AppTabLayout.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
@@ -125,7 +127,6 @@ import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsMarketItem from '@/components/csItem/CsMarketItem.vue'
 import useBot from '@/composables/useBot'
 import processStateEnum from '@/enums/processStateEnum'
-import { updateTabState } from '@/stores/appStore'
 
 export default {
     components: {
@@ -136,14 +137,14 @@ export default {
         CsMarketItem
     },
     setup() {
-        const { process, config, items, toggle } = useBot()
+        const { process, activeItems, toggle } = useBot()
 
         const isTerminating = computed(() => process.is(processStateEnum.TERMINATING))
 
         const isTerminated = computed(() => process.is(processStateEnum.TERMINATED))
 
         const sortedItems = computed(() => {
-            return [...items.values()]
+            return [...activeItems.values()]
                 .sort((a, b) => (b.$steam?.discount || b.$discount) - (a.$steam?.discount || a.$discount))
         })
 
