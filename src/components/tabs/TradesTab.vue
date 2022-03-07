@@ -37,7 +37,7 @@ import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsTradeItem from '@/components/csItem/CsTradeItem.vue'
 import { pendingItems, finishedItems, moneyFrozen, moneySpent, config } from '@/stores/botStore'
 import { process } from '@/stores/botStore'
-import { updateTabState } from '@/stores/appStore'
+import { updateTabState } from '@/stores/tabsStore'
 
 export default {
     components: {

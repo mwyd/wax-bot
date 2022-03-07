@@ -119,7 +119,7 @@
 <script>
 import { computed } from 'vue'
 import { config } from '@/stores/botStore'
-import { updateTabState } from '@/stores/appStore'
+import { updateTabState } from '@/stores/tabsStore'
 import AppTabLayout from '@/components/ui/AppTabLayout.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'

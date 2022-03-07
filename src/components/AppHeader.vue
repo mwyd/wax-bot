@@ -28,7 +28,7 @@
 
 <script>
 import { toRefs, ref } from 'vue'
-import { version } from '@/stores/appStore'
+import { version } from '@/config'
 import AppSettings from '@/components/AppSettings.vue'
 
 export default {

@@ -1,8 +1,6 @@
 import { ref, reactive } from 'vue'
 import processStateEnum from '@/enums/processStateEnum'
 
-const version = '1.0.0'
-
 const tabs = reactive({
     'Market': {
         componentName: 'MarketTab',
@@ -33,7 +31,6 @@ const initializeTradeTabCache = () => {
 }
 
 export {
-    version,
     tabs,
     activeTab,
     updateTabState,

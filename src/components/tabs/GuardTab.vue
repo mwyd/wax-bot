@@ -92,7 +92,7 @@ import CsGuardItem from '@/components/csItem/CsGuardItem.vue'
 import useGuard from '@/composables/useGuard'
 import processStateEnum from '@/enums/processStateEnum'
 import { config, guardItems, loadGuardItems } from '@/stores/guardStore'
-import { updateTabState } from '@/stores/appStore'
+import { updateTabState } from '@/stores/tabsStore'
 
 export default {
     components: {
