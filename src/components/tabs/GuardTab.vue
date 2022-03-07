@@ -70,13 +70,31 @@
                     :item="item"
                 />
             </AppScrollView>
-            <div class="wxb-text-xs wxb-text-right">
-                <span 
-                    class="wxb-px-1 wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
-                    @click="loadGuardItems"
-                >
-                    refresh
-                </span>
+            <div class="wxb-flex wxb-justify-end">
+                <div class="wxb-text-xs wxb-text-right">
+                    <span 
+                        class="wxb-px-1 wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
+                        @click="loadGuardItems"
+                    >
+                        refresh
+                    </span>
+                </div>
+                <div class="wxb-text-xs wxb-text-right">
+                    <span 
+                        class="wxb-px-1 wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
+                        @click="toggleGuardItemsStatus(false)"
+                    >
+                        observe all
+                    </span>
+                </div>
+                <div class="wxb-text-xs wxb-text-right">
+                    <span 
+                        class="wxb-px-1 wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
+                        @click="toggleGuardItemsStatus(true)"
+                    >
+                        ignore all
+                    </span>
+                </div>
             </div>
         </template>
     </AppTabLayout>
@@ -91,7 +109,7 @@ import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsGuardItem from '@/components/csItem/CsGuardItem.vue'
 import useGuard from '@/composables/useGuard'
 import processStateEnum from '@/enums/processStateEnum'
-import { config, guardItems, loadGuardItems } from '@/stores/guardStore'
+import { config, guardItems, loadGuardItems, toggleGuardItemsStatus } from '@/stores/guardStore'
 import { updateTabState } from '@/stores/tabsStore'
 
 export default {
@@ -117,7 +135,8 @@ export default {
             guardItems,
             config,
             loadGuardItems,
-            toggle
+            toggle,
+            toggleGuardItemsStatus
         }
     }
 }

@@ -49,6 +49,12 @@ const getGuardItemData = (id) => {
     return guardItemsData.value[id]
 }
 
+const toggleGuardItemsStatus = (ignore) => {
+    for(const data of Object.values(guardItemsData.value)) {
+        data.ignored = ignore
+    }
+}
+
 const getObservedItems = () => {
     let observedItems = []
 
@@ -141,6 +147,7 @@ export {
     guardItems,
     deleteGuardItem,
     getGuardItemData,
+    toggleGuardItemsStatus,
     getObservedItems,
     loadGuardItemsData,
     loadConfig,
