@@ -152,10 +152,10 @@ export default {
 }
 
 .wxb-settings__status-ok {
-    background-color: #82e28c;
+    background-color: var(--state-r);
 }
 
 .wxb-settings__status-fail {
-    background-color: #e28282;;
+    background-color: var(--state-e);
 }
 </style>

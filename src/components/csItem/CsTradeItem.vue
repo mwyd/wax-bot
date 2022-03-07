@@ -98,14 +98,14 @@ export default {
 }
 
 .wxb-cs-item-status--pending {
-    color: #61c1ff;
+    color: var(--state-i);
 }
 
 .wxb-cs-item-status--accepted {
-    color: #82e28c;
+    color: var(--state-r);
 }
 
 .wxb-cs-item-status--canceled, .wxb-cs-item-status--declined {
-    color: #e28282;
+    color: var(--state-e);
 }
 </style>
