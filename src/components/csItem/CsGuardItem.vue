@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="wxb-cs-market-item wxb-w-full wxb-p-[4px] wxb-flex">
-            <CsItemName
+            <CsItemHeader
                 class="wxb-w-[100%]"
                 :hashName="item.name"
                 :imageUrl="item.image"
@@ -48,7 +48,7 @@
 import { toRef } from 'vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
-import CsItemName from './CsItemName.vue'
+import CsItemHeader from './CsItemHeader.vue'
 import CsItemPrice from './CsItemPrice.vue'
 import CsItemDetailsBar from './CsItemDetailsBar.vue'
 import useCsItemDetails from '@/composables/useCsItemDetails'
@@ -56,7 +56,7 @@ import { getGuardItemData } from '@/stores/guardStore'
 
 export default {
     components: {
-        CsItemName,
+        CsItemHeader,
         CsItemPrice,
         CsItemDetailsBar,
         AppInput,

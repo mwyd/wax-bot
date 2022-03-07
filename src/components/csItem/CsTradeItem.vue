@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="wxb-cs-market-item wxb-w-full wxb-p-[4px] wxb-flex">
-            <CsItemName
+            <CsItemHeader
                 class="wxb-w-[100%]"
                 :hashName="item.name"
                 :imageUrl="item.image"
@@ -30,7 +30,7 @@
 
 <script>
 import { computed, toRef } from 'vue'
-import CsItemName from './CsItemName.vue'
+import CsItemHeader from './CsItemHeader.vue'
 import CsItemPrice from './CsItemPrice.vue'
 import CsItemDetailsBar from './CsItemDetailsBar.vue'
 import useCsItemDetails from '@/composables/useCsItemDetails'
@@ -39,7 +39,7 @@ import moment from 'moment'
 
 export default {
     components: {
-        CsItemName,
+        CsItemHeader,
         CsItemPrice,
         CsItemDetailsBar
     },
