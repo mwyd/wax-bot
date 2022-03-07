@@ -5,8 +5,8 @@
     >
         <template #left>
             <AppScrollView>
-                <div class="wxb-py-[8px]">
-                    <label class="wxb-block wxb-pb-[8px]">
+                <div class="wxb-py-2">
+                    <label class="wxb-block wxb-pb-2">
                         $ Bid step
                     </label>
                     <AppInput 
@@ -15,8 +15,8 @@
                         :validator="value => (value > 0 && value < 100)"
                     />
                 </div>
-                <div class="wxb-py-[8px]">
-                    <label class="wxb-block wxb-pb-[8px]">
+                <div class="wxb-py-2">
+                    <label class="wxb-block wxb-pb-2">
                         % Safe discount
                     </label>
                     <AppInput 
@@ -25,8 +25,8 @@
                         :validator="value => (value > 0 && value < 10)"
                     />
                 </div>
-                <div class="wxb-py-[8px]">
-                    <label class="wxb-block wxb-pb-[8px]">
+                <div class="wxb-py-2">
+                    <label class="wxb-block wxb-pb-2">
                         Pages
                     </label>
                     <AppInput 
@@ -35,8 +35,8 @@
                         :validator="value => (value > 0 && value < 10)"
                     />
                 </div>
-                <div class="wxb-py-[8px]">
-                    <label class="wxb-block wxb-pb-[8px]">
+                <div class="wxb-py-2">
+                    <label class="wxb-block wxb-pb-2">
                         Update delay
                     </label>
                     <AppInput 
@@ -47,7 +47,7 @@
                 </div>
             </AppScrollView>
             <AppButton 
-                class="wxb-btn-big wxb-mt-[8px] wxb-flex-[0_0_30px]"
+                class="wxb-btn-big wxb-mt-2 wxb-flex-[0_0_30px]"
                 :disabled="isTerminating"
                 @click="toggle"
             >
@@ -55,24 +55,24 @@
             </AppButton>
         </template>
         <template #right>
-            <div class="wxb-flex wxb-py-[8px]">
-                <div class="wxb-w-full wxb-px-[8px]">Name</div>
-                <div class="wxb-flex-[0_0_160px] wxb-px-[8px]">Price</div>
-                <div class="wxb-flex-[0_0_120px] wxb-px-[8px]">Min price</div>
-                <div class="wxb-flex-[0_0_120px] wxb-px-[8px]">Max price</div>
-                <div class="wxb-flex-[0_0_100px] wxb-px-[8px]">Status</div>
+            <div class="wxb-flex wxb-py-2">
+                <div class="wxb-w-full wxb-px-2">Name</div>
+                <div class="wxb-flex-[0_0_160px] wxb-px-2">Price</div>
+                <div class="wxb-flex-[0_0_120px] wxb-px-2">Min price</div>
+                <div class="wxb-flex-[0_0_120px] wxb-px-2">Max price</div>
+                <div class="wxb-flex-[0_0_100px] wxb-px-2">Status</div>
             </div>
             <AppScrollView>
                 <CsGuardItem
-                    class="wxb-py-[4px]"
+                    class="wxb-py-1"
                     v-for="[id, item] in guardItems"
                     :key="id"
                     :item="item"
                 />
             </AppScrollView>
-            <div class="wxb-text-[12px] wxb-text-right">
+            <div class="wxb-text-xs wxb-text-right">
                 <span 
-                    class="wxb-px-[4px] wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
+                    class="wxb-px-1 wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
                     @click="loadGuardItems"
                 >
                     refresh

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="wxb-cs-market-item wxb-w-full wxb-p-[4px] wxb-flex">
+        <div class="wxb-cs-market-item wxb-w-full wxb-p-1 wxb-flex">
             <CsItemHeader
                 class="wxb-w-[100%]"
                 :hashName="item.name"
@@ -15,7 +15,7 @@
             <div :class="statusClass">
                 {{ status }}
             </div>
-            <div class="wxb-flex wxb-items-center wxb-flex-[0_0_160px] wxb-px-[8px]">
+            <div class="wxb-flex wxb-items-center wxb-flex-[0_0_160px] wxb-px-2">
                 {{ boughtDateTime }}
             </div>
         </div>
@@ -76,8 +76,8 @@ export default {
             'wxb-flex',
             'wxb-items-center',
             'wxb-flex-[0_0_160px]',
-            'wxb-px-[8px]',
-            `wxb-cs-item-status-${status.value}`
+            'wxb-px-2',
+            `wxb-cs-item-status--${status.value}`
         ])
 
         const boughtDateTime = computed(() => moment(item.value.$bought_at).format('YYYY-MM-DD HH:mm:ss'))
@@ -97,15 +97,15 @@ export default {
     background-color: var(--bg-c-3);
 }
 
-.wxb-cs-item-status-pending {
+.wxb-cs-item-status--pending {
     color: #61c1ff;
 }
 
-.wxb-cs-item-status-accepted {
+.wxb-cs-item-status--accepted {
     color: #82e28c;
 }
 
-.wxb-cs-item-status-canceled, .wxb-cs-item-status-declined {
+.wxb-cs-item-status--canceled, .wxb-cs-item-status--declined {
     color: #e28282;
 }
 </style>

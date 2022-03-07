@@ -1,7 +1,7 @@
 <template>
-    <div class="wxb-flex wxb-items-center wxb-px-[8px]">   
+    <div class="wxb-flex wxb-items-center wxb-px-2">   
         <img 
-            class="wxb-h-[50px] wxb-w-auto wxb-pr-[8px]"
+            class="wxb-h-[50px] wxb-w-auto wxb-pr-2"
             :src="imageUrl" 
         />
         <a 

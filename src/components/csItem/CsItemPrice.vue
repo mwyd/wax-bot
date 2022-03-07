@@ -1,9 +1,9 @@
 <template>
-    <div class="wxb-flex wxb-items-center wxb-px-[8px]">
+    <div class="wxb-flex wxb-items-center wxb-px-2">
         <span>
             $ {{ price }}
             <sup 
-                class="wxb-text-orange-500 wxb-font-bold wxb-text-[14px]" 
+                class="wxb-text-orange-500 wxb-font-bold wxb-text-sm" 
                 v-html="discountElement"
             ></sup>
         </span>

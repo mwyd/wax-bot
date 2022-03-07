@@ -7,6 +7,10 @@
     --bg-c-2: #272a31;
     --bg-c-3: #333a44;
     --p-m: 8px;
+    --state-i: blue;
+    --state-r: green;
+    --state-t1: grey;
+    --state-t2: black;
 }
 
 .wxb-btn-big {

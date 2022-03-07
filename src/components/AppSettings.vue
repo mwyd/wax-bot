@@ -1,10 +1,8 @@
 <template>
-    <div class="wxb-settings wxb-absolute wxb-top-[70px] wxb-right-[-100%] wxb-w-[250px] wxb-z-10 wxb-p-[10px] wxb-shadow-md">
-        <div class="wxb-settings-corner wxb-w-[16px] wxb-h-[16px] wxb-absolute wxb-top-[-8px] wxb-right-[10px]">
-            
-        </div>
-        <div class="wxb-py-[8px]">
-            <label class="wxb-block wxb-pb-[8px]">
+    <div class="wxb-settings wxb-p-2 wxb-shadow-md">
+        <div class="wxb-settings__corner"></div>
+        <div class="wxb-py-2">
+            <label class="wxb-block wxb-pb-2">
                 Conduit
             </label>
             <AppInput 
@@ -45,10 +43,20 @@ export default {
 <style scoped>
 .wxb-settings {
     background-color: var(--bg-c-1);
+    position: absolute;
+    top: 70px;
+    right: -100%; 
+    width: 250px;
+    z-index: 10; 
 }
 
-.wxb-settings-corner {
+.wxb-settings__corner {
     transform: rotate(45deg);
     background-color: var(--bg-c-1);
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: -8px;
+    right: 16px;
 }
 </style>

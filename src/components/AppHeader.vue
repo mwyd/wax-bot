@@ -1,8 +1,12 @@
 <template>
-    <div class="wxb-header wxb-flex wxb-flex-[0_0_70px] wxb-justify-between wxb-items-center wxb-px-[10px] wxb-w-full">
+    <div class="wxb-header wxb-px-4">
         <div class="wxb-uppercase">
-            <span class="wxb-font-bold">wax-bot</span>
-            <sup class="wxb-pl-[4px]">{{ version }}</sup>
+            <span class="wxb-font-bold">
+                wax-bot
+            </span>
+            <sup class="wxb-pl-1">
+                {{ version }}
+            </sup>
         </div>
         <div class="wxb-flex wxb-h-full">
             <div 
@@ -11,12 +15,12 @@
                 :class="tabClass(key)"
                 @click="$emit('tabChange', key)"
             >
-                <div :class="tabStatusClass(tab.state)"></div>
+                <div :class="tabStateClass(tab.state)"></div>
                 {{ key }}
             </div>
         </div>
         <div 
-            class="wxb-settings-btn wxb-w-[16px] wxb-h-[16px] wxb-cursor-pointer wxb-bg-center wxb-bg-no-repeat wxb-bg-contain"
+            class="wxb-header__settings-btn wxb-cursor-pointer"
             @click="showSettings = !showSettings"
         >
             <Teleport to="#wxb-root">
@@ -52,32 +56,23 @@ export default {
         const showSettings = ref(false)
 
         const tabClass = (tab) => [
-            'wxb-relative',
-            'wxb-px-[10px]',
-            'wxb-flex',
-            'wxb-items-center',
-            'wxb-justify-center',
+            'wxb-header__tab',
+            'wxb-px-2',
             'wxb-cursor-pointer',
-            'wxb-w-[100px]',
-            'wxb-h-full',
-            tab == activeTab.value ? 'wxb-active-tab' : ''
+            tab == activeTab.value ? 'wxb-header__tab--active' : ''
         ]
 
-        const tabStatusClass = (status) => [
-            'wxb-absolute',
-            'wxb-top-[4px]',
-            'wxb-left-[4px]',
-            'wxb-h-[8px]',
-            'wxb-w-[8px]',
-            'wxb-rounded-[4px]',
-            `wxb-tab-status-${status}`
+        const tabStateClass = (status) => [
+            'wxb-tab__state',
+            'wxb-rounded-full',
+            `wxb-tab__state--${status}`
         ]
 
         return {
             version,
             showSettings,
             tabClass,
-            tabStatusClass
+            tabStateClass
         }
     }
 }
@@ -86,29 +81,56 @@ export default {
 <style scoped>
 .wxb-header {
     background-color: var(--bg-c-2);
+    display: flex; 
+    flex: 0 0 70px; 
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
-.wxb-active-tab {
+.wxb-header__tab {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100%
+}
+
+.wxb-header__tab--active {
     background-color: var(--bg-c-1);
 }
 
-.wxb-settings-btn {
+.wxb-tab__state {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: 8px;
+    width: 8px;
+}
+
+.wxb-tab__state--idle {
+    background-color: var(--state-i);
+}
+
+.wxb-tab__state--running {
+    background-color: var(--state-r);
+}
+
+.wxb-tab__state--terminating {
+    background-color: var(--state-t1);
+}
+
+.wxb-tab__state--terminated {
+    background-color: var(--state-t2);
+}
+
+.wxb-header__settings-btn {
+    width: 16px;
+    height: 16px;
     background-image: url('chrome-extension://__MSG_@@extension_id__/assets/img/settings.png');
-}
-
-.wxb-tab-status-idle {
-    background-color: blue;
-}
-
-.wxb-tab-status-running {
-    background-color: green;
-}
-
-.wxb-tab-status-terminating {
-    background-color: grey;
-}
-
-.wxb-tab-status-terminated {
-    background-color: black;
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 </style>

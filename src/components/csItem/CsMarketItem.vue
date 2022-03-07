@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="wxb-cs-market-item wxb-w-full wxb-p-[4px] wxb-flex">
+        <div class="wxb-cs-market-item wxb-w-full wxb-p-1 wxb-flex">
             <CsItemHeader
                 class="wxb-w-[100%]"
                 :hashName="item.name"
@@ -12,7 +12,7 @@
                 :waxpeer-discount="item.$discount"
                 :steam-discount="item.$steam?.discount"
             />
-            <div class="wxb-flex wxb-items-center wxb-flex-[0_0_100px] wxb-px-[8px]">
+            <div class="wxb-flex wxb-items-center wxb-flex-[0_0_100px] wxb-px-2">
                 <AppButton 
                     class="wxb-btn-big"
                     @click="buy"
