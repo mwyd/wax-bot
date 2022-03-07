@@ -1,7 +1,7 @@
 import { ref, reactive, watch } from 'vue'
 import { user } from '@/api/waxpeer'
 import { updateItemDetails, updateItemDiscount } from '@/resources/csItem'
-import { WXB_LOG } from '@/utils'
+import { syncStorage, WXB_LOG } from '@/utils'
 import { ordersResultLimit } from '@/config'
 
 const config = reactive({
@@ -16,31 +16,27 @@ const guardItems = ref(new Map())
 const guardItemsData = ref({})
 
 watch(config, () => {
-    chrome.storage.sync.set({ guardConfig: config })
+    syncStorage.set({ guardConfig: config })
 })
 
 watch(guardItemsData, () => {
-    chrome.storage.sync.set({ guardItemsData: guardItemsData.value })
+    syncStorage.set({ guardItemsData: guardItemsData.value })
 }, { deep: true })
 
-const loadConfig = () => {
-    chrome.storage.sync.get(['guardConfig'], (result) => {
-        const { guardConfig } = result
+const loadConfig = async () => {
+    const guardConfig = await syncStorage.get('guardConfig')
 
-        if(guardConfig instanceof Object) {
-            Object.assign(config, guardConfig)
-        }
-    })
+    if(guardConfig instanceof Object) {
+        Object.assign(config, guardConfig)
+    }
 }
 
-const loadGuardItemsData = () => {
-    chrome.storage.sync.get(['guardItemsData'], (result) => {
-        const { guardItemsData: data } = result
+const loadGuardItemsData = async () => {
+    const data = await syncStorage.get('guardItemsData')
 
-        if(data instanceof Object) {
-            guardItemsData.value = data
-        }
-    })
+    if(data instanceof Object) {
+        guardItemsData.value = data
+    }
 }
 
 const deleteGuardItem = (id) => {

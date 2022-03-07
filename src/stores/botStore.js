@@ -1,5 +1,5 @@
 import { reactive, ref, watch } from 'vue'
-import { waxpeerDate, WXB_LOG } from '@/utils'
+import { syncStorage, waxpeerDate, WXB_LOG } from '@/utils'
 import { user, market as waxpeerMarket } from '@/api/waxpeer'
 import { updateTradesDelay, tradesResultLimit, notificationSound } from '@/config'
 import useProcess from '@/composables/useProcess'
@@ -33,17 +33,15 @@ const moneySpent = ref(0)
 const moneyFrozen = ref(0)
 
 watch(config, () => {
-    chrome.storage.sync.set({ botConfig: config })
+    syncStorage.set({ botConfig: config })
 })
 
-const loadConfig = () => {
-    chrome.storage.sync.get(['botConfig'], (result) => {
-        const { botConfig } = result
+const loadConfig = async () => {
+    const botConfig = await syncStorage.get('botConfig')
 
-        if(botConfig instanceof Object) {
-            Object.assign(config, botConfig)
-        }
-    })
+    if(botConfig instanceof Object) {
+        Object.assign(config, botConfig)
+    }
 }
 
 const getTrades = async () => {

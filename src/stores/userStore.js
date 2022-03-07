@@ -1,6 +1,7 @@
 import { reactive, watch } from 'vue'
 import { user as conduitUser } from '@/api/conduit'
 import { user as waxpeerUser } from '@/api/waxpeer'
+import { syncStorage } from '@/utils'
 
 const session = reactive({
     conduitName: null,
@@ -8,14 +9,12 @@ const session = reactive({
     waxpeerId: null
 })
 
-const loadToken = () => {
-    chrome.storage.sync.get(['token'], (result) => {
-        session.token = result.token
-    })
+const loadToken = async () => {
+    session.token = await syncStorage.get('token')
 }
 
 watch(() => session.token, () => {
-    chrome.storage.sync.set({ token: session.token })
+    syncStorage.set({ token: session.token })
 })
 
 const authenticateConduit = async () => {
@@ -23,7 +22,9 @@ const authenticateConduit = async () => {
 
     if(success) {
         session.conduitName = data.name
-    } 
+    } else {
+        session.conduitName = null
+    }
 }
 
 const authenticateWaxpeer = async () => {
@@ -34,13 +35,9 @@ const authenticateWaxpeer = async () => {
     }
 }
 
-const authenticate = () => {
-    authenticateConduit()
-    authenticateWaxpeer()
-}
-
 export {
     session,
     loadToken,
-    authenticate
+    authenticateConduit,
+    authenticateWaxpeer
 }

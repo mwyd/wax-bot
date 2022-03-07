@@ -2,10 +2,12 @@ import * as botStore from './botStore'
 import * as guardStore from './guardStore'
 import * as userStore from './userStore'
 
-const setupStores = () => {
-    userStore.authenticate()
-    
-    userStore.loadToken()
+const setupStores = async () => {
+    await userStore.loadToken()
+
+    userStore.authenticateConduit()
+
+    userStore.authenticateWaxpeer()
 
     botStore.loadConfig()
     

@@ -9,6 +9,7 @@
                 v-model="token"
                 type="password"
                 placeholder="Api key..."
+                :onUpdate="authenticateConduit"
             />
         </div>
     </div>
@@ -16,7 +17,7 @@
 
 <script>
 import { computed } from 'vue'
-import { session } from '@/stores/userStore'
+import { session, authenticateConduit } from '@/stores/userStore'
 import AppInput from '@/components/ui/AppInput.vue'
 
 export default {
@@ -34,7 +35,8 @@ export default {
         })
 
         return {
-            token
+            token,
+            authenticateConduit
         }
     }
 }

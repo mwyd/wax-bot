@@ -20,9 +20,10 @@
             </div>
         </div>
         <div 
-            class="wxb-header__settings-btn wxb-cursor-pointer"
+            class="wxb-header__settings-btn wxb-cursor-pointer wxb-relative"
             @click="showSettings = !showSettings"
         >
+            <div :class="settingsStatusClass"></div>
             <Teleport to="#wxb-root">
                 <AppSettings v-if="showSettings" />
             </Teleport>
@@ -31,8 +32,9 @@
 </template>
 
 <script>
-import { toRefs, ref } from 'vue'
+import { toRefs, ref, computed } from 'vue'
 import { version } from '@/config'
+import { session } from '@/stores/userStore'
 import AppSettings from '@/components/AppSettings.vue'
 
 export default {
@@ -68,11 +70,18 @@ export default {
             `wxb-tab__state--${status}`
         ]
 
+        const settingsStatusClass = computed(() => [
+            'wxb-settings__status',
+            'wxb-rounded-full',
+            session.conduitName != null ? 'wxb-settings__status-ok' : 'wxb-settings__status-fail'
+        ])
+
         return {
             version,
             showSettings,
             tabClass,
-            tabStateClass
+            tabStateClass,
+            settingsStatusClass
         }
     }
 }
@@ -132,5 +141,21 @@ export default {
     background-position: center; 
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+.wxb-settings__status {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    height: 8px;
+    width: 8px;
+}
+
+.wxb-settings__status-ok {
+    background-color: #82e28c;
+}
+
+.wxb-settings__status-fail {
+    background-color: #e28282;;
 }
 </style>

@@ -18,9 +18,15 @@ const waxpeerDate = () => {
     return moment().subtract(2, 'hours')
 }
 
+const syncStorage = {
+    set: (data) => chrome.storage.sync.set(data),
+    get: (key) => new Promise(resolve => chrome.storage.sync.get([key], data => resolve(data[key])))
+}
+
 export {
     WXB_LOG,
     fetchBackground,
     calculateDiscount,
-    waxpeerDate
+    waxpeerDate,
+    syncStorage
 }
