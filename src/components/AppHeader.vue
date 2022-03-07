@@ -1,5 +1,5 @@
 <template>
-    <div class="wxb-header wxb-px-4">
+    <div class="wxb-header wxb-pl-9 wxb-pr-4">
         <div class="wxb-uppercase">
             <span class="wxb-font-bold">
                 wax-bot

@@ -8,12 +8,14 @@
         <KeepAlive>
             <component :is="tabs[activeTab].componentName" />
         </KeepAlive>
-        <AppButton
-            class="wxb-app__open-btn"
-            @click="isHidden = !isHidden"
-        >
-            {{ isHidden ? '›' : '‹' }}
-        </AppButton>
+        <Teleport to="#wxb-root">
+            <AppButton
+                class="wxb-toggle-btn"
+                @click="isHidden = !isHidden"
+            >
+                {{ isHidden ? '›' : '‹' }}
+            </AppButton>
+        </Teleport>
     </div>
 </template>
 
@@ -82,7 +84,6 @@ export default {
     width: 100%;
     height: 100%;
     background-color: var(--bg-c-1);
-    position: relative;
     transform: translateX(100%);
     display: flex;
     flex-direction: column;
@@ -92,12 +93,13 @@ export default {
     transform: translateX(0%);
 }
 
-.wxb-app__open-btn {
-    position: absolute;
+.wxb-toggle-btn {
+    position: fixed;
     top: 0;
-    right: -20px;
+    left: 100%;
     width: 20px;
     height: 70px;
     font-size: 20px;
+    z-index: 10;
 }
 </style>
