@@ -37,15 +37,11 @@ export default {
         validator: {
             type: Function,
             default: () => true
-        },
-        onUpdate: {
-            type: Function,
-            default: () => {}
         }
     },
     emits: ['update:modelValue'],
     setup(props, { emit }) {
-        const { modelValue, validator, onUpdate } = toRefs(props)
+        const { modelValue, validator } = toRefs(props)
 
         const internalModel = ref(modelValue.value)
 
@@ -64,8 +60,6 @@ export default {
 
         const updateModelValue = () => {
             emit('update:modelValue', internalModel.value)
-
-            onUpdate.value()
         }
 
         const validateInternalModel = () => {

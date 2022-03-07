@@ -9,9 +9,14 @@
                 v-model="token"
                 type="password"
                 placeholder="Api key..."
-                :onUpdate="authenticateConduit"
             />
         </div>
+        <AppButton 
+            class="wxb-btn-big wxb-mt-2"
+            @click="authenticateConduit"
+        >
+            Save
+        </AppButton>
     </div>
 </template>
 
@@ -19,10 +24,12 @@
 import { computed } from 'vue'
 import { session, authenticateConduit } from '@/stores/userStore'
 import AppInput from '@/components/ui/AppInput.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 
 export default {
     components: {
-        AppInput
+        AppInput,
+        AppButton
     },
     setup() {
         const token = computed({
