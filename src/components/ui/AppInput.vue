@@ -85,19 +85,7 @@ export default {
 </script>
 
 <style scoped>
-.wxb-input {
-    display: block;
-    height: 30px;
-    border-radius: 2px;
-    width: 100%;
-    background-color: rgba(32,33,38,.47);
-    border: 1px solid #383e4a;
-    padding: 4px;
-    color: inherit;
-    font-size: inherit;
-}
-
 .wxb-input--error {
-    background-color: red;
+    background-color: var(--state-e);
 }
 </style>

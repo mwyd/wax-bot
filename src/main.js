@@ -12,5 +12,5 @@ try {
 
     app.mount(root)
 } catch(err) {
-    WXB_LOG('Cannot load body element', err)
+    WXB_LOG('', err)
 }

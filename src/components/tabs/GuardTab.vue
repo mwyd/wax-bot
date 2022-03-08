@@ -1,7 +1,7 @@
 <template>
     <AppTabLayout
         left-title="Manage"
-        :right-title="'Items - ' + guardItems.size"
+        :right-title="'Items - ' + filteredItems.length"
     >
         <template #left>
             <AppScrollView>
@@ -55,6 +55,11 @@
             </AppButton>
         </template>
         <template #right>
+            <CsItemFilters 
+                :defaultFilters="defaultFilters"
+                :items="[...guardItems.values()]"
+                @filter="items => filteredItems = items"
+            />
             <div class="wxb-flex wxb-py-2">
                 <div class="wxb-w-full wxb-px-2">Name</div>
                 <div class="wxb-flex-[0_0_160px] wxb-px-2">Price</div>
@@ -65,8 +70,8 @@
             <AppScrollView>
                 <CsGuardItem
                     class="wxb-py-1"
-                    v-for="[id, item] in guardItems"
-                    :key="id"
+                    v-for="item in filteredItems"
+                    :key="item.item_id"
                     :item="item"
                 />
             </AppScrollView>
@@ -101,16 +106,22 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import AppTabLayout from '@/components/ui/AppTabLayout.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsGuardItem from '@/components/csItem/CsGuardItem.vue'
+import CsItemFilters from '@/components/csItem/CsItemFilters.vue'
 import useGuard from '@/composables/useGuard'
 import processStateEnum from '@/enums/processStateEnum'
 import { config, guardItems, loadGuardItems, toggleGuardItemsStatus } from '@/stores/guardStore'
 import { updateTabState } from '@/stores/tabsStore'
+import csItemSortEnum from '@/enums/csItemSortEnum'
+
+const defaultFilters = {
+    sortBy: csItemSortEnum.MARKET_PRICE
+}
 
 export default {
     components: {
@@ -118,9 +129,12 @@ export default {
         AppButton,
         AppInput,
         AppScrollView,
-        CsGuardItem
+        CsGuardItem,
+        CsItemFilters
     },
     setup() {
+        const filteredItems = ref([])
+
         const { process, toggle } = useGuard()
 
         const isTerminating = computed(() => process.is(processStateEnum.TERMINATING))
@@ -130,13 +144,15 @@ export default {
         process.subscribe((state) => updateTabState('Guard', state))
 
         return {
+            filteredItems,
             isTerminating,
             isTerminated,
             guardItems,
             config,
             loadGuardItems,
             toggle,
-            toggleGuardItemsStatus
+            toggleGuardItemsStatus,
+            defaultFilters
         }
     }
 }

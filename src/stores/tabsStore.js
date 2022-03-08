@@ -22,17 +22,19 @@ const updateTabState = (key, state) => {
     tabs[key].state = state
 }
 
-const initializeTradeTabCache = () => {
+const initializeTabsCache = () => {
     const initialTab = activeTab.value
 
     activeTab.value = 'Trades'
 
-    setTimeout(() => activeTab.value = initialTab, 0.1 * 1000)
+    setTimeout(() => activeTab.value = 'Guard', 0.1 * 1000)
+
+    setTimeout(() => activeTab.value = initialTab, 0.2 * 1000)
 }
 
 export {
     tabs,
     activeTab,
     updateTabState,
-    initializeTradeTabCache
+    initializeTabsCache
 }

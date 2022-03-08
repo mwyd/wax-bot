@@ -22,7 +22,7 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { setupStores } from '@/stores'
-import { tabs, activeTab, initializeTradeTabCache } from '@/stores/tabsStore'
+import { tabs, activeTab, initializeTabsCache } from '@/stores/tabsStore'
 import GuardTab from '@/components/tabs/GuardTab.vue'
 import MarketTab from '@/components/tabs/MarketTab.vue'
 import TradesTab from '@/components/tabs/TradesTab.vue'
@@ -48,7 +48,7 @@ export default {
             isHidden.value ? 'wxb-app--hidden' : ''
         ])
 
-        onMounted(initializeTradeTabCache)
+        onMounted(initializeTabsCache)
 
         return {
             tabs,

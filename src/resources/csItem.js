@@ -61,6 +61,7 @@ const updateItemDiscount = (item) => {
 }
 
 const updateItemDetails = async (item) => {
+    item.$searchable = item.name.toLowerCase()
     item.$phase = getDopplerPhase(item.market_name)
     item.$hash_name = item.$phase ? item.name.replace('(', `${item.$phase} (`) : item.name
 

@@ -8,6 +8,11 @@
                 Limit - $ {{ moneyTotal + ' / ' + limit }}
             </span>
         </h4>
+        <CsItemFilters 
+            :defaultFilters="defaultFilters"
+            :items="[...pendingItems.values(), ...finishedItems]"
+            @filter="items => filteredItems = items"
+        />
         <div class="wxb-cs-list-header wxb-flex wxb-py-2">
             <div class="wxb-w-full wxb-px-2">Name</div>
             <div class="wxb-flex-[0_0_160px] wxb-px-2">Price</div>
@@ -17,13 +22,7 @@
         <AppScrollView>
             <CsTradeItem
                 class="wxb-py-1"
-                v-for="[id, item] in pendingItems"
-                :key="id"
-                :item="item"
-            />
-            <CsTradeItem
-                class="wxb-py-1"
-                v-for="item in sortedFinishedItems"
+                v-for="item in filteredItems"
                 :key="item.item_id"
                 :item="item"
             />
@@ -32,20 +31,27 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsTradeItem from '@/components/csItem/CsTradeItem.vue'
+import CsItemFilters from '@/components/csItem/CsItemFilters.vue'
 import { pendingItems, finishedItems, moneyFrozen, moneySpent, config } from '@/stores/botStore'
 import { process } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
+import csItemSortEnum from '@/enums/csItemSortEnum'
+
+const defaultFilters = {
+    sortBy: csItemSortEnum.DATE
+}
 
 export default {
     components: {
         AppScrollView,
-        CsTradeItem
+        CsTradeItem,
+        CsItemFilters
     },
     setup() {
-        const sortedFinishedItems = computed(() => [...finishedItems.value].reverse())
+        const filteredItems = ref([])
 
         const moneyTotal = computed(() => moneyFrozen.value + moneySpent.value)
 
@@ -56,11 +62,13 @@ export default {
         process.subscribe((value) => updateTabState('Trades', value))
 
         return {
+            filteredItems,
             pendingItems,
-            sortedFinishedItems,
+            finishedItems,
             moneyTotal,
             limit,
-            itemsCount
+            itemsCount,
+            defaultFilters
         }
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <AppTabLayout
         left-title="Manage"
-        :right-title="'Items - ' + sortedItems.length"
+        :right-title="'Items - ' + filteredItems.length"
     >
         <template #left>
             <AppScrollView>
@@ -99,6 +99,10 @@
             </AppButton>
         </template>
         <template #right>
+            <CsItemFilters 
+                :items="[...activeItems.values()]" 
+                @filter="items => filteredItems = items"
+            />
             <div class="wxb-flex wxb-py-2">
                 <div class="wxb-w-full wxb-px-2">Name</div>
                 <div class="wxb-flex-[0_0_160px] wxb-px-2">Price</div>
@@ -107,7 +111,7 @@
             <AppScrollView>
                 <CsMarketItem
                     class="wxb-py-1"
-                    v-for="item in sortedItems"
+                    v-for="item in filteredItems"
                     :key="item.item_id"
                     :item="item"
                 />
@@ -117,7 +121,7 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { config } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
 import AppTabLayout from '@/components/ui/AppTabLayout.vue'
@@ -125,6 +129,7 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import AppScrollView from '@/components/ui/AppScrollView.vue'
 import CsMarketItem from '@/components/csItem/CsMarketItem.vue'
+import CsItemFilters from '@/components/csItem/CsItemFilters.vue'
 import useBot from '@/composables/useBot'
 import processStateEnum from '@/enums/processStateEnum'
 
@@ -134,27 +139,26 @@ export default {
         AppButton,
         AppInput,
         AppScrollView,
-        CsMarketItem
+        CsMarketItem,
+        CsItemFilters
     },
     setup() {
+        const filteredItems = ref([])
+
         const { process, activeItems, toggle } = useBot()
 
         const isTerminating = computed(() => process.is(processStateEnum.TERMINATING))
 
         const isTerminated = computed(() => process.is(processStateEnum.TERMINATED))
 
-        const sortedItems = computed(() => {
-            return [...activeItems.values()]
-                .sort((a, b) => (b.$steam?.discount || b.$discount) - (a.$steam?.discount || a.$discount))
-        })
-
         process.subscribe((state) => updateTabState('Market', state))
 
         return {
+            filteredItems,
             isTerminating,
             isTerminated,
             config,
-            sortedItems,
+            activeItems,
             toggle
         }
     }
