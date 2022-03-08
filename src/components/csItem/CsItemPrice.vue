@@ -1,5 +1,5 @@
 <template>
-    <div class="wxb-flex wxb-items-center wxb-px-2">
+    <div class="wxb-flex wxb-items-center wxb-px-2 wxb-overflow-hidden wxb-whitespace-nowrap">
         <span>
             $ {{ price }}
             <sup 
