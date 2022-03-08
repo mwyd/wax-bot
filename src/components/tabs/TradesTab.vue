@@ -39,6 +39,7 @@ import { pendingItems, finishedItems, moneyFrozen, moneySpent, config } from '@/
 import { process } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
 import csItemSortEnum from '@/enums/csItemSortEnum'
+import { roundNumber } from '@/utils'
 
 const defaultFilters = {
     sortBy: csItemSortEnum.DATE
@@ -53,7 +54,7 @@ export default {
     setup() {
         const filteredItems = ref([])
 
-        const moneyTotal = computed(() => moneyFrozen.value + moneySpent.value)
+        const moneyTotal = computed(() => roundNumber(moneyFrozen.value + moneySpent.value, 3))
 
         const limit = computed(() => config.limit)
 

@@ -23,10 +23,17 @@ const syncStorage = {
     get: (key) => new Promise(resolve => chrome.storage.sync.get([key], data => resolve(data[key])))
 }
 
+const roundNumber = (number, decimals = 2) => {
+    let places = Math.pow(10, decimals)
+
+    return Math.round(number * places) / places
+}
+
 export {
     WXB_LOG,
     fetchBackground,
     calculateDiscount,
     waxpeerDate,
-    syncStorage
+    syncStorage,
+    roundNumber
 }
