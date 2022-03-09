@@ -20,8 +20,8 @@ export default function useGuard() {
             for(let i = 0; i < config.pages; i++) {
                 const query = new URLSearchParams({
                     skip: i * marketResultLimit,
-                    sort: 'DESC',
-                    order: 'deals',
+                    sort: 'ASC',
+                    order: 'price',
                     game: 'csgo',
                     all: 0,
                     min_price: minPrice * 1000,

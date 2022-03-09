@@ -49,7 +49,7 @@ export default function useBot() {
                 const query = new URLSearchParams({
                     skip: i * marketResultLimit,
                     sort: 'DESC',
-                    order: 'deals',
+                    order: 'profit',
                     game: 'csgo',
                     all: 0,
                     min_price: config.minPrice * 1000,
