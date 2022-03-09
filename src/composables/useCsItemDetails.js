@@ -26,7 +26,7 @@ export default function useCsItemDetails(item) {
         },
         { 
             name: 'Suggested price $', 
-            value: item.value.$price, 
+            value: item.value.$suggested_price, 
             rarity: csItemDetailRarityEnum.COMMON
         },
         { 

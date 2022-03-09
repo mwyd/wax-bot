@@ -74,6 +74,7 @@ const decodeInspectId = (id) => {
 
 const updateItemDiscount = (item) => {
     item.$price = item.price / 1000
+    item.$suggested_price = item.steam_price_number / 1000
     item.$discount = calculateDiscount(item.price, item.steam_price_number)
 }
 
