@@ -1,5 +1,6 @@
 import { csItem } from '@/api/conduit'
 import { inspectTool } from '@/api/csgo_float'
+import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
 import { session } from '@/stores/userStore'
 import { calculateDiscount, WXB_LOG } from '@/utils'
 
@@ -14,12 +15,28 @@ const dopplerPhases = [
     'Black Pearl'
 ]
 
+const rareDopplerPhases = [
+    'Emerald',
+    'Ruby',
+    'Sapphire',
+    'Black Pearl'
+]
+
 const paintSeedVariantKeywords = [
     'Case Hardened',
     'Fade'
 ]
 
 const highRankFloat = 1e-3
+
+const valuableFloatRanges = [
+    [0, 0.01],
+    [0.07, 0.09],
+    [0.15, 0.18],
+    [0.18, 0.21],
+    [0.45, 0.5],
+    [0.76, 0.8]
+]
 
 const getDopplerPhase = (name) => {
     for(let dopplerPhase of dopplerPhases) {
@@ -108,7 +125,46 @@ const updateItemDetails = async (item) => {
     item.$paint_seed = paintseed
 }
 
+const getSteamVolumeRarity = (volume) => {
+    if(isNaN(volume)) {
+        return csItemDetailRarityEnum.COMMON
+    }
+
+    return volume < 5 
+        ? csItemDetailRarityEnum.INFREQUENT 
+        : csItemDetailRarityEnum.COMMON
+}
+
+const getDopplerPhaseRarity = (phase) => {
+    return rareDopplerPhases.indexOf(phase) > -1 
+        ? csItemDetailRarityEnum.INFREQUENT 
+        : csItemDetailRarityEnum.COMMON
+}
+
+const getFlaotRarity = (float) => {
+    if(isNaN(float)) {
+        return csItemDetailRarityEnum.COMMON
+    }
+
+    let rarity = csItemDetailRarityEnum.COMMON
+
+    for(const [min, max] of valuableFloatRanges) {
+        if(float >= min && float <= max) {
+            rarity = csItemDetailRarityEnum.INFREQUENT
+
+            break
+        }
+    }
+
+    return float <= highRankFloat
+        ? csItemDetailRarityEnum.RARE
+        : rarity
+}
+
 export {
     updateItemDiscount,
-    updateItemDetails
+    updateItemDetails,
+    getSteamVolumeRarity,
+    getDopplerPhaseRarity,
+    getFlaotRarity
 }
