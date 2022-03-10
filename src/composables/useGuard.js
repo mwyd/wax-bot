@@ -4,9 +4,11 @@ import { updateItemDiscount } from '@/resources/csItem'
 import { config, getGuardItemData, getObservedItems, deleteGuardItem } from '@/stores/guardStore'
 import { session } from '@/stores/userStore'
 import { marketResultLimit } from '@/config'
+import { pushAlert } from '@/stores/alertsStore'
 import processStateEnum from '@/enums/processStateEnum'
 import useProcess from './useProcess'
 import waxpeerApiMsgEnum from '@/enums/waxpeerApiMsgEnum'
+import alertTypeEnum from '@/enums/alertTypeEnum'
 
 export default function useGuard() {
     let timeoutId = null
@@ -105,7 +107,11 @@ export default function useGuard() {
         const observedItems = getObservedItems()
 
         if(observedItems.length == 0) {
-            WXB_LOG('Empty set')
+            pushAlert({
+                type: alertTypeEnum.INFO,
+                title: 'Guard',
+                body: 'Guard terminated - no observed items'
+            })
 
             toggle()
         }
