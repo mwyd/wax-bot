@@ -2,9 +2,11 @@ import { reactive, ref, watch } from 'vue'
 import { syncStorage, waxpeerDate, WXB_LOG } from '@/utils'
 import { user, market as waxpeerMarket } from '@/api/waxpeer'
 import { updateTradesDelay, tradesResultLimit, notificationSound } from '@/config'
+import { pushAlert } from './alertsStore'
 import useProcess from '@/composables/useProcess'
 import processStateEnum from '@/enums/processStateEnum'
 import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
+import alertTypeEnum from '@/enums/alertTypeEnum'
 
 let timestamp = waxpeerDate()
 
@@ -140,9 +142,16 @@ const buyItem = (item) => {
         shop: null
     })
         .then(data => {
-            const { success, id } = data
+            const { success, id, msg } = data
+
+            const alert = {
+                type: success ? alertTypeEnum.SUCCESS : alertTypeEnum.ERROR,
+                title: 'Waxpeer'
+            }
 
             if(success) {
+                alert.body = 'Successful purchase'
+
                 item.$trade_id = id
 
                 if(process.is(processStateEnum.TERMINATED)) {
@@ -153,8 +162,12 @@ const buyItem = (item) => {
 
                 notificationSound.play()
             } else {
+                alert.body = msg
+
                 deletePendingItem(item)
             }
+
+            pushAlert(alert)
 
             WXB_LOG('Buy info', data)
         })

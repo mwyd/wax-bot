@@ -1,4 +1,6 @@
 import moment from 'moment'
+import { pushAlert } from '@/stores/alertsStore'
+import alertTypeEnum from '@/enums/alertTypeEnum'
 
 const syncStorage = {
     set: (data) => chrome.storage.sync.set(data),
@@ -30,12 +32,23 @@ const roundNumber = (number, decimals = 2) => {
 }
 
 const copyToClipboard = async (data) => {
+    let alert = {
+        type: alertTypeEnum.SUCCESS,
+        title: 'Copy success'
+    }
+
     try {
         await navigator.clipboard.writeText(data)
     }
     catch(err) {
-        WXB_LOG('Copy error', err)
+        alert = {
+            type: alertTypeEnum.ERROR,
+            title: 'Copy error',
+            body: err?.message
+        }
     }
+
+    pushAlert(alert)
 }
 
 export {

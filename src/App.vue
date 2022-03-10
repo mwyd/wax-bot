@@ -1,4 +1,10 @@
 <template>
+    <AppButton
+        class="wxb-toggle-btn"
+        @click="isHidden = !isHidden"
+    >
+        {{ isHidden ? '›' : '‹' }}
+    </AppButton>
     <div :class="appClass">
         <AppHeader 
             :tabs="tabs"
@@ -8,15 +14,8 @@
         <KeepAlive>
             <component :is="tabs[activeTab].componentName" />
         </KeepAlive>
-        <Teleport to="#wxb-root">
-            <AppButton
-                class="wxb-toggle-btn"
-                @click="isHidden = !isHidden"
-            >
-                {{ isHidden ? '›' : '‹' }}
-            </AppButton>
-        </Teleport>
     </div>
+    <AppAlertBox />
 </template>
 
 <script>
@@ -28,6 +27,7 @@ import MarketTab from '@/components/tabs/MarketTab.vue'
 import TradesTab from '@/components/tabs/TradesTab.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import AppAlertBox from '@/components/AppAlertBox.vue'
 
 export default {
     components: {
@@ -35,7 +35,8 @@ export default {
         MarketTab,
         TradesTab,
         AppHeader,
-        AppButton
+        AppButton,
+        AppAlertBox
     },
     setup() {
         setupStores()

@@ -1,8 +1,10 @@
 import { csItem } from '@/api/conduit'
 import { inspectTool } from '@/api/csgo_float'
-import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
+import { pushAlert } from '@/stores/alertsStore'
 import { session } from '@/stores/userStore'
-import { calculateDiscount, WXB_LOG } from '@/utils'
+import { calculateDiscount } from '@/utils'
+import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
+import alertTypeEnum from '@/enums/alertTypeEnum'
 
 const dopplerPhases = [
     'Phase 1',
@@ -104,20 +106,36 @@ const updateItemDetails = async (item) => {
         if(success && data.length > 0) {
             item.$variant = data[0].variant
 
-            WXB_LOG('Rare item found', {
-                variant: item.$variant,
-                price: item.$price,
-                name: item.name
-            })
+            pushAlert({
+                type: alertTypeEnum.INFO,
+                title: 'Rare item',
+                body: `
+                    <span>${item.name}</span>
+                    <br />
+                    <span>Variant ${item.$variant}</span>
+                    <br />
+                    <span>Price $ ${item.$price}</span>
+                    <br />
+                    <span>Discount % ${item.$discount}</span>
+                `
+            }, 60 * 1000)
         }
     }
 
-    if(highRankFloat >= item.floatvalue) {
-        WXB_LOG('Rare item found', {
-            float: floatvalue,
-            price: item.$price,
-            name: item.name
-        })
+    if(highRankFloat >= floatvalue && floatvalue != 0) {
+        pushAlert({
+            type: alertTypeEnum.INFO,
+            title: 'Rare item',
+            body: `
+                <span>${item.name}</span>
+                <br />
+                <span>Float ${floatvalue}</span>
+                <br />
+                <span>Price $ ${item.$price}</span>
+                <br />
+                <span>Discount % ${item.$discount}</span>
+            `
+        }, 60 * 1000)
     }
 
     item.$owner = S
