@@ -15,9 +15,16 @@
             <div class="wxb-flex wxb-items-center wxb-flex-[0_0_100px] wxb-px-2">
                 <AppButton 
                     class="wxb-btn-big"
+                    :disabled="buyBtnDisabled"
                     @click="buy"
                 >
-                    Buy
+                    <AppLoader 
+                        v-if="buyBtnDisabled"
+                        class="wxb-my-0 wxb-mx-auto"
+                    />
+                    <span v-else>
+                        Buy
+                    </span>
                 </AppButton>
             </div>
         </div>
@@ -31,8 +38,9 @@
 </template>
 
 <script>
-import { toRef } from 'vue'
+import { toRef, ref } from 'vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import AppLoader from '@/components/ui/AppLoader.vue'
 import CsItemHeader from './CsItemHeader.vue'
 import CsItemPrice from './CsItemPrice.vue'
 import CsItemDetailsBar from './CsItemDetailsBar.vue'
@@ -44,6 +52,7 @@ export default {
         CsItemHeader,
         CsItemPrice,
         AppButton,
+        AppLoader,
         CsItemDetailsBar
     },
     props: {
@@ -55,9 +64,17 @@ export default {
     setup(props) {
         const item = toRef(props, 'item')
 
-        const buy = () => buyItem(item.value)
+        const buyBtnDisabled = ref(false)
+
+        const buy = () => {
+            buyBtnDisabled.value = true
+
+            buyItem(item.value)
+                .then(() => buyBtnDisabled.value = false)
+        }
 
         return {
+            buyBtnDisabled,
             buy,
             ...useCsItemDetails(item)
         }

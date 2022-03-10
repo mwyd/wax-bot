@@ -54,6 +54,7 @@ const getTrades = async () => {
         for(let i = 0; i < page; i++) {
             const query = new URLSearchParams({
                 skip: i * tradesResultLimit,
+                count: tradesResultLimit,
                 page: 'steam_trades',
                 start: timestamp.format('YYYY-MM-DD HH:mm:ss')
             })
@@ -121,7 +122,7 @@ const updatePendingItems = async () => {
     process.update(processStateEnum.IDLE)
 }
 
-const buyItem = (item) => {
+const buyItem = async (item) => {
     if(pendingItems.has(item.item_id) || item.$price + moneySpent.value + moneyFrozen.value > config.limit) {
         return
     }
@@ -134,48 +135,48 @@ const buyItem = (item) => {
 
     moneyFrozen.value += item.$price
 
-    waxpeerMarket.buyItem({
-        id: item.item_id,
-        image: item.image,
-        name: item.name,
-        price: item.price,
-        shop: null
-    })
-        .then(data => {
-            const { success, id, msg } = data
-
-            const alert = {
-                type: success ? alertTypeEnum.SUCCESS : alertTypeEnum.ERROR,
-                title: 'Waxpeer'
-            }
-
-            if(success) {
-                alert.body = 'Successful purchase'
-
-                item.$trade_id = id
-
-                if(process.is(processStateEnum.TERMINATED)) {
-                    timestamp = waxpeerDate()
-
-                    updatePendingItems()
-                }
-
-                notificationSound.play()
-            } else {
-                alert.body = msg
-
-                deletePendingItem(item)
-            }
-
-            pushAlert(alert)
-
-            WXB_LOG('Buy info', data)
+    try {
+        const data = await waxpeerMarket.buyItem({
+            id: item.item_id,
+            image: item.image,
+            name: item.name,
+            price: item.price,
+            shop: null
         })
-        .catch(err => {
+
+        const { success, id, msg } = data
+
+        const alert = {
+            type: success ? alertTypeEnum.SUCCESS : alertTypeEnum.ERROR,
+            title: 'Waxpeer'
+        }
+
+        if(success) {
+            alert.body = 'Successful purchase'
+
+            item.$trade_id = id
+
+            if(process.is(processStateEnum.TERMINATED)) {
+                timestamp = waxpeerDate()
+
+                updatePendingItems()
+            }
+
+            notificationSound.play()
+        } else {
+            alert.body = msg
+
             deletePendingItem(item)
+        }
 
-            WXB_LOG('Cannot buy item', err)
-        })
+        pushAlert(alert)
+
+        WXB_LOG('Buy info', data)
+    } catch (err) {
+        deletePendingItem(item)
+
+        WXB_LOG('Cannot buy item', err)
+    }
 }
 
 export {
