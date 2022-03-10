@@ -95,7 +95,13 @@
                 :disabled="isTerminating"
                 @click="toggle"
             >
-                {{ !isTerminated ? 'Stop' : 'Start' }}
+                <AppLoader 
+                    v-if="isTerminating"
+                    class="wxb-my-0 wxb-mx-auto" 
+                />
+                <span v-else>
+                    {{ !isTerminated ? 'Stop' : 'Start' }}
+                </span>
             </AppButton>
         </template>
         <template #right>
@@ -128,6 +134,7 @@ import AppTabLayout from '@/components/ui/AppTabLayout.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import AppScrollView from '@/components/ui/AppScrollView.vue'
+import AppLoader from '@/components/ui/AppLoader.vue'
 import CsMarketItem from '@/components/csItem/CsMarketItem.vue'
 import CsItemFilters from '@/components/csItem/CsItemFilters.vue'
 import useBot from '@/composables/useBot'
@@ -139,6 +146,7 @@ export default {
         AppButton,
         AppInput,
         AppScrollView,
+        AppLoader,
         CsMarketItem,
         CsItemFilters
     },
