@@ -1,7 +1,7 @@
 import { ref, reactive, watch } from 'vue'
 import { user } from '@/api/waxpeer'
 import { updateItemDetails, updateItemDiscount } from '@/resources/csItem'
-import { syncStorage, WXB_LOG } from '@/utils'
+import { syncStorage, WXB_LOG, roundNumber } from '@/utils'
 import { ordersResultLimit } from '@/config'
 
 const config = reactive({
@@ -119,8 +119,8 @@ const loadGuardItems = async () => {
 
         if(!itemGuardData) {
             let minPrice = item.$price
-            let maxPrice = minPrice * config.safeDiscount
-    
+            let maxPrice = roundNumber(item.$suggested_price * config.safeDiscount, 3)
+
             if(maxPrice < minPrice) {
                 maxPrice = minPrice + config.bidStep
             }
