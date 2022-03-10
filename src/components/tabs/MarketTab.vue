@@ -86,7 +86,7 @@
                     <AppInput 
                         v-model.number="config.updateDelay" 
                         type="number"
-                        :validator="value => (value >= 1 && value <= 10)"
+                        :validator="value => (value >= 1 && value <= 300)"
                     />
                 </div>
             </AppScrollView>

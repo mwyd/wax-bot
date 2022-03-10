@@ -32,7 +32,7 @@
                     <AppInput 
                         v-model.number="config.pages"
                         type="number"
-                        :validator="value => (value > 0 && value < 10)"
+                        :validator="value => (value >= 1 && value <= 10)"
                     />
                 </div>
                 <div class="wxb-py-2">
@@ -42,7 +42,7 @@
                     <AppInput 
                         v-model.number="config.updateDelay" 
                         type="number"
-                        :validator="value => (value >= 1 && value <= 10)"
+                        :validator="value => (value >= 1 && value <= 300)"
                     />
                 </div>
             </AppScrollView>
