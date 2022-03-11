@@ -1,5 +1,5 @@
 <template>
-    <div class="wxb-fixed wxb-top-0 wxb-left-full wxb-z-20">
+    <div class="wxb-fixed wxb-top-0 wxb-left-full wxb-z-40">
         <TransitionGroup name="wxb-alerts">
             <AppAlert 
                 v-for="[id, alert] in latestAlerts"

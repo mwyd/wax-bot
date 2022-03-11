@@ -54,7 +54,7 @@ export default {
     background-color: var(--bg-c-1);
     position: absolute;
     top: 70px;
-    right: -100%; 
+    right: 0; 
     width: 250px;
     z-index: 10; 
 }

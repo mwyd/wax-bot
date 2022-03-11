@@ -20,12 +20,18 @@
             </div>
         </div>
         <div 
-            class="wxb-header__settings-btn wxb-cursor-pointer wxb-relative"
-            @click="showSettings = !showSettings"
+            class="wxb-header__settings-btn wxb-cursor-pointer wxb-relative wxb-z-20"
+            @click="showSettings = true"
         >
             <div :class="settingsStatusClass"></div>
             <Teleport to="#wxb-root">
-                <AppSettings v-if="showSettings" />
+                <div 
+                    v-if="showSettings"
+                    class="wxb-settings-wrapper wxb-z-20"
+                    @click.self="showSettings = false"
+                >
+                    <AppSettings />
+                </div>
             </Teleport>
         </div>
     </div>
@@ -157,5 +163,14 @@ export default {
 
 .wxb-settings__status-fail {
     background-color: var(--state-e);
+}
+
+.wxb-settings-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 </style>
