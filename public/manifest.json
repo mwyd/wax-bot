@@ -3,6 +3,11 @@
     "name": "WAX-BOT",
     "version": "1.0.0",
     "description": "",
+    "icons": {
+        "16": "assets/icons/wxb-16x16.png",
+        "48": "assets/icons/wxb-48x48.png",
+        "128": "assets/icons/wxb-128x128.png"
+    },
     "content_scripts": [{
         "js": [
             "/js/chunk-vendors.js",
