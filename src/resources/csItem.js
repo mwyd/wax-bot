@@ -6,16 +6,16 @@ import { calculateDiscount, roundNumber } from '@/utils'
 import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
 import alertTypeEnum from '@/enums/alertTypeEnum'
 
-const dopplerPhases = [
-    'Phase 1',
-    'Phase 2',
-    'Phase 3',
-    'Phase 4',
-    'Emerald',
-    'Ruby',
-    'Sapphire',
-    'Black Pearl'
-]
+const dopplerPhases = {
+    phase1: 'Phase 1',
+    phase2: 'Phase 2',
+    phase3: 'Phase 3',
+    phase4: 'Phase 4',
+    emerald: 'Emerald',
+    ruby: 'Ruby',
+    sapphire: 'Sapphire',
+    blackpearl: 'Black Pearl'
+}
 
 const rareDopplerPhases = [
     'Emerald',
@@ -40,9 +40,9 @@ const valuableFloatRanges = [
     [0.76, 0.8]
 ]
 
-const getDopplerPhase = (name) => {
-    for(let dopplerPhase of dopplerPhases) {
-        if(name.includes(dopplerPhase)) return dopplerPhase
+const getDopplerPhase = (imageUrl) => {
+    for(const [key, name] of Object.entries(dopplerPhases)) {
+        if(imageUrl.includes(key)) return name
     }
 
     return null
@@ -81,9 +81,9 @@ const updateItemDiscount = (item) => {
 }
 
 const updateItemDetails = async (item) => {
-    item.$searchable = item.name.toLowerCase()
-    item.$phase = getDopplerPhase(item.market_name)
-    item.$hash_name = item.$phase ? item.name.replace('(', `${item.$phase} (`) : item.name
+    item.$phase = getDopplerPhase(item.inspect_item?.imageurl ?? '')
+    item.$conduit_hash_name = item.$phase ? item.name.replace('(', `${item.$phase} (`) : item.name
+    item.$searchable = item.$conduit_hash_name.toLowerCase()
 
     if(!item.inspect_item) return
 

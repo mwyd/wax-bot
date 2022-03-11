@@ -128,7 +128,7 @@ export default function useBot() {
             
             await updateItemDetails(marketItem)
 
-            const { success, data } = await steamMarket.getItem(marketItem.$hash_name)
+            const { success, data } = await steamMarket.getItem(marketItem.$conduit_hash_name)
 
             if(success) {
                 marketItem.$steam = {
