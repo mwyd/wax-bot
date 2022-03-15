@@ -5,8 +5,7 @@
         :type="type"
         :placeholder="placeholder"
         :disabled="disabled"
-        @focusout="rollbackInternalModel"
-        @keydown.enter="validateInternalModel"
+        @change="validateInternalModel"
     />
 </template>
 
@@ -54,10 +53,6 @@ export default {
 
         watch(modelValue, (newValue) => internalModel.value = newValue)
 
-        const rollbackInternalModel = () => {
-            internalModel.value = modelValue.value
-        }
-
         const updateModelValue = () => {
             emit('update:modelValue', internalModel.value)
         }
@@ -66,7 +61,11 @@ export default {
             if(!validator.value(internalModel.value)) {
                 errorOccured.value = true
 
-                setTimeout(() => errorOccured.value = false, 0.25 * 1000)
+                setTimeout(() => {
+                    internalModel.value = modelValue.value
+                    
+                    errorOccured.value = false
+                }, 0.25 * 1000)
 
                 return
             }
@@ -77,7 +76,6 @@ export default {
         return {
             internalModel,
             inputClass,
-            rollbackInternalModel,
             validateInternalModel
         }
     }
