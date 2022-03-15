@@ -9,7 +9,7 @@
             </span>
         </h4>
         <CsItemFilters 
-            :defaultFilters="defaultFilters"
+            :default-filters="defaultFilters"
             :items="[...pendingItems.values(), ...finishedItems]"
             @filter="items => filteredItems = items"
         />

@@ -62,7 +62,7 @@
         </template>
         <template #right>
             <CsItemFilters 
-                :defaultFilters="defaultFilters"
+                :default-filters="defaultFilters"
                 :items="[...guardItems.values()]"
                 @filter="items => filteredItems = items"
             />
