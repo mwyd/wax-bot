@@ -63,10 +63,6 @@ export default {
                 case waxpeerCsItemStatusEnum.CANCELED:
                     status = 'canceled'
                     break
-
-                case waxpeerCsItemStatusEnum.DECLINED:
-                    status = 'declined'
-                    break
             }
 
             return status
@@ -105,7 +101,7 @@ export default {
     color: var(--state-r);
 }
 
-.wxb-cs-item-status--canceled, .wxb-cs-item-status--declined {
+.wxb-cs-item-status--canceled {
     color: var(--state-e);
 }
 </style>

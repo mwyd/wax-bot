@@ -96,7 +96,7 @@ const updatePendingItems = async () => {
             return
         }
 
-        if([waxpeerCsItemStatusEnum.CANCELED, waxpeerCsItemStatusEnum.ACCEPTED, waxpeerCsItemStatusEnum.DECLINED].indexOf(tradeItem.status) > -1) {
+        if([waxpeerCsItemStatusEnum.CANCELED, waxpeerCsItemStatusEnum.ACCEPTED].indexOf(tradeItem.status) > -1) {
             item.$status = tradeItem.status
             
             deletePendingItem(item)
