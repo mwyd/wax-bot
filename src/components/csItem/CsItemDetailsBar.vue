@@ -10,6 +10,18 @@
             </span>
             {{ detail.value }}
         </span> 
+        <span class="wxb-px-2 wxb-py-1">
+            <a 
+                class="wxb-text-inherit"
+                :href="'https://buff.163.com/market/csgo#search=' + hashName"
+                target="_blank"
+            >
+                <span class="wxb-cs-item-detail-title">
+                    buff.163  
+                </span>
+                market
+            </a>
+        </span> 
         <span 
             v-if="steamOwner"
             class="wxb-px-2 wxb-py-1"
@@ -61,6 +73,10 @@ export default {
     props: {
         details: {
             type: Array,
+            required: true
+        },
+        hashName: {
+            type: String,
             required: true
         },
         steamOwner: {

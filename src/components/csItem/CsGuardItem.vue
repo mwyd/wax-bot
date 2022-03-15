@@ -3,8 +3,8 @@
         <div class="wxb-cs-market-item wxb-w-full wxb-p-1 wxb-flex">
             <CsItemHeader
                 class="wxb-w-[100%]"
-                :hashName="item.name"
-                :imageUrl="item.image"
+                :hash-name="item.name"
+                :image-url="item.image"
             />
             <CsItemPrice 
                 class="wxb-flex-[0_0_160px]"
@@ -37,9 +37,10 @@
         </div>
         <CsItemDetailsBar 
             :details="details" 
-            :steam-owner="steamOwner"
-            :wax-owner="waxOwner"
-            :inspect-link="inspectLink"
+            :steam-owner="item.$owner"
+            :wax-owner="item.by"
+            :inspect-link="item.$inspect_link"
+            :hash-name="item.name"
         />
     </div>
 </template>

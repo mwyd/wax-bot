@@ -41,16 +41,7 @@ export default function useCsItemDetails(item) {
         }
     ])
 
-    const inspectLink = computed(() => item.value.$inspect_link)
-
-    const steamOwner = computed(() => item.value.$owner)
-
-    const waxOwner = computed(() => item.value.by)
-
     return {
-        details,
-        inspectLink,
-        steamOwner,
-        waxOwner
+        details
     }
 }
