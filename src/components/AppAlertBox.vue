@@ -1,5 +1,5 @@
 <template>
-    <div class="wxb-fixed wxb-top-0 wxb-right-0 wxb-z-40">
+    <div class="wxb-fixed wxb-top-0 wxb-right-0 wxb-z-40 wxb-max-h-full wxb-overflow-y-auto">
         <TransitionGroup name="wxb-alerts">
             <AppAlert 
                 v-for="[id, alert] in latestAlerts"

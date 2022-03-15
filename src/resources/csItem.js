@@ -1,6 +1,6 @@
 import { csItem } from '@/api/conduit'
 import { inspectTool } from '@/api/csgo_float'
-import { pushAlert } from '@/stores/alertsStore'
+import { destroyAlert, pushAlert } from '@/stores/alertsStore'
 import { session } from '@/stores/userStore'
 import { calculateDiscount, roundNumber } from '@/utils'
 import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
@@ -84,6 +84,7 @@ const updateItemDetails = async (item) => {
     item.$phase = getDopplerPhase(item.inspect_item?.imageurl ?? '')
     item.$conduit_hash_name = item.$phase ? item.name.replace('(', `${item.$phase} (`) : item.name
     item.$searchable = item.$conduit_hash_name.toLowerCase()
+    item.$alerts = []
 
     if(!item.inspect_item) return
 
@@ -106,7 +107,7 @@ const updateItemDetails = async (item) => {
         if(success && data.length > 0) {
             item.$variant = data[0].variant
 
-            pushAlert({
+            const alertId = pushAlert({
                 type: alertTypeEnum.INFO,
                 title: 'Rare item',
                 body: `
@@ -118,12 +119,14 @@ const updateItemDetails = async (item) => {
                     <br />
                     <span>Discount % ${item.$discount}</span>
                 `
-            }, 60 * 1000)
+            }, null)
+
+            item.$alerts.push(alertId)
         }
     }
 
     if(highRankFloat >= floatvalue && floatvalue != 0) {
-        pushAlert({
+        const alertId = pushAlert({
             type: alertTypeEnum.INFO,
             title: 'Rare item',
             body: `
@@ -135,13 +138,21 @@ const updateItemDetails = async (item) => {
                 <br />
                 <span>Discount % ${item.$discount}</span>
             `
-        }, 60 * 1000)
+        }, null)
+
+        item.$alerts.push(alertId)
     }
 
     item.$owner = S
     item.$inspect_link = inspectLink
     item.$float = floatvalue
     item.$paint_seed = paintseed
+}
+
+const destroyItemAlerts = (alerts) => {
+    for(const id of alerts) {
+        destroyAlert(id)
+    }
 }
 
 const getSteamVolumeRarity = (volume) => {
@@ -185,5 +196,6 @@ export {
     updateItemDetails,
     getSteamVolumeRarity,
     getDopplerPhaseRarity,
-    getFlaotRarity
+    getFlaotRarity,
+    destroyItemAlerts
 }

@@ -2,7 +2,7 @@ import { reactive, watch } from 'vue'
 import { calculateDiscount, WXB_LOG } from '@/utils'
 import { market as waxpeeerMarket } from '@/api/waxpeer'
 import { steamMarket } from '@/api/conduit'
-import { updateItemDiscount, updateItemDetails } from '@/resources/csItem'
+import { updateItemDiscount, updateItemDetails, destroyItemAlerts } from '@/resources/csItem'
 import { config, moneySpent, buyItem } from '@/stores/botStore'
 import { session } from '@/stores/userStore'
 import { marketResultLimit } from '@/config'
@@ -81,6 +81,8 @@ export default function useBot() {
 
             if(!marketItem) {
                 activeItems.delete(id)
+
+                destroyItemAlerts(activeItem.$alerts)
 
                 continue
             }
@@ -171,6 +173,8 @@ export default function useBot() {
 
         clearTimeout(timeoutId)
         
+        activeItems.forEach(activeItem => destroyItemAlerts(activeItem.$alerts))
+
         activeItems.clear()
 
         process.update(processStateEnum.TERMINATED)

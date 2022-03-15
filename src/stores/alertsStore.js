@@ -10,7 +10,11 @@ const pushAlert = (alert, lifetime = 2 * 1000) => {
 
     alerts.set(uuid, alert)
 
-    setTimeout(() => destroyAlert(uuid), lifetime)
+    if(lifetime != null) {
+        setTimeout(() => destroyAlert(uuid), lifetime)
+    }
+
+    return uuid
 }
 
 const destroyAlert = (id) => {
