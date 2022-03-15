@@ -24,16 +24,14 @@
             @click="showSettings = true"
         >
             <div :class="settingsStatusClass"></div>
-            <Teleport to="#wxb-root">
-                <div 
-                    v-if="showSettings"
-                    class="wxb-settings-wrapper wxb-z-20"
-                    @click.self="showSettings = false"
-                >
-                    <AppSettings />
-                </div>
-            </Teleport>
         </div>
+    </div>
+    <div 
+        v-if="showSettings"
+        class="wxb-settings-wrapper wxb-z-20"
+        @click.self="showSettings = false"
+    >
+        <AppSettings />
     </div>
 </template>
 
@@ -169,7 +167,7 @@ export default {
     width: 100%;
     height: 100%;
     position: absolute;
-    left: 100%;
+    left: 0;
     top: 0;
     background-color: rgba(0, 0, 0, 0.2);
 }

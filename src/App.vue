@@ -64,14 +64,11 @@ export default {
 
 <style>
 #wxb-root {
-    width: 100vw;
-    max-width: 1280px;
-    height: 100vh;
-    max-height: 720px;
     position: fixed;
     top: 0;
     left: 0;
-    transform: translateX(-100%);
+    width: 0;
+    height: 0;
     z-index: 1000;
     color: white;
     font-family: Montserrat, sans-serif;
@@ -82,22 +79,24 @@ export default {
 }
 
 .wxb-app {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    max-width: 1600px;
+    max-height: 1200px;
     background-color: var(--bg-c-1);
-    transform: translateX(100%);
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .wxb-app--hidden {
-    transform: translateX(0%);
+    transform: translateX(-100%);
 }
 
 .wxb-toggle-btn {
     position: fixed;
     top: 0;
-    left: 100%;
+    left: 0;
     width: 20px;
     height: 70px;
     font-size: 20px;
