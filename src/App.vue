@@ -83,6 +83,7 @@ export default {
     height: 100vh;
     max-width: 1600px;
     max-height: 1200px;
+    min-width: 1024px;
     background-color: var(--bg-c-1);
     display: flex;
     flex-direction: column;
