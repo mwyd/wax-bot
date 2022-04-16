@@ -125,7 +125,7 @@ const updateItemDetails = async (item) => {
         }
     }
 
-    if(highRankFloat >= floatvalue && floatvalue != 0) {
+    if(highRankFloat >= floatvalue && floatvalue > 0) {
         const alertId = pushAlert({
             type: alertTypeEnum.INFO,
             title: 'Rare item',
