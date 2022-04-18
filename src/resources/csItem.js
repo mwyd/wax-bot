@@ -95,7 +95,7 @@ const updateItemDetails = async (item) => {
     if(floatvalue === null) {
         const { success, data } = await inspectTool.itemInfo(inspectLink)
 
-        if(success) {
+        if(success && data.iteminfo) {
             floatvalue = data.iteminfo.floatvalue
             paintseed = data.iteminfo.paintseed
         }
