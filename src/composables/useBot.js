@@ -1,4 +1,4 @@
-import { reactive, watch } from 'vue'
+import { reactive, watch, ref } from 'vue'
 import { calculateDiscount, WXB_LOG } from '@/utils'
 import { market as waxpeeerMarket } from '@/api/waxpeer'
 import { steamMarket } from '@/api/conduit'
@@ -123,12 +123,12 @@ export default function useBot() {
 
         updateItems(marketItems)
 
-        for(const marketItem of marketItems) {
+        for(const marketItem of ref(marketItems).value) {
             if(activeItems.has(marketItem.item_id)) {
                 continue
             }
             
-            await updateItemDetails(marketItem)
+            updateItemDetails(marketItem)
 
             const { success, data } = await steamMarket.getItem(marketItem.$conduit_hash_name)
 
