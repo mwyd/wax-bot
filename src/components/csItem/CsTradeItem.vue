@@ -83,7 +83,7 @@ export default {
             status,
             statusClass,
             boughtDateTime,
-            ...useCsItemDetails(item)
+            ...useCsItemDetails(item.value)
         }
     }
 }

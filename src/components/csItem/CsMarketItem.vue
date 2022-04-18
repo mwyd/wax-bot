@@ -77,7 +77,7 @@ export default {
         return {
             buyBtnDisabled,
             buy,
-            ...useCsItemDetails(item)
+            ...useCsItemDetails(item.value)
         }
     }
 }

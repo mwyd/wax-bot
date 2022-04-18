@@ -76,7 +76,7 @@ export default {
 
         return {
             guardData,
-            ...useCsItemDetails(item)
+            ...useCsItemDetails(item.value)
         }
     }
 }

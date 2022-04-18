@@ -6,38 +6,38 @@ export default function useCsItemDetails(item) {
     const details = computed(() => [
         { 
             name: 'Variant', 
-            value: item.value.$variant, 
+            value: item.$variant, 
             rarity: csItemDetailRarityEnum.RARE 
         },
         { 
             name: 'Float', 
-            value: item.value.$float || null, 
-            rarity: getFlaotRarity(item.value.$float)
+            value: item.$float || null, 
+            rarity: getFlaotRarity(item.$float)
         },
         { 
             name: 'Paint seed', 
-            value: item.value.$paint_seed || null, 
+            value: item.$paint_seed || null, 
             rarity: csItemDetailRarityEnum.COMMON
         },
         { 
             name: 'Phase', 
-            value: item.value.$phase,
-            rarity: getDopplerPhaseRarity(item.value.$phase)
+            value: item.$phase,
+            rarity: getDopplerPhaseRarity(item.$phase)
         },
         { 
             name: 'Suggested price $', 
-            value: item.value.$suggested_price, 
+            value: item.$suggested_price, 
             rarity: csItemDetailRarityEnum.COMMON
         },
         { 
             name: 'Steam price $', 
-            value: item.value.$steam?.price, 
+            value: item.$steam?.price, 
             rarity: csItemDetailRarityEnum.COMMON
         },
         { 
             name: 'Steam volume', 
-            value: item.value.$steam?.volume, 
-            rarity: getSteamVolumeRarity(item.value.$steam?.volume)
+            value: item.$steam?.volume, 
+            rarity: getSteamVolumeRarity(item.$steam?.volume)
         }
     ])
 
