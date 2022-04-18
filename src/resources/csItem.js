@@ -56,6 +56,14 @@ const hasPaintSeedVariant = (hashName) => {
     return false
 }
 
+const createRareItemAlertBody = (hashName, variant, price, discount) => `
+    <span>${hashName}</span>
+    <br />
+    <span class="wxb-variant">${variant}</span>
+    <br />
+    <span><span style="color: greenyellow;">$</span> ${price} (${discount} %)</span>
+`
+
 const getShortName = (hashName) => {
     return hashName
         .replace('StatTrak™ ', '')
@@ -110,34 +118,18 @@ const updateItemDetails = async (item) => {
             const alertId = pushAlert({
                 type: alertTypeEnum.INFO,
                 title: 'Rare item',
-                body: `
-                    <span>${item.name}</span>
-                    <br />
-                    <span>Variant ${item.$variant}</span>
-                    <br />
-                    <span>Price $ ${item.$price}</span>
-                    <br />
-                    <span>Discount % ${item.$discount}</span>
-                `
+                body: createRareItemAlertBody(item.name, item.$variant, item.$price, item.$discount)
             }, null)
 
             item.$alerts.push(alertId)
         }
     }
 
-    if(highRankFloat >= floatvalue && floatvalue > 0) {
+    if(floatvalue > 0 && highRankFloat >= floatvalue) {
         const alertId = pushAlert({
             type: alertTypeEnum.INFO,
             title: 'Rare item',
-            body: `
-                <span>${item.name}</span>
-                <br />
-                <span>Float ${floatvalue}</span>
-                <br />
-                <span>Price $ ${item.$price}</span>
-                <br />
-                <span>Discount % ${item.$discount}</span>
-            `
+            body: createRareItemAlertBody(item.name, floatvalue, item.$price, item.$discount)
         }, null)
 
         item.$alerts.push(alertId)

@@ -32,3 +32,8 @@
     color: inherit;
     font-size: inherit;
 }
+
+.wxb-variant {
+    color: yellow;
+    font-weight: bold;
+}
