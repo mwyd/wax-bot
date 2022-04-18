@@ -11,12 +11,12 @@ export default function useCsItemDetails(item) {
         },
         { 
             name: 'Float', 
-            value: item.value.$float, 
+            value: item.value.$float || null, 
             rarity: getFlaotRarity(item.value.$float)
         },
         { 
             name: 'Paint seed', 
-            value: item.value.$paint_seed, 
+            value: item.value.$paint_seed || null, 
             rarity: csItemDetailRarityEnum.COMMON
         },
         { 
