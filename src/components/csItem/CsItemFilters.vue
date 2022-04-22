@@ -53,7 +53,7 @@ export default {
     setup(props, { emit }) {
         const { items, defaultFilters } = toRefs(props)
 
-        const { filters, sortVariants } = useCsItemFilters(defaultFilters.value)
+        const { filters, sortVariants, comparator } = useCsItemFilters(defaultFilters.value)
 
         const sortDirBtnClass = computed(() => [
             'wxb-sort-dir-btn',
@@ -66,7 +66,7 @@ export default {
         watch([filters, items], () => {
             const filtered = items.value
                 .filter(item => item.$searchable.includes(filters.search.toLowerCase()))
-                .sort(sortVariants[filters.sortBy].callback)
+                .sort(comparator)
 
             emit('filter', filtered)
         })
