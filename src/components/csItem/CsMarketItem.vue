@@ -34,6 +34,7 @@
             :wax-owner="item.by"
             :inspect-link="item.$inspect_link"
             :hash-name="item.name"
+            :buff-good-id="item.$buff?.good_id"
         />
     </div>
 </template>

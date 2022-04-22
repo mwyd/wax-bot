@@ -1,7 +1,7 @@
 import { reactive, watch, ref } from 'vue'
 import { calculateDiscount, WXB_LOG } from '@/utils'
 import { market as waxpeeerMarket } from '@/api/waxpeer'
-import { steamMarket } from '@/api/conduit'
+import { steamMarket, buffMarket } from '@/api/conduit'
 import { updateItemDiscount, updateItemDetails, destroyItemAlerts } from '@/resources/csItem'
 import { config, moneySpent, buyItem } from '@/stores/botStore'
 import { session } from '@/stores/userStore'
@@ -130,19 +130,39 @@ export default function useBot() {
             
             updateItemDetails(marketItem)
 
-            const { success, data } = await steamMarket.getItem(marketItem.$conduit_hash_name)
+            // test
 
-            if(success) {
+            const [steamResponse, buffResponse] = await Promise.all([
+                steamMarket.getItem(marketItem.$conduit_hash_name),
+                buffMarket.getItem(marketItem.name)
+            ])
+
+            if(buffResponse.success) {
+                const { price, volume, good_id } = buffResponse.data
+                
+                marketItem.$buff = {
+                    price,
+                    volume,
+                    good_id,
+                    discount: calculateDiscount(marketItem.$price, price)
+                }
+            }
+
+            if(steamResponse.success) {
+                const { price, volume } = steamResponse.data
+
                 marketItem.$steam = {
-                    price: data.price,
-                    volume: data.volume,
-                    discount: calculateDiscount(marketItem.$price, data.price)
+                    price,
+                    volume,
+                    discount: calculateDiscount(marketItem.$price, price)
                 }
 
                 if(itemFulfillCriteria(marketItem)) {
                     buyItem(marketItem)
                 }
             }
+
+            // test
 
             activeItems.set(marketItem.item_id, marketItem)
         }

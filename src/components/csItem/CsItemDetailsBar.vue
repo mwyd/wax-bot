@@ -13,11 +13,11 @@
         <span class="wxb-px-2 wxb-py-1">
             <a 
                 class="wxb-text-inherit"
-                :href="'https://buff.163.com/market/csgo#search=' + hashName"
+                :href="buffMarketLink"
                 target="_blank"
             >
                 <span class="wxb-cs-item-detail-title">
-                    buff.163  
+                    Buff  
                 </span>
                 market
             </a>
@@ -87,10 +87,13 @@ export default {
         },
         inspectLink: {
             type: String
+        },
+        buffGoodId: {
+            type: Number
         }
     },
     setup(props) {
-        const { details } = toRefs(props)
+        const { details, hashName, buffGoodId } = toRefs(props)
 
         const existingDetails = computed(() => {
             return details.value.filter(e => e.value != null)
@@ -102,10 +105,16 @@ export default {
             `wxb-cs-item-detail--${rarity}`
         ]
 
+        const buffMarketLink = computed(() => buffGoodId.value
+            ? 'https://buff.163.com/goods/' + buffGoodId.value
+            : 'https://buff.163.com/market/csgo#search=' + hashName.value
+        )
+
         return {
             existingDetails,
             copyToClipboard,
-            csItemDetailClass
+            csItemDetailClass,
+            buffMarketLink
         }
     }
 }

@@ -38,6 +38,16 @@ export default function useCsItemDetails(item) {
             name: 'Steam volume', 
             value: item.$steam?.volume, 
             rarity: getSteamVolumeRarity(item.$steam?.volume)
+        },
+        { 
+            name: 'Buff price $', 
+            value: item.$buff?.price, 
+            rarity: csItemDetailRarityEnum.COMMON
+        },
+        { 
+            name: 'Buff volume', 
+            value: item.$buff?.volume, 
+            rarity: getSteamVolumeRarity(item.$buff?.volume)
         }
     ])
 

@@ -10,6 +10,10 @@ export default function useCsItemFilters(defaults = {}) {
     })
 
     const sortVariants = {
+        [csItemSortEnum.BUFF_DISCOUNT]: {
+            name: 'Buff discount',
+            callback: (a, b) => ((b.$buff?.discount ?? 0) - (a.$buff?.discount ?? 0)) * (filters.sortAsc ? -1 : 1)
+        },
         [csItemSortEnum.STEAM_DISCOUNT]: {
             name: 'Steam discount',
             callback: (a, b) => ((b.$steam?.discount ?? 0) - (a.$steam?.discount ?? 0)) * (filters.sortAsc ? -1 : 1)
