@@ -20,7 +20,6 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue'
-import { setupStores } from '@/stores'
 import { tabs, activeTab, initializeTabsCache } from '@/stores/tabsStore'
 import GuardTab from '@/components/tabs/GuardTab.vue'
 import MarketTab from '@/components/tabs/MarketTab.vue'
@@ -39,8 +38,6 @@ export default {
         AppAlertBox
     },
     setup() {
-        setupStores()
-
         const isHidden = ref(true)
 
         const appClass = computed(() => [

@@ -106,6 +106,7 @@
         </template>
         <template #right>
             <CsItemFilters 
+                :default-filters="defaultFilters"
                 :items="[...activeItems.values()]" 
                 @filter="items => filteredItems = items"
             />
@@ -130,6 +131,7 @@
 import { computed, ref } from 'vue'
 import { config } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
+import { userPreferences } from '@/stores/userStore'
 import AppTabLayout from '@/components/ui/AppTabLayout.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
@@ -139,6 +141,8 @@ import CsMarketItem from '@/components/csItem/CsMarketItem.vue'
 import CsItemFilters from '@/components/csItem/CsItemFilters.vue'
 import useBot from '@/composables/useBot'
 import processStateEnum from '@/enums/processStateEnum'
+import targetMarketEnum from '@/enums/targetMarketEnum'
+import csItemSortEnum from '@/enums/csItemSortEnum'
 
 export default {
     components: {
@@ -151,6 +155,12 @@ export default {
         CsItemFilters
     },
     setup() {
+        const defaultFilters = {
+            sortBy: userPreferences.targetMarket == targetMarketEnum.BUFF
+                ? csItemSortEnum.BUFF_DISCOUNT
+                : csItemSortEnum.STEAM_DISCOUNT
+        }
+
         const filteredItems = ref([])
 
         const { process, activeItems, toggle } = useBot()
@@ -162,6 +172,7 @@ export default {
         process.subscribe((state) => updateTabState('Market', state))
 
         return {
+            defaultFilters,
             filteredItems,
             isTerminating,
             isTerminated,
