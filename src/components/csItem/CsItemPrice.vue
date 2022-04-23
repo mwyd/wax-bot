@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import { computed, toRefs } from 'vue'
+import { computed } from 'vue'
+import { userPreferences } from '@/stores/userStore'
 
 export default {
     props: {
@@ -25,16 +26,19 @@ export default {
         },
         steamDiscount: {
             type: Number
+        },
+        buffDiscount: {
+            type: Number
         }
     },
     setup(props) {
-        const { waxpeerDiscount, steamDiscount } = toRefs(props)
-
         const discountElement = computed(() => {
-            let content = `${waxpeerDiscount.value}%`
+            let content = `${props.waxpeerDiscount}%`
 
-            if(steamDiscount.value) {
-                content = `${steamDiscount.value}% | ` + content
+            const targetMarketDiscount = props[`${userPreferences.targetMarket}Discount`]
+
+            if(targetMarketDiscount) {
+                content = `${targetMarketDiscount}% | ` + content
             }
 
             return `<span>${content}</span>`

@@ -11,6 +11,7 @@
                 :price="item.$price" 
                 :waxpeer-discount="item.$discount"
                 :steam-discount="item.$steam?.discount"
+                :buff-discount="item.$buff?.discount"
             />
             <div class="wxb-flex wxb-items-center wxb-flex-[0_0_100px] wxb-px-2">
                 <AppButton 

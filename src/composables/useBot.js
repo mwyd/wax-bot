@@ -93,6 +93,10 @@ export default function useBot() {
 
                 updateItemDiscount(activeItem)
 
+                if(activeItem.$buff instanceof Object) {
+                    activeItem.$buff.discount = calculateDiscount(activeItem.$price, activeItem.$buff.price)
+                }
+
                 if(activeItem.$steam instanceof Object) {
                     activeItem.$steam.discount = calculateDiscount(activeItem.$price, activeItem.$steam.price)
                 }
@@ -132,9 +136,9 @@ export default function useBot() {
 
             // test
 
-            const [steamResponse, buffResponse] = await Promise.all([
-                steamMarket.getItem(marketItem.$conduit_hash_name),
-                buffMarket.getItem(marketItem.name)
+            const [buffResponse, steamResponse] = await Promise.all([
+                buffMarket.getItem(marketItem.name),
+                steamMarket.getItem(marketItem.$conduit_hash_name)
             ])
 
             if(buffResponse.success) {
@@ -156,10 +160,10 @@ export default function useBot() {
                     volume,
                     discount: calculateDiscount(marketItem.$price, price)
                 }
+            }
 
-                if(itemFulfillCriteria(marketItem)) {
-                    buyItem(marketItem)
-                }
+            if(itemFulfillCriteria(marketItem)) {
+                buyItem(marketItem)
             }
 
             // test

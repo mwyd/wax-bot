@@ -11,6 +11,15 @@
                 placeholder="Api key..."
             />
         </div>
+        <div class="wxb-py-2">
+            <label class="wxb-block wxb-pb-2">
+                Target market
+            </label>
+            <AppHorizontalSelect
+                :options="Object.values(targetMarketEnum)"
+                v-model="userPreferences.targetMarket"
+            />
+        </div>
         <AppButton 
             class="wxb-btn-big wxb-mt-2"
             @click="authenticateConduit"
@@ -22,14 +31,17 @@
 
 <script>
 import { computed } from 'vue'
-import { session, authenticateConduit } from '@/stores/userStore'
+import { session, authenticateConduit, userPreferences } from '@/stores/userStore'
 import AppInput from '@/components/ui/AppInput.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import AppHorizontalSelect from '@/components/ui/AppHorizontalSelect.vue'
+import targetMarketEnum from '@/enums/targetMarketEnum'
 
 export default {
     components: {
         AppInput,
-        AppButton
+        AppButton,
+        AppHorizontalSelect
     },
     setup() {
         const token = computed({
@@ -42,8 +54,10 @@ export default {
         })
 
         return {
+            userPreferences,
             token,
-            authenticateConduit
+            authenticateConduit,
+            targetMarketEnum
         }
     }
 }

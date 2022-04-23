@@ -11,6 +11,7 @@
                 :price="item.$price" 
                 :waxpeer-discount="item.$discount"
                 :steam-discount="item.$steam?.discount"
+                :buff-discount="item.$buff?.discount"
             />
             <div :class="statusClass">
                 {{ status }}
