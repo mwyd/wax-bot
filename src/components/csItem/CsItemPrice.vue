@@ -37,7 +37,7 @@ export default {
 
             const targetMarketDiscount = props[`${userPreferences.targetMarket}Discount`]
 
-            if(targetMarketDiscount) {
+            if(targetMarketDiscount != null) {
                 content = `${targetMarketDiscount}% | ` + content
             }
 
