@@ -71,10 +71,10 @@
                 </div>
                 <div class="wxb-py-2">
                     <label class="wxb-block wxb-pb-2">
-                        Steam volume
+                        Volume
                     </label>
                     <AppInput 
-                        v-model.number="config.steamVolume"
+                        v-model.number="config.volume"
                         type="number"
                         :validator="value => (value >= 0 && value <= 10000)" 
                     />

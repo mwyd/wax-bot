@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { getDopplerPhaseRarity, getSteamVolumeRarity, getFlaotRarity } from '@/resources/csItem'
+import { getDopplerPhaseRarity, getVolumeRarity, getFlaotRarity } from '@/resources/csItem'
 import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
 
 export default function useCsItemDetails(item) {
@@ -37,7 +37,7 @@ export default function useCsItemDetails(item) {
         { 
             name: 'Steam volume', 
             value: item.$steam?.volume, 
-            rarity: getSteamVolumeRarity(item.$steam?.volume)
+            rarity: getVolumeRarity(item.$steam?.volume)
         },
         { 
             name: 'Buff price $', 
@@ -47,7 +47,7 @@ export default function useCsItemDetails(item) {
         { 
             name: 'Buff volume', 
             value: item.$buff?.volume, 
-            rarity: getSteamVolumeRarity(item.$buff?.volume)
+            rarity: getVolumeRarity(item.$buff?.volume)
         }
     ])
 

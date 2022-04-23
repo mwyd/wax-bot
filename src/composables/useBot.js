@@ -19,7 +19,7 @@ export default function useBot() {
     watch([
         () => config.deal, 
         () => config.dealMargin, 
-        () => config.steamVolume,
+        () => config.volume,
         () => config.limit
     ], () => tryBuyItems())
 
@@ -37,7 +37,7 @@ export default function useBot() {
 
     const itemFulfillCriteria = (activeItem) => {
         return activeItem.$steam instanceof Object
-            && activeItem.$steam.volume >= config.steamVolume 
+            && activeItem.$steam.volume >= config.volume 
             && activeItem.$steam.discount >= config.deal + config.dealMargin
     }
 

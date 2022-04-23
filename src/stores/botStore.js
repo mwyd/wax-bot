@@ -22,7 +22,7 @@ const config = reactive({
     limit: 500,
     search: '',
     pages: 1,
-    steamVolume: 10,
+    volume: 10,
     updateDelay: 4
 })
 

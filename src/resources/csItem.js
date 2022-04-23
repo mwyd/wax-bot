@@ -147,7 +147,7 @@ const destroyItemAlerts = (alerts) => {
     }
 }
 
-const getSteamVolumeRarity = (volume) => {
+const getVolumeRarity = (volume) => {
     if(isNaN(volume)) {
         return csItemDetailRarityEnum.COMMON
     }
@@ -186,7 +186,7 @@ const getFlaotRarity = (float) => {
 export {
     updateItemDiscount,
     updateItemDetails,
-    getSteamVolumeRarity,
+    getVolumeRarity,
     getDopplerPhaseRarity,
     getFlaotRarity,
     destroyItemAlerts
