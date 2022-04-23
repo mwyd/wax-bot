@@ -1,10 +1,11 @@
 import { reactive } from 'vue'
+import { steamBuffDiscountOffset } from '@/config'
 import csItemSortEnum from '@/enums/csItemSortEnum'
 
 const sortVariants = {
     [csItemSortEnum.BUFF_DISCOUNT]: {
         name: 'Buff discount',
-        callback: (a, b) => ((b.$buff?.discount ?? 0) - (a.$buff?.discount ?? 0))
+        callback: (a, b) => ((b.$buff?.discount ?? -steamBuffDiscountOffset) - (a.$buff?.discount ?? -steamBuffDiscountOffset))
     },
     [csItemSortEnum.STEAM_DISCOUNT]: {
         name: 'Steam discount',

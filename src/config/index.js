@@ -8,6 +8,8 @@ const ordersResultLimit = 50
 
 const marketResultLimit = 50
 
+const steamBuffDiscountOffset = 30
+
 const notificationSound = new Audio(chrome.runtime.getURL('/assets/audio/witam.mp3'))
 
 export {
@@ -16,5 +18,6 @@ export {
     tradesResultLimit,
     ordersResultLimit,
     marketResultLimit,
+    steamBuffDiscountOffset,
     notificationSound
 }

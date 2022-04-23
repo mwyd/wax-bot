@@ -16,7 +16,7 @@
                             :validator="value => (value >= -1000 && value <= 100)"
                         />
                         <AppInput
-                            v-model.number="config.dealMargin" 
+                            v-model.number="computedDealMargin" 
                             type="number"
                             :validator="value => (value >= -config.deal && value <= 1000 - config.deal)"
                         />
@@ -129,7 +129,7 @@
 
 <script>
 import { computed, ref } from 'vue'
-import { config } from '@/stores/botStore'
+import { config, computedDealMargin } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
 import { userPreferences } from '@/stores/userStore'
 import AppTabLayout from '@/components/ui/AppTabLayout.vue'
@@ -177,6 +177,7 @@ export default {
             isTerminating,
             isTerminated,
             config,
+            computedDealMargin,
             activeItems,
             toggle
         }

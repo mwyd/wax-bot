@@ -1,12 +1,14 @@
-import { reactive, ref, watch } from 'vue'
+import { reactive, ref, watch, computed } from 'vue'
 import { syncStorage, waxpeerDate, WXB_LOG } from '@/utils'
 import { user, market as waxpeerMarket } from '@/api/waxpeer'
-import { updateTradesDelay, tradesResultLimit, notificationSound } from '@/config'
+import { updateTradesDelay, tradesResultLimit, notificationSound, steamBuffDiscountOffset } from '@/config'
+import { userPreferences } from './userStore'
 import { pushAlert } from './alertsStore'
 import useProcess from '@/composables/useProcess'
 import processStateEnum from '@/enums/processStateEnum'
 import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
 import alertTypeEnum from '@/enums/alertTypeEnum'
+import targetMarketEnum from '@/enums/targetMarketEnum'
 
 let timestamp = waxpeerDate()
 
@@ -24,6 +26,27 @@ const config = reactive({
     pages: 1,
     volume: 10,
     updateDelay: 4
+})
+
+const computedDealMargin = computed({
+    get() {
+        let dealMargin = config.dealMargin
+
+        if(userPreferences.targetMarket == targetMarketEnum.BUFF) {
+            dealMargin -= steamBuffDiscountOffset
+        }
+
+        return dealMargin
+    },
+    set(value) {
+        let dealMargin = value
+
+        if(userPreferences.targetMarket == targetMarketEnum.BUFF) {
+            dealMargin += steamBuffDiscountOffset
+        }
+
+        config.dealMargin = dealMargin
+    }
 })
 
 const pendingItems = reactive(new Map())
@@ -182,6 +205,7 @@ const buyItem = async (item) => {
 export {
     process,
     config,
+    computedDealMargin,
     pendingItems,
     finishedItems,
     moneySpent,

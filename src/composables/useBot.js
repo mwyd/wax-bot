@@ -3,8 +3,8 @@ import { calculateDiscount, WXB_LOG } from '@/utils'
 import { market as waxpeeerMarket } from '@/api/waxpeer'
 import { steamMarket, buffMarket } from '@/api/conduit'
 import { updateItemDiscount, updateItemDetails, destroyItemAlerts } from '@/resources/csItem'
-import { config, moneySpent, buyItem } from '@/stores/botStore'
-import { session } from '@/stores/userStore'
+import { config, computedDealMargin, moneySpent, buyItem } from '@/stores/botStore'
+import { session, userPreferences } from '@/stores/userStore'
 import { marketResultLimit } from '@/config'
 import processStateEnum from '@/enums/processStateEnum'
 import useProcess from './useProcess'
@@ -36,9 +36,11 @@ export default function useBot() {
     }
 
     const itemFulfillCriteria = (activeItem) => {
-        return activeItem.$steam instanceof Object
-            && activeItem.$steam.volume >= config.volume 
-            && activeItem.$steam.discount >= config.deal + config.dealMargin
+        const marketData = activeItem[`$${userPreferences.targetMarket}`]
+
+        return marketData instanceof Object
+            && marketData.volume >= config.volume 
+            && marketData.discount >= config.deal + computedDealMargin.value
     }
 
     const getMarketItems = async () => {
@@ -134,8 +136,6 @@ export default function useBot() {
             
             updateItemDetails(marketItem)
 
-            // test
-
             const [buffResponse, steamResponse] = await Promise.all([
                 buffMarket.getItem(marketItem.name),
                 steamMarket.getItem(marketItem.$conduit_hash_name)
@@ -165,8 +165,6 @@ export default function useBot() {
             if(itemFulfillCriteria(marketItem)) {
                 buyItem(marketItem)
             }
-
-            // test
 
             activeItems.set(marketItem.item_id, marketItem)
         }
