@@ -6,8 +6,10 @@ import { updateItemDiscount, updateItemDetails, destroyItemAlerts } from '@/reso
 import { config, computedDealMargin, moneySpent, buyItem } from '@/stores/botStore'
 import { session, userPreferences } from '@/stores/userStore'
 import { marketResultLimit } from '@/config'
+import { pushAlert } from '@/stores/alertsStore'
 import processStateEnum from '@/enums/processStateEnum'
 import useProcess from './useProcess'
+import alertTypeEnum from '@/enums/alertTypeEnum'
 
 export default function useBot() {
     let timeoutId = null
@@ -51,7 +53,7 @@ export default function useBot() {
                 const query = new URLSearchParams({
                     skip: i * marketResultLimit,
                     sort: 'DESC',
-                    order: 'profit',
+                    order: 'deals',
                     game: 'csgo',
                     all: 0,
                     min_price: config.minPrice * 1000,
@@ -114,7 +116,11 @@ export default function useBot() {
         process.update(processStateEnum.RUNNING)
         
         if(config.limit - moneySpent.value < config.minPrice) {
-            WXB_LOG('Limit reached')
+            pushAlert({
+                type: alertTypeEnum.INFO,
+                title: 'Bot',
+                body: 'Terminating bot - limit reached'
+            })
 
             toggle()
         }

@@ -110,7 +110,7 @@ export default function useGuard() {
             pushAlert({
                 type: alertTypeEnum.INFO,
                 title: 'Guard',
-                body: 'Guard terminated - no observed items'
+                body: 'Terminating guard - no observed items'
             })
 
             toggle()

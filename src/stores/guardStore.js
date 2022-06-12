@@ -122,7 +122,7 @@ const loadGuardItems = async () => {
             let maxPrice = roundNumber(item.$suggested_price * config.safeDiscount, 3)
 
             if(maxPrice < minPrice) {
-                maxPrice = minPrice + config.bidStep
+                maxPrice = roundNumber(minPrice + config.bidStep, 3)
             }
 
             updatedGuardItemsData[item.item_id] = {
