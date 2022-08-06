@@ -1,6 +1,6 @@
 import { WXB_LOG } from '@/utils'
 import { market as waxpeeerMarket, user as waxpeerUser } from '@/api/waxpeer'
-import { updateItemDiscount } from '@/resources/csItem'
+import { normalizeItemPrice } from '@/resources/csItem'
 import { config, getGuardItemData, getObservedItems, deleteGuardItem } from '@/stores/guardStore'
 import { session } from '@/stores/userStore'
 import { marketResultLimit } from '@/config'
@@ -56,18 +56,18 @@ export default function useGuard() {
           item_id: observedItem.item_id,
           image: observedItem.image,
           name: observedItem.name,
-          price: newPrice,
+          price: newPrice * 1000,
           game: 'csgo'
         }
       })
 
       if (success) {
-        observedItem.price = newPrice
+        observedItem.price = newPrice * 1000
 
-        updateItemDiscount(observedItem)
+        normalizeItemPrice(observedItem)
       } else {
         if (msg == waxpeerApiMsgEnum.NO_ITEM_FOUND) {
-          deleteGuardItem(observedItem.item_id)
+          deleteGuardItem(observedItem.$key)
         }
       }
     } catch (err) {
@@ -76,18 +76,18 @@ export default function useGuard() {
   }
 
   const checkObservedItem = async (observedItem) => {
-    const { minPrice, maxPrice } = getGuardItemData(observedItem.item_id)
+    const { minPrice, maxPrice } = getGuardItemData(observedItem.$key)
 
     let marketItems = await getSimilarMarketItems(observedItem.name, minPrice, maxPrice)
 
-    let newPrice = maxPrice * 1000
+    let newPrice = maxPrice
 
     for (const marketItem of marketItems) {
       if (marketItem.by == session.waxpeerId) {
         continue
       }
 
-      const nextPrice = marketItem.price - (config.bidStep * 1000)
+      const nextPrice = (marketItem.price / 1000) - config.bidStep
 
       if (nextPrice > minPrice) {
         newPrice = nextPrice
@@ -96,7 +96,7 @@ export default function useGuard() {
       }
     }
 
-    if (observedItem.price != newPrice) {
+    if (observedItem.$price != newPrice) {
       updateObservedItemPrice(observedItem, newPrice)
     }
   }

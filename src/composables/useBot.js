@@ -2,7 +2,7 @@ import { reactive, watch, ref } from 'vue'
 import { calculateDiscount, WXB_LOG } from '@/utils'
 import { market as waxpeeerMarket } from '@/api/waxpeer'
 import { steamMarket, buffMarket } from '@/api/conduit'
-import { updateItemDiscount, updateItemDetails, destroyItemAlerts } from '@/resources/csItem'
+import { normalizeItemPrice, updateItemDetails, destroyItemAlerts } from '@/resources/csItem'
 import { config, computedDealMargin, moneySpent, buyItem } from '@/stores/botStore'
 import { session, userPreferences } from '@/stores/userStore'
 import { marketResultLimit } from '@/config'
@@ -95,7 +95,7 @@ export default function useBot() {
         activeItem.price = marketItem.price
         activeItem.steam_price_number = marketItem.steam_price_number
 
-        updateItemDiscount(activeItem)
+        normalizeItemPrice(activeItem)
 
         if (activeItem.$buff instanceof Object) {
           activeItem.$buff.discount = calculateDiscount(activeItem.$price, activeItem.$buff.price)
@@ -128,7 +128,7 @@ export default function useBot() {
     let marketItems = await getMarketItems()
 
     for (const marketItem of marketItems) {
-      updateItemDiscount(marketItem)
+      normalizeItemPrice(marketItem)
     }
 
     marketItems = marketItems.filter(marketItem => marketItem.$discount >= config.deal && marketItem.by != session.waxpeerId)

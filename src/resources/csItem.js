@@ -57,11 +57,11 @@ const hasPaintSeedVariant = (hashName) => {
 }
 
 const createRareItemAlertBody = (hashName, variant, price, discount) => `
-    <span>${hashName}</span>
-    <br />
-    <span class="wxb-variant">${variant}</span>
-    <br />
-    <span><span style="color: greenyellow;">$</span> ${price} (${discount} %)</span>
+  <span>${hashName}</span>
+  <br />
+  <span class="wxb-variant">${variant}</span>
+  <br />
+  <span><span style="color: greenyellow;">$</span> ${price} (${discount} %)</span>
 `
 
 const getShortName = (hashName) => {
@@ -82,7 +82,7 @@ const decodeInspectId = (id) => {
   }
 }
 
-const updateItemDiscount = (item) => {
+const normalizeItemPrice = (item) => {
   item.$price = roundNumber(item.price / 1000, 3)
   item.$suggested_price = roundNumber(item.steam_price_number / 1000, 3)
   item.$discount = calculateDiscount(item.price, item.steam_price_number)
@@ -94,7 +94,9 @@ const updateItemDetails = async (item) => {
   item.$searchable = item.$conduit_hash_name.toLowerCase()
   item.$alerts = []
 
-  if (!item.inspect_item) return
+  if (!item.inspect_item) {
+    return
+  }
 
   let { id, floatvalue, paintseed } = item.inspect_item
 
@@ -184,7 +186,7 @@ const getFlaotRarity = (float) => {
 }
 
 export {
-  updateItemDiscount,
+  normalizeItemPrice,
   updateItemDetails,
   getVolumeRarity,
   getDopplerPhaseRarity,

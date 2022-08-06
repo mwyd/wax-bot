@@ -1,8 +1,9 @@
 import { ref, reactive, watch } from 'vue'
 import { user } from '@/api/waxpeer'
-import { updateItemDetails, updateItemDiscount } from '@/resources/csItem'
+import { updateItemDetails, normalizeItemPrice } from '@/resources/csItem'
 import { syncStorage, WXB_LOG, roundNumber } from '@/utils'
 import { ordersResultLimit } from '@/config'
+import moment from "moment";
 
 const config = reactive({
   bidStep: 0.01,
@@ -39,14 +40,14 @@ const loadGuardItemsData = async () => {
   }
 }
 
-const deleteGuardItem = (id) => {
-  guardItems.value.delete(id)
+const deleteGuardItem = (key) => {
+  guardItems.value.delete(key)
 
-  delete guardItemsData.value[id]
+  delete guardItemsData.value[key]
 }
 
-const getGuardItemData = (id) => {
-  return guardItemsData.value[id]
+const getGuardItemData = (key) => {
+  return guardItemsData.value[key]
 }
 
 const toggleGuardItemsStatus = (ignore) => {
@@ -56,12 +57,12 @@ const toggleGuardItemsStatus = (ignore) => {
 }
 
 const getObservedItems = () => {
-  let observedItems = []
+  const observedItems = []
 
-  for (let [key, item] of guardItems.value) {
-    const guardItemData = guardItemsData.value[key]
+  for (const [key, item] of guardItems.value) {
+    const data = guardItemsData.value[key]
 
-    if (guardItemData?.ignored === false) {
+    if (data?.ignored === false) {
       observedItems.push(item)
     }
   }
@@ -109,13 +110,14 @@ const loadGuardItems = async () => {
   const updatedGuardItemsData = {}
 
   for (let item of ref(sellItems).value) {
+    item.$key = `${item.item_id}.${moment(item.date).format('X')}`
     item.steam_price_number = item.steam_price?.average ?? item.price
 
-    updateItemDiscount(item)
+    normalizeItemPrice(item)
 
     updateItemDetails(item)
 
-    const itemGuardData = getGuardItemData(item.item_id)
+    const itemGuardData = getGuardItemData(item.$key)
 
     if (!itemGuardData) {
       let minPrice = item.$price
@@ -125,16 +127,16 @@ const loadGuardItems = async () => {
         maxPrice = roundNumber(minPrice + config.bidStep, 3)
       }
 
-      updatedGuardItemsData[item.item_id] = {
+      updatedGuardItemsData[item.$key] = {
         ignored: true,
         minPrice,
         maxPrice
       }
     } else {
-      updatedGuardItemsData[item.item_id] = itemGuardData
+      updatedGuardItemsData[item.$key] = itemGuardData
     }
 
-    updatedGuardItems.set(item.item_id, item)
+    updatedGuardItems.set(item.$key, item)
   }
 
   guardItems.value = updatedGuardItems

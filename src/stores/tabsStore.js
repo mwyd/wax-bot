@@ -1,4 +1,4 @@
-import { ref, reactive } from 'vue'
+import { ref, reactive, nextTick } from 'vue'
 import processStateEnum from '@/enums/processStateEnum'
 
 const tabs = reactive({
@@ -22,14 +22,20 @@ const updateTabState = (key, state) => {
   tabs[key].state = state
 }
 
-const initializeTabsCache = () => {
+const initializeTabsCache = async () => {
   const initialTab = activeTab.value
 
-  activeTab.value = 'Trades'
+  for (const key in tabs) {
+    if (key === initialTab) {
+      continue
+    }
 
-  setTimeout(() => activeTab.value = 'Guard', 0.1 * 1000)
+    activeTab.value = key
 
-  setTimeout(() => activeTab.value = initialTab, 0.2 * 1000)
+    await nextTick()
+  }
+
+  activeTab.value = initialTab
 }
 
 export {

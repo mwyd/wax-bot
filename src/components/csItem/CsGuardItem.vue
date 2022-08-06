@@ -74,7 +74,7 @@ export default {
   setup(props) {
     const item = toRef(props, 'item')
 
-    const guardData = getGuardItemData(item.value.item_id)
+    const guardData = getGuardItemData(item.value.$key)
 
     return {
       guardData,
