@@ -12,205 +12,205 @@ import useProcess from './useProcess'
 import alertTypeEnum from '@/enums/alertTypeEnum'
 
 export default function useBot() {
-    let timeoutId = null
+  let timeoutId = null
 
-    const process = useProcess()
+  const process = useProcess()
 
-    const activeItems = reactive(new Map())
+  const activeItems = reactive(new Map())
 
-    watch([
-        () => config.deal, 
-        () => config.dealMargin, 
-        () => config.volume,
-        () => config.limit
-    ], () => tryBuyItems())
+  watch([
+    () => config.deal,
+    () => config.dealMargin,
+    () => config.volume,
+    () => config.limit
+  ], () => tryBuyItems())
 
-    const tryBuyItems = () => {
-        if(process.is(processStateEnum.TERMINATING) || process.is(processStateEnum.TERMINATED)) {
-            return
-        }
+  const tryBuyItems = () => {
+    if (process.is(processStateEnum.TERMINATING) || process.is(processStateEnum.TERMINATED)) {
+      return
+    }
 
-        activeItems.forEach(activeItem => {
-            if(itemFulfillCriteria(activeItem)) {
-                buyItem(activeItem)
-            }
+    activeItems.forEach(activeItem => {
+      if (itemFulfillCriteria(activeItem)) {
+        buyItem(activeItem)
+      }
+    })
+  }
+
+  const itemFulfillCriteria = (activeItem) => {
+    const marketData = activeItem[`$${userPreferences.targetMarket}`]
+
+    return marketData instanceof Object
+      && marketData.volume >= config.volume
+      && marketData.discount >= config.deal + computedDealMargin.value
+  }
+
+  const getMarketItems = async () => {
+    let marketItems = []
+
+    try {
+      for (let i = 0; i < config.pages; i++) {
+        const query = new URLSearchParams({
+          skip: i * marketResultLimit,
+          sort: 'DESC',
+          order: 'deals',
+          game: 'csgo',
+          all: 0,
+          min_price: config.minPrice * 1000,
+          max_price: config.maxPrice * 1000,
+          search: config.search,
+          exact: 0
         })
-    }
 
-    const itemFulfillCriteria = (activeItem) => {
-        const marketData = activeItem[`$${userPreferences.targetMarket}`]
+        const { success, items } = await waxpeeerMarket.getItems(query)
 
-        return marketData instanceof Object
-            && marketData.volume >= config.volume 
-            && marketData.discount >= config.deal + computedDealMargin.value
-    }
-
-    const getMarketItems = async () => {
-        let marketItems = []
-
-        try {
-            for(let i = 0; i < config.pages; i++) {
-                const query = new URLSearchParams({
-                    skip: i * marketResultLimit,
-                    sort: 'DESC',
-                    order: 'deals',
-                    game: 'csgo',
-                    all: 0,
-                    min_price: config.minPrice * 1000,
-                    max_price: config.maxPrice * 1000,
-                    search: config.search,
-                    exact: 0
-                })
-    
-                const { success, items } = await waxpeeerMarket.getItems(query)
-    
-                if(success) {
-                    marketItems = [...marketItems, ...items]
-                }
-    
-                if(!success || items.length < marketResultLimit) {
-                    break
-                }
-            }
-        } catch(err) {
-            WXB_LOG('Cannot load item page', err)
+        if (success) {
+          marketItems = [...marketItems, ...items]
         }
 
-        return marketItems
+        if (!success || items.length < marketResultLimit) {
+          break
+        }
+      }
+    } catch (err) {
+      WXB_LOG('Cannot load item page', err)
     }
 
-    const updateItems = (marketItems) => {
-        for(const [id, activeItem] of activeItems) {
-            const marketItem = marketItems.find(marketItem => marketItem.item_id == id)
+    return marketItems
+  }
 
-            if(!marketItem) {
-                activeItems.delete(id)
+  const updateItems = (marketItems) => {
+    for (const [id, activeItem] of activeItems) {
+      const marketItem = marketItems.find(marketItem => marketItem.item_id == id)
 
-                destroyItemAlerts(activeItem.$alerts)
+      if (!marketItem) {
+        activeItems.delete(id)
 
-                continue
-            }
+        destroyItemAlerts(activeItem.$alerts)
 
-            if(marketItem.price != activeItem.price) {
-                activeItem.price = marketItem.price
-                activeItem.steam_price_number = marketItem.steam_price_number
+        continue
+      }
 
-                updateItemDiscount(activeItem)
+      if (marketItem.price != activeItem.price) {
+        activeItem.price = marketItem.price
+        activeItem.steam_price_number = marketItem.steam_price_number
 
-                if(activeItem.$buff instanceof Object) {
-                    activeItem.$buff.discount = calculateDiscount(activeItem.$price, activeItem.$buff.price)
-                }
+        updateItemDiscount(activeItem)
 
-                if(activeItem.$steam instanceof Object) {
-                    activeItem.$steam.discount = calculateDiscount(activeItem.$price, activeItem.$steam.price)
-                }
-
-                if(itemFulfillCriteria(activeItem)) {
-                    buyItem(activeItem)
-                }
-            }
+        if (activeItem.$buff instanceof Object) {
+          activeItem.$buff.discount = calculateDiscount(activeItem.$price, activeItem.$buff.price)
         }
+
+        if (activeItem.$steam instanceof Object) {
+          activeItem.$steam.discount = calculateDiscount(activeItem.$price, activeItem.$steam.price)
+        }
+
+        if (itemFulfillCriteria(activeItem)) {
+          buyItem(activeItem)
+        }
+      }
+    }
+  }
+
+  const run = async () => {
+    process.update(processStateEnum.RUNNING)
+
+    if (config.limit - moneySpent.value < config.minPrice) {
+      pushAlert({
+        type: alertTypeEnum.INFO,
+        title: 'Bot',
+        body: 'Terminating bot - limit reached'
+      })
+
+      toggle()
     }
 
-    const run = async () => {
-        process.update(processStateEnum.RUNNING)
-        
-        if(config.limit - moneySpent.value < config.minPrice) {
-            pushAlert({
-                type: alertTypeEnum.INFO,
-                title: 'Bot',
-                body: 'Terminating bot - limit reached'
-            })
+    let marketItems = await getMarketItems()
 
-            toggle()
-        }
-
-        let marketItems = await getMarketItems()
-
-        for(const marketItem of marketItems) {
-            updateItemDiscount(marketItem)
-        }
-
-        marketItems = marketItems.filter(marketItem => marketItem.$discount >= config.deal && marketItem.by != session.waxpeerId)
-
-        updateItems(marketItems)
-
-        for(const marketItem of ref(marketItems).value) {
-            if(activeItems.has(marketItem.item_id)) {
-                continue
-            }
-            
-            updateItemDetails(marketItem)
-
-            const [buffResponse, steamResponse] = await Promise.all([
-                buffMarket.getItem(marketItem.name),
-                steamMarket.getItem(marketItem.$conduit_hash_name)
-            ])
-
-            if(buffResponse.success) {
-                const { price, volume, good_id } = buffResponse.data
-                
-                marketItem.$buff = {
-                    price,
-                    volume,
-                    good_id,
-                    discount: calculateDiscount(marketItem.$price, price)
-                }
-            }
-
-            if(steamResponse.success) {
-                const { price, volume } = steamResponse.data
-
-                marketItem.$steam = {
-                    price,
-                    volume,
-                    discount: calculateDiscount(marketItem.$price, price)
-                }
-            }
-
-            if(itemFulfillCriteria(marketItem)) {
-                buyItem(marketItem)
-            }
-
-            activeItems.set(marketItem.item_id, marketItem)
-        }
-
-        if(process.is(processStateEnum.TERMINATING)) {
-            toggle()
-
-            return
-        }
-
-        timeoutId = setTimeout(run, config.updateDelay * 1000)
-
-        process.update(processStateEnum.IDLE)
+    for (const marketItem of marketItems) {
+      updateItemDiscount(marketItem)
     }
 
-    const toggle = () => {
-        if(process.is(processStateEnum.RUNNING)) {
-            process.update(processStateEnum.TERMINATING)
+    marketItems = marketItems.filter(marketItem => marketItem.$discount >= config.deal && marketItem.by != session.waxpeerId)
 
-            return 
-        } 
-        
-        if(process.is(processStateEnum.TERMINATED)) {
-            run()
+    updateItems(marketItems)
 
-            return
+    for (const marketItem of ref(marketItems).value) {
+      if (activeItems.has(marketItem.item_id)) {
+        continue
+      }
+
+      updateItemDetails(marketItem)
+
+      const [buffResponse, steamResponse] = await Promise.all([
+        buffMarket.getItem(marketItem.name),
+        steamMarket.getItem(marketItem.$conduit_hash_name)
+      ])
+
+      if (buffResponse.success) {
+        const { price, volume, good_id } = buffResponse.data
+
+        marketItem.$buff = {
+          price,
+          volume,
+          good_id,
+          discount: calculateDiscount(marketItem.$price, price)
         }
+      }
 
-        clearTimeout(timeoutId)
-        
-        activeItems.forEach(activeItem => destroyItemAlerts(activeItem.$alerts))
+      if (steamResponse.success) {
+        const { price, volume } = steamResponse.data
 
-        activeItems.clear()
+        marketItem.$steam = {
+          price,
+          volume,
+          discount: calculateDiscount(marketItem.$price, price)
+        }
+      }
 
-        process.update(processStateEnum.TERMINATED)
+      if (itemFulfillCriteria(marketItem)) {
+        buyItem(marketItem)
+      }
+
+      activeItems.set(marketItem.item_id, marketItem)
     }
 
-    return {
-        process,
-        activeItems,
-        toggle 
+    if (process.is(processStateEnum.TERMINATING)) {
+      toggle()
+
+      return
     }
+
+    timeoutId = setTimeout(run, config.updateDelay * 1000)
+
+    process.update(processStateEnum.IDLE)
+  }
+
+  const toggle = () => {
+    if (process.is(processStateEnum.RUNNING)) {
+      process.update(processStateEnum.TERMINATING)
+
+      return
+    }
+
+    if (process.is(processStateEnum.TERMINATED)) {
+      run()
+
+      return
+    }
+
+    clearTimeout(timeoutId)
+
+    activeItems.forEach(activeItem => destroyItemAlerts(activeItem.$alerts))
+
+    activeItems.clear()
+
+    process.update(processStateEnum.TERMINATED)
+  }
+
+  return {
+    process,
+    activeItems,
+    toggle
+  }
 }

@@ -3,37 +3,37 @@
 @tailwind utilities;
 
 .wxb {
-    --bg-c-1: #2b313a;
-    --bg-c-2: #272a31;
-    --bg-c-3: #333a44;
-    --i-bg-c: #262a31;
-    --i-br-c: #383e4a;
-    --state-i: #61c1ff;
-    --state-r: #82e28c;
-    --state-t1: #cacccf;
-    --state-t2: #515c6d;
-    --state-e: #e28282;
+  --bg-c-1: #2b313a;
+  --bg-c-2: #272a31;
+  --bg-c-3: #333a44;
+  --i-bg-c: #262a31;
+  --i-br-c: #383e4a;
+  --state-i: #61c1ff;
+  --state-r: #82e28c;
+  --state-t1: #cacccf;
+  --state-t2: #515c6d;
+  --state-e: #e28282;
 }
 
 .wxb-btn-big {
-    font-size: 12px;
-    width: 100%;
-    height: 30px;
+  font-size: 12px;
+  width: 100%;
+  height: 30px;
 }
 
 .wxb-input {
-    display: block;
-    height: 30px;
-    border-radius: 2px;
-    width: 100%;
-    background-color: var(--i-bg-c);
-    border: 1px solid var(--i-br-c);
-    padding: 4px;
-    color: inherit;
-    font-size: inherit;
+  display: block;
+  height: 30px;
+  border-radius: 2px;
+  width: 100%;
+  background-color: var(--i-bg-c);
+  border: 1px solid var(--i-br-c);
+  padding: 4px;
+  color: inherit;
+  font-size: inherit;
 }
 
 .wxb-variant {
-    color: yellow;
-    font-weight: bold;
+  color: yellow;
+  font-weight: bold;
 }

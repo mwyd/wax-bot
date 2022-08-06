@@ -7,16 +7,16 @@ import App from './App.vue'
 import './main.css'
 
 const setupApp = async () => {
-    await setupStores()
+  await setupStores()
 
-    const root = initRoot()
-    const app = createApp(App)
+  const root = initRoot()
+  const app = createApp(App)
 
-    app.mount(root)
+  app.mount(root)
 }
 
 try {
-    setupApp()
-} catch(err) {
-    WXB_LOG('', err)
+  setupApp()
+} catch (err) {
+  WXB_LOG('App setup error', err)
 }

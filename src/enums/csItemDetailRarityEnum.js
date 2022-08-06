@@ -1,5 +1,5 @@
 export default Object.freeze({
-    COMMON: 'common',
-    INFREQUENT: 'infrequent',
-    RARE: 'rare'
+  COMMON: 'common',
+  INFREQUENT: 'infrequent',
+  RARE: 'rare'
 })

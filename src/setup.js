@@ -1,16 +1,18 @@
 const initRoot = () => {
-    const body = document.querySelector('body')
-    const root = document.createElement('div')
+  const body = document.querySelector('body')
+  const root = document.createElement('div')
 
-    root.classList.add('wxb')
-    
-    root.setAttribute('id', 'wxb-root')
+  root.classList.add('wxb')
 
-    if(!body) throw 'Missing body element'
+  root.setAttribute('id', 'wxb-root')
 
-    body.appendChild(root)
+  if (!body) {
+    throw 'Missing body element'
+  }
 
-    return root
+  body.appendChild(root)
+
+  return root
 }
 
 export { initRoot }

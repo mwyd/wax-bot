@@ -1,35 +1,45 @@
 {
-    "manifest_version": 3,
-    "name": "WAX-BOT",
-    "version": "1.0.6",
-    "description": "",
-    "icons": {
-        "16": "assets/icons/wxb-16x16.png",
-        "48": "assets/icons/wxb-48x48.png",
-        "128": "assets/icons/wxb-128x128.png"
-    },
-    "content_scripts": [{
-        "js": [
-            "/js/chunk-vendors.js",
-            "/js/app.js"
-        ],
-        "css": [
-            "/css/app.css"
-        ],
-        "matches": ["https://waxpeer.com/*"]
-    }],
-    "background": {
-        "service_worker": "/js/background.js"
-    },
-    "permissions": [
-        "storage"
-    ],
-    "host_permissions": [
-        "https://api.csgofloat.com/*"
-    ],
-    "web_accessible_resources": [{
-        "resources": ["/assets/*"],
-        "matches": ["https://waxpeer.com/*"],
-        "extension_ids": []
-    }]
+  "manifest_version": 3,
+  "name": "WAX-BOT",
+  "version": "1.0.6",
+  "description": "",
+  "icons": {
+    "16": "assets/icons/wxb-16x16.png",
+    "48": "assets/icons/wxb-48x48.png",
+    "128": "assets/icons/wxb-128x128.png"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "/js/chunk-vendors.js",
+        "/js/app.js"
+      ],
+      "css": [
+        "/css/app.css"
+      ],
+      "matches": [
+        "https://waxpeer.com/*"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "/js/background.js"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.csgofloat.com/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "/assets/*"
+      ],
+      "matches": [
+        "https://waxpeer.com/*"
+      ],
+      "extension_ids": []
+    }
+  ]
 }

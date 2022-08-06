@@ -7,80 +7,80 @@ import alertTypeEnum from '@/enums/alertTypeEnum'
 import targetMarketEnum from '@/enums/targetMarketEnum'
 
 const session = reactive({
-    conduitName: null,
-    token: null,
-    waxpeerId: null
+  conduitName: null,
+  token: null,
+  waxpeerId: null
 })
 
 const userPreferences = reactive({
-    targetMarket: targetMarketEnum.STEAM
+  targetMarket: targetMarketEnum.STEAM
 })
 
 const loadToken = async () => {
-    session.token = await syncStorage.get('token')
+  session.token = await syncStorage.get('token')
 }
 
 watch(() => session.token, () => {
-    syncStorage.set({ token: session.token })
+  syncStorage.set({ token: session.token })
 })
 
 const loadUserPreferences = async () => {
-    const preferences = await syncStorage.get('preferences')
+  const preferences = await syncStorage.get('preferences')
 
-    if(preferences instanceof Object) {
-        Object.assign(userPreferences, preferences)
-    }
+  if (preferences instanceof Object) {
+    Object.assign(userPreferences, preferences)
+  }
 }
 
 watch(userPreferences, () => {
-    syncStorage.set({ preferences: userPreferences })
+  syncStorage.set({ preferences: userPreferences })
 })
 
 const authenticateConduit = async () => {
-    const { success, data } = await conduitUser.authenticate(session.token)
+  const { success, data } = await conduitUser.authenticate(session.token)
 
-    const alert = {
-        type: alertTypeEnum.SUCCESS,
-        title: 'Conduit',
-        body: 'Authenticated'
-    }
+  const alert = {
+    type: alertTypeEnum.SUCCESS,
+    title: 'Conduit',
+    body: 'Authenticated'
+  }
 
-    if(success) {
-        session.conduitName = data.name
-    } else {
-        session.conduitName = null
+  if (success) {
+    session.conduitName = data.name
+  } else {
+    session.conduitName = null
 
-        alert.type = alertTypeEnum.ERROR
-        alert.body = 'Unauthenticated'
-    }
+    alert.type = alertTypeEnum.ERROR
+    alert.body = 'Unauthenticated'
+  }
 
-    pushAlert(alert)
+  pushAlert(alert)
 }
 
 const authenticateWaxpeer = async () => {
-    const { success, user } = await waxpeerUser.authenticate()
+  const { success, user } = await waxpeerUser.authenticate()
 
-    const alert = {
-        type: alertTypeEnum.SUCCESS,
-        title: 'Waxpeer',
-        body: 'Authenticated'
-    }
+  const alert = {
+    type: alertTypeEnum.SUCCESS,
+    title: 'Waxpeer',
+    body: 'Authenticated'
+  }
 
-    if(success) {
-        session.waxpeerId = user.id
-    } else {
-        alert.type = alertTypeEnum.ERROR
-        alert.body = 'Unauthenticated'
-    }
+  if (success) {
+    session.waxpeerId = user.id
+  } else {
+    alert.type = alertTypeEnum.ERROR
+    alert.body = 'Unauthenticated'
+  }
 
-    pushAlert(alert)
+  pushAlert(alert)
 }
 
 export {
-    session,
-    userPreferences,
-    loadToken,
-    loadUserPreferences,
-    authenticateConduit,
-    authenticateWaxpeer
+  session,
+  userPreferences,
+  loadToken,
+  loadUserPreferences,
+  authenticateConduit,
+  authenticateWaxpeer
 }
