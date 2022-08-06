@@ -60,7 +60,7 @@ export default {
 
     const itemsCount = computed(() => pendingItems.size + finishedItems.value.length)
 
-    process.subscribe((value) => updateTabState('Trades', value))
+    process.subscribe((state) => updateTabState('Trades', state))
 
     return {
       filteredItems,

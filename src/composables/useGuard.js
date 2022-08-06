@@ -1,5 +1,5 @@
 import { WXB_LOG } from '@/utils'
-import { market as waxpeeerMarket, user as waxpeerUser } from '@/api/waxpeer'
+import { market as waxpeeerMarket, user as waxpeerUser } from '@/services/waxpeer'
 import { normalizeItemPrice } from '@/resources/csItem'
 import { config, getGuardItemData, getObservedItems, deleteGuardItem } from '@/stores/guardStore'
 import { session } from '@/stores/userStore'

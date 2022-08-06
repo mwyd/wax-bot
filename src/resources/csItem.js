@@ -1,5 +1,5 @@
-import { csItem } from '@/api/conduit'
-import { inspectTool } from '@/api/csgo_float'
+import { csItem } from '@/services/conduit'
+import { inspectTool } from '@/services/csgo_float'
 import { destroyAlert, pushAlert } from '@/stores/alertsStore'
 import { session } from '@/stores/userStore'
 import { calculateDiscount, roundNumber } from '@/utils'

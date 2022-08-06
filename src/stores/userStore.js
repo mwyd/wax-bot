@@ -1,6 +1,6 @@
 import { reactive, watch } from 'vue'
-import { user as conduitUser } from '@/api/conduit'
-import { user as waxpeerUser } from '@/api/waxpeer'
+import { user as conduitUser } from '@/services/conduit'
+import { user as waxpeerUser } from '@/services/waxpeer'
 import { syncStorage } from '@/utils'
 import { pushAlert } from './alertsStore'
 import alertTypeEnum from '@/enums/alertTypeEnum'

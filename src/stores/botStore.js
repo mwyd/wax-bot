@@ -1,6 +1,6 @@
 import { reactive, ref, watch, computed } from 'vue'
 import { syncStorage, waxpeerDate, WXB_LOG } from '@/utils'
-import { user, market as waxpeerMarket } from '@/api/waxpeer'
+import { user, market as waxpeerMarket } from '@/services/waxpeer'
 import { updateTradesDelay, tradesResultLimit, notificationSound, steamBuffDiscountOffset } from '@/config'
 import { userPreferences } from './userStore'
 import { pushAlert } from './alertsStore'
