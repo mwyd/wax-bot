@@ -5,7 +5,7 @@
       type="text"
       placeholder="Search..."
     />
-    <div class="wxb-ml-2 wxb-flex-[0_0_160px]">
+    <div class="wxb-ml-2 wxb-flex-lg">
       <select
         class="wxb-input"
         v-model="filters.sortBy"
@@ -32,7 +32,7 @@
 
 <script>
 import { toRefs, watch, computed } from 'vue'
-import AppInput from '@/components/ui/AppInput.vue'
+import AppInput from '@/components/ui/AppInput'
 import useCsItemFilters from '@/composables/useCsItemFilters'
 
 export default {
@@ -56,11 +56,11 @@ export default {
     const { filters, sortVariants, comparator } = useCsItemFilters(defaultFilters.value)
 
     const sortDirBtnClass = computed(() => [
-      'wxb-sort-dir-btn',
+      'wxb-sort-btn',
       'wxb-cursor-pointer',
       'wxb-p-1.5',
       'wxb-ml-2',
-      filters.sortAsc ? 'wxb-sort-dir-btn--asc' : 'wxb-sort-dir-btn--desc'
+      filters.sortAsc ? 'wxb-sort-btn-asc' : 'wxb-sort-btn-desc'
     ])
 
     watch([filters, items], () => {
@@ -81,43 +81,43 @@ export default {
 </script>
 
 <style scoped>
-.wxb-sort-dir-btn {
+.wxb-sort-btn {
   flex: 0 0 30px;
   border-radius: 2px;
-  background-color: var(--i-bg-c);
-  border: 1px solid var(--i-br-c);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @apply wxb-bg-gray-800;
+  @apply wxb-text-gray-900;
 }
 
-.wxb-sort-dir-btn > div {
+.wxb-sort-btn > div {
   height: 2px;
-  background: var(--state-t2);
   border-radius: 2px;
+  @apply wxb-bg-gray-400;
 }
 
-.wxb-sort-dir-btn--desc > div:nth-child(1) {
+.wxb-sort-btn-desc > div:nth-child(1) {
   width: 100%;
 }
 
-.wxb-sort-dir-btn--desc > div:nth-child(2) {
+.wxb-sort-btn-desc > div:nth-child(2) {
   width: 80%;
 }
 
-.wxb-sort-dir-btn--desc > div:nth-child(3) {
+.wxb-sort-btn-desc > div:nth-child(3) {
   width: 60%;
 }
 
-.wxb-sort-dir-btn--asc > div:nth-child(1) {
+.wxb-sort-btn-asc > div:nth-child(1) {
   width: 60%;
 }
 
-.wxb-sort-dir-btn--asc > div:nth-child(2) {
+.wxb-sort-btn-asc > div:nth-child(2) {
   width: 80%;
 }
 
-.wxb-sort-dir-btn--asc > div:nth-child(3) {
+.wxb-sort-btn-asc > div:nth-child(3) {
   width: 100%;
 }
 </style>
