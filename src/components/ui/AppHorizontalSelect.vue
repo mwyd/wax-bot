@@ -37,7 +37,7 @@ export default {
       'wxb-w-full',
       'wxb-text-center',
       'wxb-cursor-pointer',
-      isSelected == modelValue.value ? 'wxb-h-select__option--selected' : '',
+      isSelected == modelValue.value ? 'wxb-h-select-option-selected' : '',
     ]
 
     return {
@@ -49,13 +49,13 @@ export default {
 
 <style scoped>
 .wxb-h-select {
-  background: var(--i-bg-c);
-  border: 1px solid var(--i-br-c);
   border-radius: 2px;
+  @apply wxb-border wxb-border-solid wxb-border-gray-900;
+  @apply wxb-bg-gray-800;
 }
 
-.wxb-h-select__option--selected {
+.wxb-h-select-option-selected {
   border-radius: inherit;
-  background: var(--state-t2);
+  @apply wxb-bg-gray-400;
 }
 </style>

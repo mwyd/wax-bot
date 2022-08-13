@@ -13,7 +13,7 @@
 
 <script>
 import { latestAlerts } from '@/stores/alertsStore'
-import AppAlert from '@/components/ui/AppAlert.vue'
+import AppAlert from '@/components/ui/AppAlert'
 
 export default {
   components: {

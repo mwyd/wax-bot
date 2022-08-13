@@ -1,9 +1,9 @@
 <template>
-  <AppTabLayout
-    left-title="Manage"
-    :right-title="'Items - ' + filteredItems.length"
-  >
-    <template #left>
+  <div class="wxb-flex wxb-h-full wxb-p-2">
+    <div class="wxb-border wxb-border-gray-600 wxb-flex-2xl wxb-p-2 wxb-pr-4 wxb-flex wxb-flex-col">
+      <h4 class="wxb-mt-0">
+        Manage
+      </h4>
       <AppScrollView>
         <div class="wxb-py-2">
           <label class="wxb-block wxb-pb-2">
@@ -47,20 +47,28 @@
         </div>
       </AppScrollView>
       <AppButton
-        class="wxb-btn-big wxb-mt-2 wxb-flex-[0_0_30px]"
+        class="wxb-btn-big wxb-mt-2 wxb-flex-xs"
         :disabled="isTerminating"
         @click="toggle"
       >
         <AppLoader
           v-if="isTerminating"
-          class="wxb-my-0 wxb-mx-auto"
+          class="wxb-mx-auto"
         />
         <span v-else>
           {{ !isTerminated ? 'Stop' : 'Start' }}
         </span>
       </AppButton>
-    </template>
-    <template #right>
+    </div>
+    <div class="wxb-p-2 wxb-pl-4 wxb-w-full wxb-flex wxb-flex-col">
+      <h4 class="wxb-mt-0 wxb-flex wxb-justify-between">
+        <span>
+          Items - {{ guardItems.size }}
+        </span>
+        <span>
+          $ {{ guardItemsValue }}
+        </span>
+      </h4>
       <CsItemFilters
         :default-filters="defaultFilters"
         :items="[...guardItems.values()]"
@@ -68,71 +76,55 @@
       />
       <div class="wxb-flex wxb-py-2">
         <div class="wxb-w-full wxb-px-2">Name</div>
-        <div class="wxb-flex-[0_0_160px] wxb-px-2">Price</div>
-        <div class="wxb-flex-[0_0_120px] wxb-px-2">Min price</div>
-        <div class="wxb-flex-[0_0_120px] wxb-px-2">Max price</div>
-        <div class="wxb-flex-[0_0_100px] wxb-px-2">Status</div>
+        <div class="wxb-flex-lg wxb-px-2">Price</div>
+        <div class="wxb-flex-md wxb-px-2">Min price</div>
+        <div class="wxb-flex-md wxb-px-2">Max price</div>
+        <div class="wxb-flex-sm wxb-px-2">Status</div>
       </div>
       <AppScrollView>
         <CsGuardItem
-          class="wxb-py-1"
           v-for="item in filteredItems"
           :key="item.item_id"
           :item="item"
         />
       </AppScrollView>
-      <div class="wxb-flex wxb-justify-end">
-        <div class="wxb-text-xs wxb-text-right">
-          <span
-            class="wxb-px-1 wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
-            @click="loadGuardItems"
-          >
-            refresh
-          </span>
-        </div>
-        <div class="wxb-text-xs wxb-text-right">
-          <span
-            class="wxb-px-1 wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
-            @click="toggleGuardItemsStatus(false)"
-          >
-            observe all
-          </span>
-        </div>
-        <div class="wxb-text-xs wxb-text-right">
-          <span
-            class="wxb-px-1 wxb-cursor-pointer wxb-text-[#616a80] hover:wxb-text-[#fff]"
-            @click="toggleGuardItemsStatus(true)"
-          >
-            ignore all
-          </span>
-        </div>
-      </div>
-    </template>
-  </AppTabLayout>
+      <AppActionsBar
+        class="wxb-mt-4"
+        :actions="actions"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
 import { computed, ref } from 'vue'
-import AppTabLayout from '@/components/ui/AppTabLayout.vue'
-import AppButton from '@/components/ui/AppButton.vue'
-import AppInput from '@/components/ui/AppInput.vue'
-import AppScrollView from '@/components/ui/AppScrollView.vue'
-import AppLoader from '@/components/ui/AppLoader.vue'
-import CsGuardItem from '@/components/csItem/CsGuardItem.vue'
-import CsItemFilters from '@/components/csItem/CsItemFilters.vue'
+import AppActionsBar from '@/components/ui/AppActionsBar'
+import AppButton from '@/components/ui/AppButton'
+import AppInput from '@/components/ui/AppInput'
+import AppScrollView from '@/components/ui/AppScrollView'
+import AppLoader from '@/components/ui/AppLoader'
+import CsGuardItem from '@/components/cs/CsGuardItem'
+import CsItemFilters from '@/components/cs/CsItemFilters'
 import useGuard from '@/composables/useGuard'
 import processStateEnum from '@/enums/processStateEnum'
-import { config, guardItems, loadGuardItems, toggleGuardItemsStatus } from '@/stores/guardStore'
+import { config, guardItems, loadGuardItems, ignoreGuardItems } from '@/stores/guardStore'
 import { updateTabState } from '@/stores/tabsStore'
+import { roundNumber } from '@/utils'
 import csItemSortEnum from '@/enums/csItemSortEnum'
 
 const defaultFilters = {
   sortBy: csItemSortEnum.MARKET_PRICE
 }
 
+const actions = [
+  { name: 'refresh', callback: loadGuardItems },
+  { name: 'observe all', callback: () => ignoreGuardItems(false) },
+  { name: 'ignore all', callback: () => ignoreGuardItems(true) }
+]
+
 export default {
   components: {
-    AppTabLayout,
+    AppActionsBar,
     AppButton,
     AppInput,
     AppScrollView,
@@ -151,23 +143,26 @@ export default {
 
     process.subscribe((state) => updateTabState('Guard', state))
 
+    const guardItemsValue = computed(() => roundNumber(
+      [...guardItems.value.values()].reduce(((a, item) => a + item.$price), 0),
+      3
+    ))
+
     return {
+      actions,
       filteredItems,
       isTerminating,
       isTerminated,
       guardItems,
+      guardItemsValue,
       config,
-      loadGuardItems,
       toggle,
-      toggleGuardItemsStatus,
       defaultFilters
     }
   }
 }
 </script>
 
-<style scoped>
-.wxb-guard__start-btn {
-  margin-top: 10px;
-}
+<style>
+
 </style>

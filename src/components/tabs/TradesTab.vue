@@ -5,7 +5,7 @@
         Items - {{ itemsCount }}
       </span>
       <span>
-        Limit - $ {{ moneyTotal + ' / ' + limit }}
+        $ {{ itemsValue.accepted }} / {{ itemsValue.total }}
       </span>
     </h4>
     <CsItemFilters
@@ -13,15 +13,14 @@
       :items="[...pendingItems.values(), ...finishedItems]"
       @filter="items => filteredItems = items"
     />
-    <div class="wxb-cs-list-header wxb-flex wxb-py-2">
+    <div class="wxb-flex wxb-py-2">
       <div class="wxb-w-full wxb-px-2">Name</div>
-      <div class="wxb-flex-[0_0_160px] wxb-px-2">Price</div>
-      <div class="wxb-flex-[0_0_160px] wxb-px-2">Status</div>
-      <div class="wxb-flex-[0_0_160px] wxb-px-2">Date</div>
+      <div class="wxb-flex-lg wxb-px-2">Price</div>
+      <div class="wxb-flex-lg wxb-px-2">Status</div>
+      <div class="wxb-flex-lg wxb-px-2">Date</div>
     </div>
     <AppScrollView>
       <CsTradeItem
-        class="wxb-py-1"
         v-for="item in filteredItems"
         :key="item.item_id"
         :item="item"
@@ -32,14 +31,15 @@
 
 <script>
 import { computed, ref } from 'vue'
-import AppScrollView from '@/components/ui/AppScrollView.vue'
-import CsTradeItem from '@/components/csItem/CsTradeItem.vue'
-import CsItemFilters from '@/components/csItem/CsItemFilters.vue'
-import { pendingItems, finishedItems, moneyFrozen, moneySpent, config } from '@/stores/botStore'
+import AppScrollView from '@/components/ui/AppScrollView'
+import CsTradeItem from '@/components/cs/CsTradeItem'
+import CsItemFilters from '@/components/cs/CsItemFilters'
+import { pendingItems, finishedItems } from '@/stores/botStore'
 import { process } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
-import csItemSortEnum from '@/enums/csItemSortEnum'
 import { roundNumber } from '@/utils'
+import csItemSortEnum from '@/enums/csItemSortEnum'
+import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
 
 const defaultFilters = {
   sortBy: csItemSortEnum.DATE
@@ -54,20 +54,35 @@ export default {
   setup() {
     const filteredItems = ref([])
 
-    const moneyTotal = computed(() => roundNumber(moneyFrozen.value + moneySpent.value, 3))
-
-    const limit = computed(() => config.limit)
-
     const itemsCount = computed(() => pendingItems.size + finishedItems.value.length)
 
     process.subscribe((state) => updateTabState('Trades', state))
+
+    const itemsValue = computed(() => {
+      const pendingValue = [...pendingItems.values()].reduce((a, item) => a + item.$price, 0)
+
+      let acceptedValue = 0
+      let finishedValue = 0
+
+      for (const item of finishedItems.value) {
+        if (item.$status == waxpeerCsItemStatusEnum.ACCEPTED) {
+          acceptedValue += item.$price
+        }
+
+        finishedValue += item.$price
+      }
+
+      return {
+        accepted: roundNumber(acceptedValue, 3),
+        total: roundNumber(pendingValue + finishedValue, 3)
+      }
+    })
 
     return {
       filteredItems,
       pendingItems,
       finishedItems,
-      moneyTotal,
-      limit,
+      itemsValue,
       itemsCount,
       defaultFilters
     }

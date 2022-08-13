@@ -28,7 +28,7 @@
 <script>
 import AppButton from '@/components/ui/AppButton'
 import AppInput from '@/components/ui/AppInput'
-import CsItem from '@/components/csItem/CsItem'
+import CsItem from '@/components/cs/CsItem'
 import { getGuardItemData } from '@/stores/guardStore'
 
 export default {

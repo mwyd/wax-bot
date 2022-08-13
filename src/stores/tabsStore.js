@@ -6,6 +6,10 @@ const tabs = reactive({
     componentName: 'MarketTab',
     state: processStateEnum.TERMINATED
   },
+  'Bots': {
+    componentName: 'BotsTab',
+    state: processStateEnum.TERMINATED
+  },
   'Trades': {
     componentName: 'TradesTab',
     state: processStateEnum.TERMINATED

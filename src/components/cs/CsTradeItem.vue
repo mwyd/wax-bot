@@ -11,7 +11,7 @@
 
 <script>
 import { computed, toRef } from 'vue'
-import CsItem from '@/components/csItem/CsItem'
+import CsItem from '@/components/cs/CsItem'
 import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
 import moment from 'moment'
 

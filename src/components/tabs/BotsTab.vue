@@ -2,74 +2,66 @@
   <div class="wxb-flex wxb-flex-col wxb-h-full wxb-p-4">
     <h4 class="wxb-mt-0 wxb-flex wxb-justify-between">
       <span>
-        Items - {{ itemsCount }}
+        Instances - {{ botInstancesIds.length }}
       </span>
       <span>
-        Limit - $ {{ moneyTotal + ' / ' + limit }}
+        Limit $ 0 / {{ limit }}
       </span>
     </h4>
-    <CsItemFilters
-      :default-filters="defaultFilters"
-      :items="[...pendingItems.values(), ...finishedItems]"
-      @filter="items => filteredItems = items"
-    />
-    <div class="wxb-cs-list-header wxb-flex wxb-py-2">
-      <div class="wxb-w-full wxb-px-2">Name</div>
-      <div class="wxb-flex-[0_0_160px] wxb-px-2">Price</div>
-      <div class="wxb-flex-[0_0_160px] wxb-px-2">Status</div>
-      <div class="wxb-flex-[0_0_160px] wxb-px-2">Date</div>
-    </div>
     <AppScrollView>
-      <CsTradeItem
-        class="wxb-py-1"
-        v-for="item in filteredItems"
-        :key="item.item_id"
-        :item="item"
-      />
+      <div class="wxb-grid wxb-grid-cols-4 xl:wxb-grid-cols-5 wxb-gap-2">
+        <BotInstance
+          v-for="id in botInstancesIds"
+          :key="id"
+          :id="id"
+        />
+      </div>
     </AppScrollView>
+    <AppActionsBar
+      class="wxb-mt-4"
+      :actions="actions"
+    />
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import AppScrollView from '@/components/ui/AppScrollView.vue'
-import CsTradeItem from '@/components/csItem/CsTradeItem.vue'
-import CsItemFilters from '@/components/csItem/CsItemFilters.vue'
-import { pendingItems, finishedItems, moneyFrozen, moneySpent, config } from '@/stores/botStore'
-import { process } from '@/stores/botStore'
+import { computed, watch } from 'vue'
+import AppActionsBar from '@/components/ui/AppActionsBar'
+import AppScrollView from '@/components/ui/AppScrollView'
+import BotInstance from '@/components/BotInstance'
+import { botConfigs, addBotConfig, runningBotInstances, terminatedBotInstances } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
-import csItemSortEnum from '@/enums/csItemSortEnum'
 import { roundNumber } from '@/utils'
+import processStateEnum from '@/enums/processStateEnum'
 
-const defaultFilters = {
-  sortBy: csItemSortEnum.DATE
-}
+const actions = [
+  { name: 'add', callback: addBotConfig },
+  { name: 'start all', callback: () => terminatedBotInstances.value.forEach(instance => instance.toggle()) },
+  { name: 'stop all', callback: () => runningBotInstances.value.forEach(instance => instance.toggle()) }
+]
 
 export default {
   components: {
+    AppActionsBar,
     AppScrollView,
-    CsTradeItem,
-    CsItemFilters
+    BotInstance
   },
   setup() {
-    const filteredItems = ref([])
+    const botInstancesIds = computed(() => Object.keys(botConfigs.value))
 
-    const moneyTotal = computed(() => roundNumber(moneyFrozen.value + moneySpent.value, 3))
+    const limit = computed(() => roundNumber(
+      Object.values(botConfigs.value).reduce((a, config) => a + config.limit, 0),
+      3
+    ))
 
-    const limit = computed(() => config.limit)
-
-    const itemsCount = computed(() => pendingItems.size + finishedItems.value.length)
-
-    process.subscribe((state) => updateTabState('Trades', state))
+    watch(() => runningBotInstances.value.length, (value) => {
+      updateTabState('Bots', value ? processStateEnum.RUNNING : processStateEnum.TERMINATED)
+    })
 
     return {
-      filteredItems,
-      pendingItems,
-      finishedItems,
-      moneyTotal,
+      botInstancesIds,
       limit,
-      itemsCount,
-      defaultFilters
+      actions
     }
   }
 }

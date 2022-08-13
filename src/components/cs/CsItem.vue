@@ -43,7 +43,7 @@
 <script>
 import { computed, toRef } from 'vue'
 import { userPreferences } from '@/stores/userStore'
-import CsItemDetailsBar from '@/components/csItem/CsItemDetailsBar'
+import CsItemDetailsBar from '@/components/cs/CsItemDetailsBar'
 import useCsItemDetails from '@/composables/useCsItemDetails'
 
 export default {

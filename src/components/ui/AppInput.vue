@@ -11,6 +11,7 @@
 
 <script>
 import { computed, ref, toRefs, watch } from 'vue'
+import { inputHighlightTimeout } from '@/config'
 
 export default {
   props: {
@@ -44,28 +45,26 @@ export default {
 
     const internalModel = ref(modelValue.value)
 
-    const errorOccured = ref(false)
+    const errorOccurred = ref(false)
 
     const inputClass = computed(() => [
       'wxb-input',
-      errorOccured.value ? 'wxb-input--error' : ''
+      errorOccurred.value ? 'wxb-input-error' : ''
     ])
 
     watch(modelValue, (newValue) => internalModel.value = newValue)
 
-    const updateModelValue = () => {
-      emit('update:modelValue', internalModel.value)
-    }
+    const updateModelValue = () => emit('update:modelValue', internalModel.value)
 
     const validateInternalModel = () => {
       if (!validator.value(internalModel.value)) {
-        errorOccured.value = true
+        errorOccurred.value = true
 
         setTimeout(() => {
           internalModel.value = modelValue.value
 
-          errorOccured.value = false
-        }, 0.25 * 1000)
+          errorOccurred.value = false
+        }, inputHighlightTimeout)
 
         return
       }
@@ -83,7 +82,7 @@ export default {
 </script>
 
 <style scoped>
-.wxb-input--error {
-  background-color: var(--state-e);
+.wxb-input-error {
+  @apply wxb-bg-red-400;
 }
 </style>

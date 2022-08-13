@@ -21,18 +21,20 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { tabs, activeTab, initializeTabsCache } from '@/stores/tabsStore'
-import GuardTab from '@/components/tabs/GuardTab.vue'
-import MarketTab from '@/components/tabs/MarketTab.vue'
-import TradesTab from '@/components/tabs/TradesTab.vue'
-import AppHeader from '@/components/AppHeader.vue'
-import AppButton from '@/components/ui/AppButton.vue'
-import AppAlertBox from '@/components/AppAlertBox.vue'
+import GuardTab from '@/components/tabs/GuardTab'
+import MarketTab from '@/components/tabs/MarketTab'
+import TradesTab from '@/components/tabs/TradesTab'
+import BotsTab from '@/components/tabs/BotsTab'
+import AppHeader from '@/components/AppHeader'
+import AppButton from '@/components/ui/AppButton'
+import AppAlertBox from '@/components/AppAlertBox'
 
 export default {
   components: {
     GuardTab,
     MarketTab,
     TradesTab,
+    BotsTab,
     AppHeader,
     AppButton,
     AppAlertBox
@@ -43,7 +45,7 @@ export default {
     const appClass = computed(() => [
       'wxb-shadow-md',
       'wxb-app',
-      isHidden.value ? 'wxb-app--hidden' : ''
+      isHidden.value ? 'wxb-app-hidden' : ''
     ])
 
     onMounted(initializeTabsCache)
@@ -81,13 +83,13 @@ export default {
   max-width: 1600px;
   max-height: 1200px;
   min-width: 1024px;
-  background-color: var(--bg-c-1);
   display: flex;
   flex-direction: column;
   position: relative;
+  @apply wxb-bg-gray-500;
 }
 
-.wxb-app--hidden {
+.wxb-app-hidden {
   transform: translateX(-100%);
 }
 

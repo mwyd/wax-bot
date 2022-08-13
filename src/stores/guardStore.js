@@ -3,7 +3,7 @@ import { user } from '@/services/waxpeer'
 import { updateItemDetails, normalizeItemPrice } from '@/resources/csItem'
 import { syncStorage, WXB_LOG, roundNumber } from '@/utils'
 import { ordersResultLimit } from '@/config'
-import moment from "moment";
+import moment from 'moment'
 
 const config = reactive({
   bidStep: 0.01,
@@ -50,7 +50,7 @@ const getGuardItemData = (key) => {
   return guardItemsData.value[key]
 }
 
-const toggleGuardItemsStatus = (ignore) => {
+const ignoreGuardItems = (ignore) => {
   for (const data of Object.values(guardItemsData.value)) {
     data.ignored = ignore
   }
@@ -149,7 +149,7 @@ export {
   guardItems,
   deleteGuardItem,
   getGuardItemData,
-  toggleGuardItemsStatus,
+  ignoreGuardItems,
   getObservedItems,
   loadGuardItemsData,
   loadConfig,

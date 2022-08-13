@@ -1,9 +1,9 @@
 <template>
   <div class="wxb-header wxb-pl-9 wxb-pr-4">
     <div class="wxb-uppercase">
-            <span class="wxb-font-bold">
-                wax-bot
-            </span>
+      <span class="wxb-font-bold">
+        wax-bot
+      </span>
       <sup class="wxb-pl-1">
         {{ version }}
       </sup>
@@ -15,12 +15,15 @@
         :class="tabClass(key)"
         @click="$emit('tabChange', key)"
       >
-        <div :class="tabStateClass(tab.state)"></div>
+        <AppProcessIndicator
+          class="wxb-absolute wxb-left-1 wxb-top-1"
+          :state="tab.state"
+        />
         {{ key }}
       </div>
     </div>
     <div
-      class="wxb-header__settings-btn wxb-cursor-pointer wxb-relative wxb-z-20"
+      class="wxb-header-settings-btn wxb-cursor-pointer wxb-relative wxb-z-20"
       @click="showSettings = true"
     >
       <div :class="settingsStatusClass"></div>
@@ -39,10 +42,12 @@
 import { toRefs, ref, computed } from 'vue'
 import { version } from '@/config'
 import { session } from '@/stores/userStore'
-import AppSettings from '@/components/AppSettings.vue'
+import AppProcessIndicator from '@/components/ui/AppProcessIndicator'
+import AppSettings from '@/components/AppSettings'
 
 export default {
   components: {
+    AppProcessIndicator,
     AppSettings
   },
   props: {
@@ -62,29 +67,22 @@ export default {
     const showSettings = ref(false)
 
     const tabClass = (tab) => [
-      'wxb-header__tab',
+      'wxb-header-tab',
       'wxb-px-2',
       'wxb-cursor-pointer',
-      tab == activeTab.value ? 'wxb-header__tab--active' : ''
-    ]
-
-    const tabStateClass = (status) => [
-      'wxb-tab__state',
-      'wxb-rounded-full',
-      `wxb-tab__state--${status}`
+      tab == activeTab.value ? 'wxb-header-tab-active' : ''
     ]
 
     const settingsStatusClass = computed(() => [
-      'wxb-settings__status',
+      'wxb-settings-status',
       'wxb-rounded-full',
-      session.conduitName != null ? 'wxb-settings__status-ok' : 'wxb-settings__status-fail'
+      session.conduitName != null ? 'wxb-settings-status-ok' : 'wxb-settings-status-fail'
     ])
 
     return {
       version,
       showSettings,
       tabClass,
-      tabStateClass,
       settingsStatusClass
     }
   }
@@ -93,15 +91,15 @@ export default {
 
 <style scoped>
 .wxb-header {
-  background-color: var(--bg-c-2);
   display: flex;
   flex: 0 0 70px;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  @apply wxb-bg-gray-600;
 }
 
-.wxb-header__tab {
+.wxb-header-tab {
   position: relative;
   display: flex;
   justify-content: center;
@@ -110,35 +108,11 @@ export default {
   height: 100%
 }
 
-.wxb-header__tab--active {
-  background-color: var(--bg-c-1);
+.wxb-header-tab-active {
+  @apply wxb-bg-gray-500;
 }
 
-.wxb-tab__state {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  height: 8px;
-  width: 8px;
-}
-
-.wxb-tab__state--idle {
-  background-color: var(--state-i);
-}
-
-.wxb-tab__state--running {
-  background-color: var(--state-r);
-}
-
-.wxb-tab__state--terminating {
-  background-color: var(--state-t1);
-}
-
-.wxb-tab__state--terminated {
-  background-color: var(--state-t2);
-}
-
-.wxb-header__settings-btn {
+.wxb-header-settings-btn {
   width: 16px;
   height: 16px;
   background-image: url('chrome-extension://__MSG_@@extension_id__/assets/img/settings.png');
@@ -147,7 +121,7 @@ export default {
   background-size: contain;
 }
 
-.wxb-settings__status {
+.wxb-settings-status {
   position: absolute;
   top: -8px;
   left: -8px;
@@ -155,12 +129,12 @@ export default {
   width: 8px;
 }
 
-.wxb-settings__status-ok {
-  background-color: var(--state-r);
+.wxb-settings-status-ok {
+  @apply wxb-bg-green-400;
 }
 
-.wxb-settings__status-fail {
-  background-color: var(--state-e);
+.wxb-settings-status-fail {
+  @apply wxb-bg-red-400;
 }
 
 .wxb-settings-wrapper {

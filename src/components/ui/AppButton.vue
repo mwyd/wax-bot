@@ -1,6 +1,8 @@
 <template>
   <button class="wxb-btn">
-    <slot/>
+    <slot>
+      Click
+    </slot>
   </button>
 </template>
 

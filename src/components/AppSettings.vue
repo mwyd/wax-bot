@@ -1,6 +1,6 @@
 <template>
   <div class="wxb-settings wxb-p-2 wxb-shadow-md">
-    <div class="wxb-settings__corner"></div>
+    <div class="wxb-settings-corner"></div>
     <div class="wxb-py-2">
       <label class="wxb-block wxb-pb-2">
         Conduit
@@ -32,9 +32,9 @@
 <script>
 import { computed } from 'vue'
 import { session, authenticateConduit, userPreferences } from '@/stores/userStore'
-import AppInput from '@/components/ui/AppInput.vue'
-import AppButton from '@/components/ui/AppButton.vue'
-import AppHorizontalSelect from '@/components/ui/AppHorizontalSelect.vue'
+import AppInput from '@/components/ui/AppInput'
+import AppButton from '@/components/ui/AppButton'
+import AppHorizontalSelect from '@/components/ui/AppHorizontalSelect'
 import targetMarketEnum from '@/enums/targetMarketEnum'
 
 export default {
@@ -65,21 +65,21 @@ export default {
 
 <style scoped>
 .wxb-settings {
-  background-color: var(--bg-c-1);
   position: absolute;
   top: 70px;
   right: 0;
   width: 250px;
   z-index: 10;
+  @apply wxb-bg-gray-500;
 }
 
-.wxb-settings__corner {
+.wxb-settings-corner {
   transform: rotate(45deg);
-  background-color: var(--bg-c-1);
   width: 16px;
   height: 16px;
   position: absolute;
   top: -8px;
   right: 16px;
+  @apply wxb-bg-gray-500;
 }
 </style>

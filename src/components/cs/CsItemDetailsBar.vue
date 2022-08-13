@@ -49,7 +49,7 @@
 <script>
 import { computed, toRefs } from 'vue'
 import { copyToClipboard } from '@/utils'
-import CsItemDetail from '@/components/csItem/CsItemDetail'
+import CsItemDetail from '@/components/cs/CsItemDetail'
 
 export default {
   components: {

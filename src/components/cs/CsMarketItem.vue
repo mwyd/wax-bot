@@ -22,7 +22,7 @@
 import { toRef, ref } from 'vue'
 import AppButton from '@/components/ui/AppButton'
 import AppLoader from '@/components/ui/AppLoader'
-import CsItem from '@/components/csItem/CsItem'
+import CsItem from '@/components/cs/CsItem'
 import { buyItem } from '@/stores/botStore'
 
 export default {

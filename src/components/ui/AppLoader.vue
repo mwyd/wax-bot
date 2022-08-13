@@ -10,10 +10,10 @@ export default {}
 .wxb-loader {
   border: 2px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 2px solid var(--state-t1);
   width: 16px;
   height: 16px;
   animation: wxb-spin 0.5s linear infinite;
+  @apply wxb-border-t-2 wxb-border-t-gray-300;
 }
 
 @keyframes wxb-spin {

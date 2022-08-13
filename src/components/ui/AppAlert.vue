@@ -46,7 +46,7 @@ export default {
       'wxb-p-2',
       'wxb-m-2',
       'wxb-cursor-pointer',
-      `wxb-alert--${type.value}`
+      `wxb-alert-${type.value}`
     ])
 
     return {
@@ -64,20 +64,21 @@ export default {
   border-radius: 2px;
   display: flex;
   flex-direction: column;
+  border-left: 4px solid;
 }
 
-.wxb-alert--success {
-  background-color: var(--state-r);
-  border-left: 4px solid #5fa777;
+.wxb-alert-success {
+  @apply wxb-bg-green-400;
+  @apply wxb-border-l-green-700;
 }
 
-.wxb-alert--info {
-  background-color: var(--state-i);
-  border-left: 4px solid #5693c3;
+.wxb-alert-info {
+  @apply wxb-bg-blue-400;
+  @apply wxb-border-l-blue-700;
 }
 
-.wxb-alert--error {
-  background-color: var(--state-e);
-  border-left: 4px solid #b56777;
+.wxb-alert-error {
+  @apply wxb-bg-red-400;
+  @apply wxb-border-l-red-700;
 }
 </style>

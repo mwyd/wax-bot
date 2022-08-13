@@ -1,22 +1,44 @@
-import { reactive, watch, ref } from 'vue'
+import { reactive, watch, ref, computed } from 'vue'
 import { calculateDiscount, WXB_LOG } from '@/utils'
 import { market as waxpeeerMarket } from '@/services/waxpeer'
 import { steamMarket, buffMarket } from '@/services/conduit'
 import { normalizeItemPrice, updateItemDetails, destroyItemAlerts } from '@/resources/csItem'
-import { config, computedDealMargin, moneySpent, buyItem } from '@/stores/botStore'
+import { buyItem } from '@/stores/botStore'
 import { session, userPreferences } from '@/stores/userStore'
-import { marketResultLimit } from '@/config'
+import { marketResultLimit, steamBuffDiscountOffset } from '@/config'
 import { pushAlert } from '@/stores/alertsStore'
 import processStateEnum from '@/enums/processStateEnum'
 import useProcess from './useProcess'
 import alertTypeEnum from '@/enums/alertTypeEnum'
+import targetMarketEnum from '@/enums/targetMarketEnum'
 
-export default function useBot() {
+export default function useBot(config) {
   let timeoutId = null
 
   const process = useProcess()
 
   const activeItems = reactive(new Map())
+
+  const computedDealMargin = computed({
+    get() {
+      let dealMargin = config.dealMargin
+
+      if (userPreferences.targetMarket === targetMarketEnum.BUFF) {
+        dealMargin -= steamBuffDiscountOffset
+      }
+
+      return dealMargin
+    },
+    set(value) {
+      let dealMargin = value
+
+      if (userPreferences.targetMarket === targetMarketEnum.BUFF) {
+        dealMargin += steamBuffDiscountOffset
+      }
+
+      config.dealMargin = dealMargin
+    }
+  })
 
   watch([
     () => config.deal,
@@ -115,7 +137,8 @@ export default function useBot() {
   const run = async () => {
     process.update(processStateEnum.RUNNING)
 
-    if (config.limit - moneySpent.value < config.minPrice) {
+    //TODO: u know ;)
+    if (config.limit < config.minPrice) {
       pushAlert({
         type: alertTypeEnum.INFO,
         title: 'Bot',
@@ -211,6 +234,7 @@ export default function useBot() {
   return {
     process,
     activeItems,
+    computedDealMargin,
     toggle
   }
 }

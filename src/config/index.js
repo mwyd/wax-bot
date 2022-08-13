@@ -12,6 +12,8 @@ const steamBuffDiscountOffset = 30
 
 const notificationSound = new Audio(chrome.runtime.getURL('/assets/audio/witam.mp3'))
 
+const inputHighlightTimeout = 0.25 * 1000
+
 export {
   version,
   updateTradesDelay,
@@ -19,5 +21,6 @@ export {
   ordersResultLimit,
   marketResultLimit,
   steamBuffDiscountOffset,
-  notificationSound
+  notificationSound,
+  inputHighlightTimeout
 }

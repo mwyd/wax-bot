@@ -2,21 +2,21 @@ import { createApp } from 'vue'
 import { initRoot } from './setup'
 import { setupStores } from '@/stores'
 import { WXB_LOG } from './utils'
-import App from './App.vue'
+import App from './App'
 
 import './main.css'
 
 const setupApp = async () => {
-  await setupStores()
+  try {
+    await setupStores()
 
-  const root = initRoot()
-  const app = createApp(App)
+    const root = initRoot()
+    const app = createApp(App)
 
-  app.mount(root)
+    app.mount(root)
+  } catch (err) {
+    WXB_LOG('App setup error', err)
+  }
 }
 
-try {
-  setupApp()
-} catch (err) {
-  WXB_LOG('App setup error', err)
-}
+setupApp()

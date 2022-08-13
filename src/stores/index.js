@@ -9,7 +9,7 @@ const setupStores = async () => {
   userStore.authenticateConduit()
   userStore.authenticateWaxpeer()
 
-  botStore.loadConfig()
+  botStore.loadBotConfigs()
 
   guardStore.loadConfig()
   guardStore.loadGuardItemsData()
