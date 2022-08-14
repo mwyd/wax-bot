@@ -1,7 +1,7 @@
 import { reactive, watch, ref, computed } from 'vue'
 import { calculateDiscount } from '@/utils'
 import { market as waxpeeerMarket } from '@/services/waxpeer'
-import { steamMarket, buffMarket } from '@/services/conduit'
+import { getSteamMarketItemData, getBuffMarketItemData } from '@/cache/conduit'
 import { normalizeItemPrice, updateItemDetails, destroyItemAlerts } from '@/resources/csItem'
 import { buyItem } from '@/stores/botStore'
 import { session, userPreferences } from '@/stores/userStore'
@@ -128,29 +128,22 @@ export default function useBot(config) {
 
       updateItemDetails(marketItem)
 
-      const [buffResponse, steamResponse] = await Promise.all([
-        buffMarket.getItem(marketItem.name),
-        steamMarket.getItem(marketItem.$conduit_hash_name)
+      const [steamData, buffData] = await Promise.all([
+        getSteamMarketItemData(marketItem.$conduit_hash_name),
+        getBuffMarketItemData(marketItem.name)
       ])
 
-      if (buffResponse.success) {
-        const { price, volume, good_id } = buffResponse.data
-
-        marketItem.$buff = {
-          price,
-          volume,
-          good_id,
-          discount: calculateDiscount(marketItem.$price, price)
+      if (steamData) {
+        marketItem.$steam = {
+          ...steamData,
+          discount: calculateDiscount(marketItem.$price, steamData.price)
         }
       }
 
-      if (steamResponse.success) {
-        const { price, volume } = steamResponse.data
-
-        marketItem.$steam = {
-          price,
-          volume,
-          discount: calculateDiscount(marketItem.$price, price)
+      if (buffData) {
+        marketItem.$buff = {
+          ...buffData,
+          discount: calculateDiscount(marketItem.$price, buffData.price)
         }
       }
 
