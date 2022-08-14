@@ -1,6 +1,6 @@
 <template>
   <div class="wxb-flex wxb-h-full wxb-p-2">
-    <div class="wxb-border wxb-border-gray-600 wxb-flex-2xl wxb-p-2 wxb-pr-4 wxb-flex wxb-flex-col">
+    <div class="wxb-right-border wxb-flex-2xl wxb-p-2 wxb-pr-4 wxb-flex wxb-flex-col">
       <h4 class="wxb-mt-0">
         Manage
       </h4>
@@ -163,6 +163,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.wxb-right-border {
+  border-right: 1px solid;
+  @apply wxb-border-r-gray-600;
+}
 </style>
