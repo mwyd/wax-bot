@@ -1,11 +1,11 @@
 import { reactive, watch, ref, computed } from 'vue'
-import { calculateDiscount, WXB_LOG } from '@/utils'
+import { calculateDiscount } from '@/utils'
 import { market as waxpeeerMarket } from '@/services/waxpeer'
 import { steamMarket, buffMarket } from '@/services/conduit'
 import { normalizeItemPrice, updateItemDetails, destroyItemAlerts } from '@/resources/csItem'
 import { buyItem } from '@/stores/botStore'
 import { session, userPreferences } from '@/stores/userStore'
-import { marketResultLimit, steamBuffDiscountOffset } from '@/config'
+import { steamBuffDiscountOffset } from '@/config'
 import { pushAlert } from '@/stores/alertsStore'
 import processStateEnum from '@/enums/processStateEnum'
 import useProcess from './useProcess'
@@ -67,43 +67,9 @@ export default function useBot(config) {
       && marketData.discount >= config.deal + computedDealMargin.value
   }
 
-  const getMarketItems = async () => {
-    let marketItems = []
-
-    try {
-      for (let i = 0; i < config.pages; i++) {
-        const query = new URLSearchParams({
-          skip: i * marketResultLimit,
-          sort: 'DESC',
-          order: 'deals',
-          game: 'csgo',
-          all: 0,
-          min_price: config.minPrice * 1000,
-          max_price: config.maxPrice * 1000,
-          search: config.search,
-          exact: 0
-        })
-
-        const { success, items } = await waxpeeerMarket.getItems(query)
-
-        if (success) {
-          marketItems = [...marketItems, ...items]
-        }
-
-        if (!success || items.length < marketResultLimit) {
-          break
-        }
-      }
-    } catch (err) {
-      WXB_LOG('Cannot load item page', err)
-    }
-
-    return marketItems
-  }
-
   const updateItems = (marketItems) => {
     for (const [id, activeItem] of activeItems) {
-      const marketItem = marketItems.find(marketItem => marketItem.item_id == id)
+      const marketItem = marketItems.find(marketItem => marketItem.item_id === id)
 
       if (!marketItem) {
         activeItems.delete(id)
@@ -113,7 +79,7 @@ export default function useBot(config) {
         continue
       }
 
-      if (marketItem.price != activeItem.price) {
+      if (marketItem.price !== activeItem.price) {
         activeItem.price = marketItem.price
         activeItem.steam_price_number = marketItem.steam_price_number
 
@@ -148,13 +114,24 @@ export default function useBot(config) {
       toggle()
     }
 
-    let marketItems = await getMarketItems()
+    let marketItems = await waxpeeerMarket.getItemsByPages({
+      sort: 'DESC',
+      order: 'profit',
+      game: 'csgo',
+      all: 0,
+      min_price: config.minPrice * 1000,
+      max_price: config.maxPrice * 1000,
+      search: config.search,
+      exact: 0
+    }, config.pages)
 
     for (const marketItem of marketItems) {
       normalizeItemPrice(marketItem)
     }
 
-    marketItems = marketItems.filter(marketItem => marketItem.$discount >= config.deal && marketItem.by != session.waxpeerId)
+    marketItems = marketItems.filter(marketItem => {
+      return marketItem.$discount >= config.deal && marketItem.by !== session.waxpeerId
+    })
 
     updateItems(marketItems)
 

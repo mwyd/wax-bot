@@ -3,7 +3,6 @@ import { market as waxpeeerMarket, user as waxpeerUser } from '@/services/waxpee
 import { normalizeItemPrice } from '@/resources/csItem'
 import { config, getGuardItemData, getObservedItems, deleteGuardItem } from '@/stores/guardStore'
 import { session } from '@/stores/userStore'
-import { marketResultLimit } from '@/config'
 import { pushAlert } from '@/stores/alertsStore'
 import processStateEnum from '@/enums/processStateEnum'
 import useProcess from './useProcess'
@@ -15,40 +14,6 @@ export default function useGuard() {
 
   const process = useProcess()
 
-  const getSimilarMarketItems = async (search, minPrice, maxPrice) => {
-    let marketItems = []
-
-    try {
-      for (let i = 0; i < config.pages; i++) {
-        const query = new URLSearchParams({
-          skip: i * marketResultLimit,
-          sort: 'ASC',
-          order: 'price',
-          game: 'csgo',
-          all: 0,
-          min_price: minPrice * 1000,
-          max_price: maxPrice * 1000,
-          search: search,
-          exact: 1
-        })
-
-        const { success, items } = await waxpeeerMarket.getItems(query)
-
-        if (success) {
-          marketItems = [...marketItems, ...items]
-        }
-
-        if (!success || items.length < marketResultLimit) {
-          break
-        }
-      }
-    } catch (err) {
-      WXB_LOG('Cannot load item page', err)
-    }
-
-    return marketItems
-  }
-
   const updateObservedItemPrice = async (observedItem, newPrice) => {
     try {
       const { success, msg } = await waxpeerUser.editSellOffer({
@@ -56,19 +21,17 @@ export default function useGuard() {
           item_id: observedItem.item_id,
           image: observedItem.image,
           name: observedItem.name,
-          price: newPrice * 1000,
+          price: newPrice,
           game: 'csgo'
         }
       })
 
       if (success) {
-        observedItem.price = newPrice * 1000
+        observedItem.price = newPrice
 
         normalizeItemPrice(observedItem)
-      } else {
-        if (msg == waxpeerApiMsgEnum.NO_ITEM_FOUND) {
-          deleteGuardItem(observedItem.$key)
-        }
+      } else if (msg === waxpeerApiMsgEnum.NO_ITEM_FOUND) {
+        deleteGuardItem(observedItem.$key)
       }
     } catch (err) {
       WXB_LOG('Cannot update item price', err)
@@ -78,12 +41,21 @@ export default function useGuard() {
   const checkObservedItem = async (observedItem) => {
     const { minPrice, maxPrice } = getGuardItemData(observedItem.$key)
 
-    let marketItems = await getSimilarMarketItems(observedItem.name, minPrice, maxPrice)
+    const marketItems = await waxpeeerMarket.getItemsByPages({
+      sort: 'ASC',
+      order: 'price',
+      game: 'csgo',
+      all: 0,
+      min_price: minPrice * 1000,
+      max_price: maxPrice * 1000,
+      search: observedItem.name,
+      exact: 1
+    }, config.pages)
 
     let newPrice = maxPrice
 
     for (const marketItem of marketItems) {
-      if (marketItem.by == session.waxpeerId) {
+      if (marketItem.by === session.waxpeerId) {
         continue
       }
 
@@ -96,8 +68,8 @@ export default function useGuard() {
       }
     }
 
-    if (observedItem.$price != newPrice) {
-      updateObservedItemPrice(observedItem, newPrice)
+    if (observedItem.$price !== newPrice) {
+      await updateObservedItemPrice(observedItem, newPrice * 1000)
     }
   }
 
@@ -106,7 +78,7 @@ export default function useGuard() {
 
     const observedItems = getObservedItems()
 
-    if (observedItems.length == 0) {
+    if (observedItems.length === 0) {
       pushAlert({
         type: alertTypeEnum.INFO,
         title: 'Guard',
