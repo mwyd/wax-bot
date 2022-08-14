@@ -1,4 +1,4 @@
-const version = '1.0.6'
+const version = '1.1.0'
 
 const updateTradesDelay = 10
 
