@@ -14,6 +14,8 @@ const notificationSound = new Audio(chrome.runtime.getURL('/assets/audio/witam.m
 
 const inputHighlightTimeout = 0.25 * 1000
 
+const botConfigsLimit = 20
+
 export {
   version,
   updateTradesDelay,
@@ -22,5 +24,6 @@ export {
   marketResultLimit,
   steamBuffDiscountOffset,
   notificationSound,
-  inputHighlightTimeout
+  inputHighlightTimeout,
+  botConfigsLimit
 }

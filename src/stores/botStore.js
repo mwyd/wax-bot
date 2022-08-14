@@ -1,7 +1,7 @@
 import { reactive, ref, watch, computed } from 'vue'
 import { syncStorage, waxpeerDate, WXB_LOG } from '@/utils'
-import { user, market as waxpeerMarket } from '@/services/waxpeer'
-import { updateTradesDelay, tradesResultLimit, notificationSound } from '@/config'
+import { user as waxpeerUser, market as waxpeerMarket } from '@/services/waxpeer'
+import { updateTradesDelay, tradesResultLimit, notificationSound, botConfigsLimit } from '@/config'
 import { pushAlert } from './alertsStore'
 import { v4 as uuidv4 } from 'uuid'
 import useProcess from '@/composables/useProcess'
@@ -10,8 +10,6 @@ import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
 import alertTypeEnum from '@/enums/alertTypeEnum'
 
 let timestamp = waxpeerDate()
-
-let timeoutId = null
 
 const process = useProcess()
 
@@ -36,11 +34,11 @@ const activeItems = computed(() => {
 })
 
 const runningBotInstances = computed(() => {
-  return [...botInstances.values()].filter(instance => instance.state != processStateEnum.TERMINATED)
+  return [...botInstances.values()].filter(instance => instance.state !== processStateEnum.TERMINATED)
 })
 
 const terminatedBotInstances = computed(() => {
-  return [...botInstances.values()].filter(instance => instance.state == processStateEnum.TERMINATED)
+  return [...botInstances.values()].filter(instance => instance.state === processStateEnum.TERMINATED)
 })
 
 const registerBotInstance = (id, instance) => {
@@ -60,6 +58,16 @@ const loadBotConfigs = async () => {
 }
 
 const addBotConfig = () => {
+  if (Object.keys(botConfigs.value).length >= botConfigsLimit) {
+    pushAlert({
+      type: alertTypeEnum.INFO,
+      title: 'Bot',
+      body: 'Configs limit reached'
+    })
+
+    return
+  }
+
   const uuid = uuidv4()
 
   botConfigs.value[uuid] = {
@@ -85,44 +93,15 @@ const getBotConfig = (id) => {
   return botConfigs.value[id]
 }
 
-const getTrades = async () => {
-  let page = 1
-  let trades = []
-
-  try {
-    for (let i = 0; i < page; i++) {
-      const query = new URLSearchParams({
-        skip: i * tradesResultLimit,
-        count: tradesResultLimit,
-        page: 'steam_trades',
-        start: timestamp.format('YYYY-MM-DD HH:mm:ss')
-      })
-
-      const { success, data } = await user.getTrades(query)
-
-      if (success) {
-        trades = [...trades, ...data[0]]
-      }
-
-      if (!success || data[0].length < tradesResultLimit) {
-        break
-      }
-
-      page++
-    }
-  } catch (err) {
-    WXB_LOG('Cannot load trades page', err)
-  }
-
-  return trades
-}
-
 const updatePendingItems = async () => {
   process.update(processStateEnum.RUNNING)
 
-  const trades = await getTrades()
+  const trades = await waxpeerUser.getAllTrades({
+    page: 'steam_trades',
+    start: timestamp.format('YYYY-MM-DD HH:mm:ss')
+  })
 
-  pendingItems.forEach(item => {
+  for (const [id, item] of pendingItems) {
     const tradeItem = trades.find(trade => trade.id === item.$trade_id)
 
     if (!tradeItem) {
@@ -132,7 +111,7 @@ const updatePendingItems = async () => {
     if ([waxpeerCsItemStatusEnum.CANCELED, waxpeerCsItemStatusEnum.ACCEPTED].indexOf(tradeItem.status) > -1) {
       item.$status = tradeItem.status
 
-      pendingItems.delete(item.item_id)
+      pendingItems.delete(id)
 
       finishedItems.value.push(item)
 
@@ -140,17 +119,15 @@ const updatePendingItems = async () => {
       //   moneySpent.value += item.$price
       // }
     }
-  })
+  }
 
   if (pendingItems.size === 0) {
     process.update(processStateEnum.TERMINATED)
 
-    clearTimeout(timeoutId)
-
     return
   }
 
-  timeoutId = setTimeout(updatePendingItems, updateTradesDelay * 1000)
+  setTimeout(updatePendingItems, updateTradesDelay * 1000)
 
   process.update(processStateEnum.IDLE)
 }
