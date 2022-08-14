@@ -2,8 +2,6 @@ const initRoot = () => {
   const body = document.querySelector('body')
   const root = document.createElement('div')
 
-  root.classList.add('wxb')
-
   root.setAttribute('id', 'wxb-root')
 
   if (!body) {

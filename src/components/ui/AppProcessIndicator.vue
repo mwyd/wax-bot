@@ -17,6 +17,7 @@ export default {
       'wxb-h-2',
       'wxb-w-2',
       'wxb-rounded-full',
+      'wxb-transition-none',
       `wxb-indicator-${props.state}`
     ])
 

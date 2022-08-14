@@ -70,7 +70,7 @@ export default {
       'wxb-header-tab',
       'wxb-px-2',
       'wxb-cursor-pointer',
-      tab == activeTab.value ? 'wxb-header-tab-active' : ''
+      tab === activeTab.value ? 'wxb-header-tab-active' : ''
     ]
 
     const settingsStatusClass = computed(() => [

@@ -37,7 +37,7 @@ export default {
       'wxb-w-full',
       'wxb-text-center',
       'wxb-cursor-pointer',
-      isSelected == modelValue.value ? 'wxb-h-select-option-selected' : '',
+      isSelected === modelValue.value ? 'wxb-h-select-option-selected' : '',
     ]
 
     return {

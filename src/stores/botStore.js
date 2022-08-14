@@ -113,15 +113,6 @@ const updatePendingItems = async () => {
       pendingItems.delete(id)
 
       finishedItems.value.push(item)
-
-      /* if (tradeItem.status == waxpeerCsItemStatusEnum.ACCEPTED) {
-         const instance = botInstances.get(item.$instance_id)
-
-         if (instance) {
-          instance.moneyFrozen -= item.$price
-          instance.moneySpent += item.$price
-         }
-       } */
     }
   }
 

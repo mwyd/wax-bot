@@ -1,7 +1,7 @@
 import externalServiceEnum from './enums/externalServiceEnum'
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (sender.origin != 'https://waxpeer.com') {
+  if (sender.origin !== 'https://waxpeer.com') {
     return false
   }
 

@@ -65,7 +65,7 @@ export default {
       let finishedValue = 0
 
       for (const item of finishedItems.value) {
-        if (item.$status == waxpeerCsItemStatusEnum.ACCEPTED) {
+        if (item.$status === waxpeerCsItemStatusEnum.ACCEPTED) {
           acceptedValue += item.$price
         }
 
