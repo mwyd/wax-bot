@@ -16,7 +16,7 @@ export default function useGuard() {
 
   const updateObservedItemPrice = async (observedItem, newPrice) => {
     try {
-      const { success, msg } = await waxpeerUser.editSellOffer({
+      const { success, msg, position } = await waxpeerUser.editSellOffer({
         item: {
           item_id: observedItem.item_id,
           image: observedItem.image,
@@ -27,6 +27,7 @@ export default function useGuard() {
       })
 
       if (success) {
+        observedItem.position = position
         observedItem.price = newPrice
 
         normalizeItemPrice(observedItem)

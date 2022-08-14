@@ -116,7 +116,7 @@ export default function useBot(config) {
 
     let marketItems = await waxpeeerMarket.getItemsByPages({
       sort: 'DESC',
-      order: 'profit',
+      order: 'deals',
       game: 'csgo',
       all: 0,
       min_price: config.minPrice * 1000,

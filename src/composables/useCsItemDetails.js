@@ -5,6 +5,11 @@ import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
 export default function useCsItemDetails(item) {
   const details = computed(() => [
     {
+      name: 'Position',
+      value: item.position,
+      rarity: csItemDetailRarityEnum.COMMON
+    },
+    {
       name: 'Variant',
       value: item.$variant,
       rarity: csItemDetailRarityEnum.RARE
