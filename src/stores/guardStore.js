@@ -1,8 +1,7 @@
 import { ref, reactive, watch } from 'vue'
-import { user } from '@/services/waxpeer'
+import { user as waxpeerUser } from '@/services/waxpeer'
 import { updateItemDetails, normalizeItemPrice } from '@/resources/csItem'
-import { syncStorage, WXB_LOG, roundNumber } from '@/utils'
-import { ordersResultLimit } from '@/config'
+import { syncStorage, roundNumber } from '@/utils'
 import moment from 'moment'
 
 const config = reactive({
@@ -70,40 +69,11 @@ const getObservedItems = () => {
   return observedItems
 }
 
-const getSellItems = async () => {
-  let page = 1
-  let sellItems = []
-
-  try {
-    for (let i = 0; i < page; i++) {
-      const query = new URLSearchParams({
-        game: 'csgo',
-        skip: i * ordersResultLimit,
-        count: ordersResultLimit,
-        sort: 'desc'
-      })
-
-      const { success, items } = await user.getItems(query)
-
-      if (success) {
-        sellItems = [...sellItems, ...items]
-      }
-
-      if (!success || items.length < ordersResultLimit) {
-        break
-      }
-
-      page++
-    }
-  } catch (err) {
-    WXB_LOG('Cannot load orders page', err)
-  }
-
-  return sellItems
-}
-
 const loadGuardItems = async () => {
-  const sellItems = await getSellItems()
+  const sellItems = await waxpeerUser.getAllItems({
+    game: 'csgo',
+    sort: 'desc'
+  })
 
   const updatedGuardItems = new Map()
 

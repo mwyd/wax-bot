@@ -1,4 +1,4 @@
-import { tradesResultLimit } from '@/config'
+import { ordersResultLimit, tradesResultLimit } from '@/config'
 import { WXB_LOG } from '@/utils'
 
 export default function useUser({ baseUrl, credentials, headers }) {
@@ -46,9 +46,40 @@ export default function useUser({ baseUrl, credentials, headers }) {
   }
 
   const getItems = async (query) => {
-    const response = await fetch(`${baseUrl}/get-my-sell-offers/?${query.toString()}`, { credentials, headers })
+    const params = new URLSearchParams(query)
+
+    const response = await fetch(`${baseUrl}/get-my-sell-offers/?${params.toString()}`, { credentials, headers })
 
     return response.json()
+  }
+
+  const getAllItems = async (query) => {
+    let page = 1
+    let sellItems = []
+
+    try {
+      for (let i = 0; i < page; i++) {
+        const { success, items } = await getItems({
+          skip: i * ordersResultLimit,
+          count: ordersResultLimit,
+          ...query
+        })
+
+        if (success) {
+          sellItems = [...sellItems, ...items]
+        }
+
+        if (!success || items.length < ordersResultLimit) {
+          break
+        }
+
+        page++
+      }
+    } catch (err) {
+      WXB_LOG('Cannot load orders page', err)
+    }
+
+    return sellItems
   }
 
   const editSellOffer = async (body) => {
@@ -70,6 +101,7 @@ export default function useUser({ baseUrl, credentials, headers }) {
     getTrades,
     getAllTrades,
     getItems,
+    getAllItems,
     editSellOffer
   }
 }

@@ -1,7 +1,7 @@
 import { reactive, ref, watch, computed } from 'vue'
 import { syncStorage, waxpeerDate, WXB_LOG } from '@/utils'
 import { user as waxpeerUser, market as waxpeerMarket } from '@/services/waxpeer'
-import { updateTradesDelay, tradesResultLimit, notificationSound, botConfigsLimit } from '@/config'
+import { updateTradesDelay, notificationSound, botConfigsLimit } from '@/config'
 import { pushAlert } from './alertsStore'
 import { v4 as uuidv4 } from 'uuid'
 import useProcess from '@/composables/useProcess'
