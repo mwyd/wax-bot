@@ -73,7 +73,7 @@ export default {
 
     return {
       discount,
-      ...useCsItemDetails(item.value)
+      ...useCsItemDetails(item)
     }
   }
 }

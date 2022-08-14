@@ -79,7 +79,7 @@ const loadGuardItems = async () => {
 
   const updatedGuardItemsData = {}
 
-  for (let item of ref(sellItems).value) {
+  for (const item of ref(sellItems).value) {
     item.$key = `${item.item_id}_${moment(item.date).format('X')}`
     item.steam_price_number = item.steam_price?.average ?? item.price
 
