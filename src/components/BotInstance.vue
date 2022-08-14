@@ -39,19 +39,9 @@
         <AppInput
           v-model.number="config.maxPrice"
           type="number"
-          :validator="value => (value >= config.minPrice && value <= config.limit)"
+          :validator="value => (value >= config.minPrice && value <= 1000000)"
         />
       </div>
-    </div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        $ Limit
-      </label>
-      <AppInput
-        v-model.number="config.limit"
-        type="number"
-        :validator="value => (value >= config.maxPrice && value <= 1000000)"
-      />
     </div>
     <div class="wxb-py-2">
       <label class="wxb-block wxb-pb-2">

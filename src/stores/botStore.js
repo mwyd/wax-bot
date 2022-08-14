@@ -75,7 +75,6 @@ const addBotConfig = () => {
     dealMargin: 100,
     minPrice: 50,
     maxPrice: 500,
-    limit: 500,
     search: '',
     pages: 1,
     volume: 10,
@@ -115,9 +114,14 @@ const updatePendingItems = async () => {
 
       finishedItems.value.push(item)
 
-      // if (tradeItem.status == waxpeerCsItemStatusEnum.ACCEPTED) {
-      //   moneySpent.value += item.$price
-      // }
+      /* if (tradeItem.status == waxpeerCsItemStatusEnum.ACCEPTED) {
+         const instance = botInstances.get(item.$instance_id)
+
+         if (instance) {
+          instance.moneyFrozen -= item.$price
+          instance.moneySpent += item.$price
+         }
+       } */
     }
   }
 

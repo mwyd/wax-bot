@@ -6,10 +6,8 @@ import { normalizeItemPrice, updateItemDetails, destroyItemAlerts } from '@/reso
 import { buyItem } from '@/stores/botStore'
 import { session, userPreferences } from '@/stores/userStore'
 import { steamBuffDiscountOffset } from '@/config'
-import { pushAlert } from '@/stores/alertsStore'
 import processStateEnum from '@/enums/processStateEnum'
 import useProcess from './useProcess'
-import alertTypeEnum from '@/enums/alertTypeEnum'
 import targetMarketEnum from '@/enums/targetMarketEnum'
 
 export default function useBot(config) {
@@ -43,8 +41,7 @@ export default function useBot(config) {
   watch([
     () => config.deal,
     () => config.dealMargin,
-    () => config.volume,
-    () => config.limit
+    () => config.volume
   ], () => tryBuyItems())
 
   const tryBuyItems = () => {
@@ -102,17 +99,6 @@ export default function useBot(config) {
 
   const run = async () => {
     process.update(processStateEnum.RUNNING)
-
-    //TODO: u know ;)
-    if (config.limit < config.minPrice) {
-      pushAlert({
-        type: alertTypeEnum.INFO,
-        title: 'Bot',
-        body: 'Terminating bot - limit reached'
-      })
-
-      toggle()
-    }
 
     let marketItems = await waxpeeerMarket.getItemsByPages({
       sort: 'DESC',
