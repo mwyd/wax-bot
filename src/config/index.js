@@ -12,7 +12,7 @@ const steamBuffDiscountOffset = 30
 
 const notificationSound = new Audio(chrome.runtime.getURL('/assets/audio/witam.mp3'))
 
-const inputHighlightTimeout = 0.25 * 1000
+const inputHighlightTimeout = 0.25
 
 const botConfigsLimit = 20
 

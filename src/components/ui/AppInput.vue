@@ -64,7 +64,7 @@ export default {
           internalModel.value = modelValue.value
 
           errorOccurred.value = false
-        }, inputHighlightTimeout)
+        }, inputHighlightTimeout * 1000)
 
         return
       }

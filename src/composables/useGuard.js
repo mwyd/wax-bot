@@ -16,19 +16,19 @@ export default function useGuard() {
 
   const updateObservedItemPrice = async (observedItem, newPrice) => {
     try {
-      const { success, msg, position } = await waxpeerUser.editSellOffer({
+      const { success, msg, position, price } = await waxpeerUser.editSellOffer({
         item: {
           item_id: observedItem.item_id,
           image: observedItem.image,
           name: observedItem.name,
-          price: newPrice,
+          price: newPrice * 1000,
           game: 'csgo'
         }
       })
 
       if (success) {
         observedItem.position = position
-        observedItem.price = newPrice
+        observedItem.price = price
 
         normalizeItemPrice(observedItem)
       } else if (msg === waxpeerApiMsgEnum.NO_ITEM_FOUND) {
@@ -70,7 +70,7 @@ export default function useGuard() {
     }
 
     if (observedItem.$price !== newPrice) {
-      await updateObservedItemPrice(observedItem, newPrice * 1000)
+      await updateObservedItemPrice(observedItem, newPrice)
     }
   }
 
