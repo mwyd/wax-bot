@@ -2,20 +2,26 @@
   <div class="wxb-py-1">
     <div class="wxb-bg-gray-700 wxb-p-1 wxb-flex">
       <div class="wxb-w-full wxb-flex wxb-items-center wxb-px-2">
-        <img
-          class="wxb-h-12 wxb-pr-2"
-          :alt="item.item_id"
-          :src="item.image"
+        <div class="wxb-w-full wxb-flex wxb-items-center wxb-overflow-hidden wxb-text-ellipsis wxb-whitespace-nowrap">
+          <img
+            class="wxb-h-12 wxb-pr-2"
+            :alt="item.item_id"
+            :src="item.image"
+          />
+          <a
+            class="wxb-text-inherit"
+            :href="`https://steamcommunity.com/market/listings/730/${item.name}`"
+            target="_blank"
+          >
+            <div>
+              {{ item.name }}
+            </div>
+          </a>
+        </div>
+        <CsItemStickers
+          v-if="item.inspect_item?.stickers"
+          :stickers="item.inspect_item?.stickers"
         />
-        <a
-          class="wxb-text-inherit"
-          :href="`https://steamcommunity.com/market/listings/730/${item.name}`"
-          target="_blank"
-        >
-          <div>
-            {{ item.name }}
-          </div>
-        </a>
       </div>
       <div class="wxb-flex wxb-flex-lg wxb-items-center wxb-px-2 wxb-overflow-hidden wxb-whitespace-nowrap">
         <span>
@@ -44,11 +50,13 @@
 import { computed, toRef } from 'vue'
 import { userPreferences } from '@/stores/userStore'
 import CsItemDetailsBar from '@/components/cs/CsItemDetailsBar'
+import CsItemStickers from '@/components/cs/CsItemStickers'
 import useCsItemDetails from '@/composables/useCsItemDetails'
 
 export default {
   components: {
-    CsItemDetailsBar
+    CsItemDetailsBar,
+    CsItemStickers
   },
   props: {
     item: {

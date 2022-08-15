@@ -1,11 +1,21 @@
 <template>
-  <button class="wxb-btn">
+  <button
+    class="wxb-btn"
+    :type="type"
+  >
     <slot>Click</slot>
   </button>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    type: {
+      type: String,
+      default: 'button'
+    }
+  }
+}
 </script>
 
 <style scoped>
