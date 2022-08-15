@@ -53,7 +53,9 @@ const loadBotConfigs = async () => {
   const data = await syncStorage.get('botConfigs')
 
   if (data instanceof Object) {
-    botConfigs.value = data
+    botConfigs.value = Object.fromEntries(
+      Object.entries(data).sort((a, b) => a[1].createdAt - b[1].createdAt)
+    )
   }
 }
 
@@ -78,7 +80,8 @@ const addBotConfig = () => {
     search: '',
     pages: 1,
     volume: 10,
-    updateDelay: 4
+    updateDelay: 4,
+    createdAt: Date.now()
   }
 }
 
