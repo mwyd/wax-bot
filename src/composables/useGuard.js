@@ -1,4 +1,4 @@
-import { WXB_LOG } from '@/utils'
+import { WXB_LOG, roundNumber } from '@/utils'
 import { market as waxpeeerMarket, user as waxpeerUser } from '@/services/waxpeer'
 import { normalizeItemPrice } from '@/resources/csItem'
 import { config, getGuardItemData, getObservedItems, deleteGuardItem } from '@/stores/guardStore'
@@ -60,7 +60,7 @@ export default function useGuard() {
         continue
       }
 
-      const nextPrice = (marketItem.price / 1000) - config.bidStep
+      const nextPrice = roundNumber((marketItem.price / 1000) - config.bidStep, 3)
 
       if (nextPrice > minPrice) {
         newPrice = nextPrice
