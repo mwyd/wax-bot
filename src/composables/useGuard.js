@@ -39,8 +39,8 @@ export default function useGuard() {
     }
   }
 
-  const checkObservedItem = async (observedItem) => {
-    const { minPrice, maxPrice } = getGuardItemData(observedItem.$key)
+  const checkObservedItemPrice = async (observedItem, guardItemData) => {
+    const { minPrice, maxPrice } = guardItemData
 
     const marketItems = await waxpeeerMarket.getItemsByPages({
       sort: 'ASC',
@@ -74,8 +74,40 @@ export default function useGuard() {
     }
   }
 
-  const run = async () => {
+  const handleObservedItems = async (observedItems) => {
     process.update(processStateEnum.RUNNING)
+
+    const observedItem = observedItems.shift()
+
+    if (!observedItem) {
+      run()
+
+      return
+    }
+
+    const guardItemData = getGuardItemData(observedItem.$key)
+
+    if (!guardItemData || guardItemData?.ignored) {
+      handleObservedItems(observedItems)
+
+      return
+    }
+
+    await checkObservedItemPrice(observedItem, guardItemData)
+
+    if (process.is(processStateEnum.TERMINATING)) {
+      toggle()
+
+      return
+    }
+
+    timeoutId = setTimeout(() => handleObservedItems(observedItems), config.updateDelay * 1000)
+
+    process.update(processStateEnum.IDLE)
+  }
+
+  const run = () => {
+    process.update(processStateEnum.IDLE)
 
     const observedItems = getObservedItems()
 
@@ -86,22 +118,14 @@ export default function useGuard() {
         body: 'Terminating guard - no observed items'
       })
 
-      toggle()
-    }
+      process.update(processStateEnum.TERMINATING)
 
-    for (const observedItem of observedItems) {
-      await checkObservedItem(observedItem)
-    }
-
-    if (process.is(processStateEnum.TERMINATING)) {
       toggle()
 
       return
     }
 
-    timeoutId = setTimeout(run, config.updateDelay * 1000)
-
-    process.update(processStateEnum.IDLE)
+    handleObservedItems(observedItems)
   }
 
   const toggle = () => {
