@@ -69,6 +69,16 @@ const getObservedItems = () => {
   return observedItems
 }
 
+function* getObservedItemsLazy() {
+  for (const [key, item] of guardItems.value) {
+    const data = guardItemsData.value[key]
+
+    if (data?.ignored === false) {
+      yield item
+    }
+  }
+}
+
 const loadGuardItems = async () => {
   const sellItems = await waxpeerUser.getAllItems({
     game: 'csgo',
@@ -121,6 +131,7 @@ export {
   getGuardItemData,
   ignoreGuardItems,
   getObservedItems,
+  getObservedItemsLazy,
   loadGuardItemsData,
   loadConfig,
   loadGuardItems

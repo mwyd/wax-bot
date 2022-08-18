@@ -1,7 +1,7 @@
 import { WXB_LOG, roundNumber } from '@/utils'
 import { market as waxpeeerMarket, user as waxpeerUser } from '@/services/waxpeer'
 import { normalizeItemPrice } from '@/resources/csItem'
-import { config, getGuardItemData, getObservedItems, deleteGuardItem } from '@/stores/guardStore'
+import { config, getGuardItemData, getObservedItems, getObservedItemsLazy, deleteGuardItem } from '@/stores/guardStore'
 import { session } from '@/stores/userStore'
 import { pushAlert } from '@/stores/alertsStore'
 import processStateEnum from '@/enums/processStateEnum'
@@ -39,8 +39,8 @@ export default function useGuard() {
     }
   }
 
-  const checkObservedItemPrice = async (observedItem, guardItemData) => {
-    const { minPrice, maxPrice } = guardItemData
+  const checkObservedItemPrice = async (observedItem) => {
+    const { minPrice, maxPrice } = getGuardItemData(observedItem.$key)
 
     const marketItems = await waxpeeerMarket.getItemsByPages({
       sort: 'ASC',
@@ -74,26 +74,18 @@ export default function useGuard() {
     }
   }
 
-  const handleObservedItems = async (observedItems) => {
+  const handleObservedItems = async (observedItemsGenerator) => {
     process.update(processStateEnum.RUNNING)
 
-    const observedItem = observedItems.shift()
+    const { value: observedItem, done } = observedItemsGenerator.next()
 
-    if (!observedItem) {
+    if (done) {
       run()
 
       return
     }
 
-    const guardItemData = getGuardItemData(observedItem.$key)
-
-    if (!guardItemData || guardItemData?.ignored) {
-      handleObservedItems(observedItems)
-
-      return
-    }
-
-    await checkObservedItemPrice(observedItem, guardItemData)
+    await checkObservedItemPrice(observedItem)
 
     if (process.is(processStateEnum.TERMINATING)) {
       toggle()
@@ -101,7 +93,7 @@ export default function useGuard() {
       return
     }
 
-    timeoutId = setTimeout(() => handleObservedItems(observedItems), config.updateDelay * 1000)
+    timeoutId = setTimeout(() => handleObservedItems(observedItemsGenerator), config.updateDelay * 1000)
 
     process.update(processStateEnum.IDLE)
   }
@@ -109,23 +101,21 @@ export default function useGuard() {
   const run = () => {
     process.update(processStateEnum.IDLE)
 
-    const observedItems = getObservedItems()
-
-    if (observedItems.length === 0) {
+    if (getObservedItems().length === 0) {
       pushAlert({
         type: alertTypeEnum.INFO,
         title: 'Guard',
         body: 'Terminating guard - no observed items'
       })
 
-      process.update(processStateEnum.TERMINATING)
-
       toggle()
 
       return
     }
 
-    handleObservedItems(observedItems)
+    handleObservedItems(
+      getObservedItemsLazy()
+    )
   }
 
   const toggle = () => {
