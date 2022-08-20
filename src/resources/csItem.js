@@ -2,7 +2,7 @@ import { csItem } from '@/services/conduit'
 import { inspectTool } from '@/services/csgo_float'
 import { destroyAlert, pushAlert } from '@/stores/alertsStore'
 import { session } from '@/stores/userStore'
-import { calculateDiscount, roundNumber } from '@/utils'
+import { calculateDiscount, round } from '@/utils'
 import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
 import alertTypeEnum from '@/enums/alertTypeEnum'
 
@@ -83,8 +83,8 @@ const decodeInspectId = (id) => {
 }
 
 const normalizeItemPrice = (item) => {
-  item.$price = roundNumber(item.price / 1000, 3)
-  item.$suggested_price = roundNumber(item.steam_price_number / 1000, 3)
+  item.$price = round(item.price / 1000)
+  item.$suggested_price = round(item.steam_price_number / 1000)
   item.$discount = calculateDiscount(item.price, item.steam_price_number)
 }
 

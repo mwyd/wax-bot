@@ -2,17 +2,33 @@
   <button
     class="wxb-btn"
     :type="type"
+    :disabled="disabled"
   >
-    <slot>Click</slot>
+    <AppLoader
+      v-if="disabled"
+      class="wxb-mx-auto"
+    />
+    <span v-else>
+      <slot>Click</slot>
+    </span>
   </button>
 </template>
 
 <script>
+import AppLoader from '@/components/ui/AppLoader'
+
 export default {
+  components: {
+    AppLoader
+  },
   props: {
     type: {
       type: String,
       default: 'button'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }

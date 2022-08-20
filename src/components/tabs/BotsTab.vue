@@ -1,28 +1,31 @@
 <template>
-  <div class="wxb-flex wxb-flex-col wxb-h-full wxb-p-4">
-    <h4 class="wxb-mt-0 wxb-flex wxb-justify-between">
+  <AppTabWrapper>
+    <template #header>
       Instances - {{ botInstancesIds.length }}
-    </h4>
-    <AppScrollView>
-      <div class="wxb-grid wxb-grid-cols-4 xl:wxb-grid-cols-5 wxb-gap-2">
-        <BotInstance
-          v-for="id in botInstancesIds"
-          :key="id"
-          :id="id"
-        />
-      </div>
-    </AppScrollView>
-    <AppActionsBar
-      class="wxb-mt-4"
-      :actions="actions"
-    />
-  </div>
+    </template>
+    <template #body>
+      <AppScrollView>
+        <div class="wxb-grid wxb-grid-cols-4 xl:wxb-grid-cols-5 wxb-gap-2">
+          <BotInstance
+            v-for="id in botInstancesIds"
+            :key="id"
+            :id="id"
+          />
+        </div>
+      </AppScrollView>
+      <AppActionsBar
+        class="wxb-mt-4"
+        :actions="actions"
+      />
+    </template>
+  </AppTabWrapper>
 </template>
 
 <script>
 import { computed, watch } from 'vue'
 import AppActionsBar from '@/components/ui/AppActionsBar'
 import AppScrollView from '@/components/ui/AppScrollView'
+import AppTabWrapper from '@/components/ui/AppTabWrapper'
 import BotInstance from '@/components/BotInstance'
 import { botConfigs, addBotConfig, runningBotInstances, terminatedBotInstances } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
@@ -38,6 +41,7 @@ export default {
   components: {
     AppActionsBar,
     AppScrollView,
+    AppTabWrapper,
     BotInstance
   },
   setup() {

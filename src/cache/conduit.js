@@ -7,10 +7,10 @@ const buffMarketItemsData = new Map()
 const getSteamMarketItemData = async (conduitHashName) => {
   let marketData = steamMarketItemsData.get(conduitHashName)
 
-  if(!marketData) {
+  if (!marketData) {
     const { success, data } = await steamMarket.getItem(conduitHashName)
 
-    if(success) {
+    if (success) {
       marketData = {
         price: data.price,
         volume: data.volume
@@ -26,10 +26,10 @@ const getSteamMarketItemData = async (conduitHashName) => {
 const getBuffMarketItemData = async (hashName) => {
   let marketData = buffMarketItemsData.get(hashName)
 
-  if(!marketData) {
+  if (!marketData) {
     const { success, data } = await buffMarket.getItem(hashName)
 
-    if(success) {
+    if (success) {
       marketData = {
         price: data.price,
         volume: data.volume,

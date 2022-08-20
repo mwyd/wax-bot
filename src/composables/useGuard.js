@@ -1,7 +1,7 @@
-import { WXB_LOG, roundNumber } from '@/utils'
+import { WXB_LOG, round } from '@/utils'
 import { market as waxpeeerMarket, user as waxpeerUser } from '@/services/waxpeer'
 import { normalizeItemPrice } from '@/resources/csItem'
-import { config, getGuardItemData, getObservedItems, getObservedItemsLazy, deleteGuardItem } from '@/stores/guardStore'
+import { config, getGuardItemData, getObservedItems, deleteGuardItem } from '@/stores/guardStore'
 import { session } from '@/stores/userStore'
 import { pushAlert } from '@/stores/alertsStore'
 import processStateEnum from '@/enums/processStateEnum'
@@ -60,7 +60,7 @@ export default function useGuard() {
         continue
       }
 
-      const nextPrice = roundNumber((marketItem.price / 1000) - config.bidStep, 3)
+      const nextPrice = round((marketItem.price / 1000) - config.bidStep)
 
       if (nextPrice > minPrice) {
         newPrice = nextPrice
@@ -74,10 +74,10 @@ export default function useGuard() {
     }
   }
 
-  const handleObservedItems = async (observedItemsGenerator) => {
+  const handleObservedItems = async (observedItems) => {
     process.update(processStateEnum.RUNNING)
 
-    const { value: observedItem, done } = observedItemsGenerator.next()
+    const { value: observedItem, done } = observedItems.next()
 
     if (done) {
       run()
@@ -93,7 +93,7 @@ export default function useGuard() {
       return
     }
 
-    timeoutId = setTimeout(() => handleObservedItems(observedItemsGenerator), config.updateDelay * 1000)
+    timeoutId = setTimeout(() => handleObservedItems(observedItems), config.updateDelay * 1000)
 
     process.update(processStateEnum.IDLE)
   }
@@ -101,7 +101,7 @@ export default function useGuard() {
   const run = () => {
     process.update(processStateEnum.IDLE)
 
-    if (getObservedItems().length === 0) {
+    if ([...getObservedItems()].length === 0) {
       pushAlert({
         type: alertTypeEnum.INFO,
         title: 'Guard',
@@ -114,7 +114,7 @@ export default function useGuard() {
     }
 
     handleObservedItems(
-      getObservedItemsLazy()
+      getObservedItems()
     )
   }
 

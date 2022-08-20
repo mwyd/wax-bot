@@ -6,13 +6,7 @@
         :disabled="buyBtnDisabled"
         @click="buy"
       >
-        <AppLoader
-          v-if="buyBtnDisabled"
-          class="wxb-mx-auto"
-        />
-        <span v-else>
-          Buy
-        </span>
+        Buy
       </AppButton>
     </div>
   </CsItem>
@@ -21,14 +15,12 @@
 <script>
 import { toRef, ref } from 'vue'
 import AppButton from '@/components/ui/AppButton'
-import AppLoader from '@/components/ui/AppLoader'
 import CsItem from '@/components/cs/CsItem'
 import { buyItem } from '@/stores/botStore'
 
 export default {
   components: {
     AppButton,
-    AppLoader,
     CsItem
   },
   props: {

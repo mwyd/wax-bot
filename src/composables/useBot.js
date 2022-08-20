@@ -50,13 +50,13 @@ export default function useBot(config) {
     }
 
     activeItems.forEach(activeItem => {
-      if (itemFulfillCriteria(activeItem)) {
+      if (itemFulfilCriteria(activeItem)) {
         buyItem(activeItem)
       }
     })
   }
 
-  const itemFulfillCriteria = (activeItem) => {
+  const itemFulfilCriteria = (activeItem) => {
     const marketData = activeItem[`$${userPreferences.targetMarket}`]
 
     return marketData instanceof Object
@@ -90,11 +90,40 @@ export default function useBot(config) {
           activeItem.$steam.discount = calculateDiscount(activeItem.$price, activeItem.$steam.price)
         }
 
-        if (itemFulfillCriteria(activeItem)) {
+        if (itemFulfilCriteria(activeItem)) {
           buyItem(activeItem)
         }
       }
     }
+  }
+
+  const handleMarketItem = async (marketItem) => {
+    updateItemDetails(marketItem)
+
+    const [steamData, buffData] = await Promise.all([
+      getSteamMarketItemData(marketItem.$conduit_hash_name),
+      getBuffMarketItemData(marketItem.name)
+    ])
+
+    if (steamData) {
+      marketItem.$steam = {
+        ...steamData,
+        discount: calculateDiscount(marketItem.$price, steamData.price)
+      }
+    }
+
+    if (buffData) {
+      marketItem.$buff = {
+        ...buffData,
+        discount: calculateDiscount(marketItem.$price, buffData.price)
+      }
+    }
+
+    if (itemFulfilCriteria(marketItem)) {
+      buyItem(marketItem)
+    }
+
+    activeItems.set(marketItem.item_id, marketItem)
   }
 
   const run = async () => {
@@ -126,32 +155,7 @@ export default function useBot(config) {
         continue
       }
 
-      updateItemDetails(marketItem)
-
-      const [steamData, buffData] = await Promise.all([
-        getSteamMarketItemData(marketItem.$conduit_hash_name),
-        getBuffMarketItemData(marketItem.name)
-      ])
-
-      if (steamData) {
-        marketItem.$steam = {
-          ...steamData,
-          discount: calculateDiscount(marketItem.$price, steamData.price)
-        }
-      }
-
-      if (buffData) {
-        marketItem.$buff = {
-          ...buffData,
-          discount: calculateDiscount(marketItem.$price, buffData.price)
-        }
-      }
-
-      if (itemFulfillCriteria(marketItem)) {
-        buyItem(marketItem)
-      }
-
-      activeItems.set(marketItem.item_id, marketItem)
+      await handleMarketItem(marketItem)
     }
 
     if (process.is(processStateEnum.TERMINATING)) {

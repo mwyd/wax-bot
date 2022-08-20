@@ -25,7 +25,7 @@ const waxpeerDate = () => {
   return moment().subtract(2, 'hours')
 }
 
-const roundNumber = (number, decimals = 2) => {
+const round = (number, decimals = 3) => {
   let places = Math.pow(10, decimals)
 
   return Math.round(number * places) / places
@@ -56,6 +56,6 @@ export {
   fetchBackground,
   calculateDiscount,
   waxpeerDate,
-  roundNumber,
+  round,
   copyToClipboard
 }

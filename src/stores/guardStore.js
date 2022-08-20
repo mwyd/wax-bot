@@ -1,7 +1,7 @@
 import { ref, reactive, watch } from 'vue'
 import { user as waxpeerUser } from '@/services/waxpeer'
 import { updateItemDetails, normalizeItemPrice } from '@/resources/csItem'
-import { syncStorage, roundNumber } from '@/utils'
+import { syncStorage, round } from '@/utils'
 import moment from 'moment'
 
 const config = reactive({
@@ -55,21 +55,7 @@ const ignoreGuardItems = (ignore) => {
   }
 }
 
-const getObservedItems = () => {
-  const observedItems = []
-
-  for (const [key, item] of guardItems.value) {
-    const data = guardItemsData.value[key]
-
-    if (data?.ignored === false) {
-      observedItems.push(item)
-    }
-  }
-
-  return observedItems
-}
-
-function* getObservedItemsLazy() {
+function* getObservedItems() {
   for (const [key, item] of guardItems.value) {
     const data = guardItemsData.value[key]
 
@@ -101,10 +87,10 @@ const loadGuardItems = async () => {
 
     if (!itemGuardData) {
       let minPrice = item.$price
-      let maxPrice = roundNumber(item.$suggested_price * config.safeDiscount, 3)
+      let maxPrice = round(item.$suggested_price * config.safeDiscount)
 
       if (maxPrice < minPrice) {
-        maxPrice = roundNumber(minPrice + config.bidStep, 3)
+        maxPrice = round(minPrice + config.bidStep)
       }
 
       updatedGuardItemsData[item.$key] = {
@@ -131,7 +117,6 @@ export {
   getGuardItemData,
   ignoreGuardItems,
   getObservedItems,
-  getObservedItemsLazy,
   loadGuardItemsData,
   loadConfig,
   loadGuardItems

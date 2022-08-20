@@ -51,13 +51,7 @@
         :disabled="isTerminating"
         @click="toggle"
       >
-        <AppLoader
-          v-if="isTerminating"
-          class="wxb-mx-auto"
-        />
-        <span v-else>
-          {{ !isTerminated ? 'Stop' : 'Start' }}
-        </span>
+        {{ !isTerminated ? 'Stop' : 'Start' }}
       </AppButton>
     </div>
     <div class="wxb-p-2 wxb-pl-4 wxb-w-full wxb-flex wxb-flex-col">
@@ -102,14 +96,13 @@ import AppActionsBar from '@/components/ui/AppActionsBar'
 import AppButton from '@/components/ui/AppButton'
 import AppInput from '@/components/ui/AppInput'
 import AppScrollView from '@/components/ui/AppScrollView'
-import AppLoader from '@/components/ui/AppLoader'
 import CsGuardItem from '@/components/cs/CsGuardItem'
 import CsItemFilters from '@/components/cs/CsItemFilters'
 import useGuard from '@/composables/useGuard'
 import processStateEnum from '@/enums/processStateEnum'
 import { config, guardItems, loadGuardItems, ignoreGuardItems } from '@/stores/guardStore'
 import { updateTabState } from '@/stores/tabsStore'
-import { roundNumber } from '@/utils'
+import { round } from '@/utils'
 import csItemSortEnum from '@/enums/csItemSortEnum'
 
 const defaultFilters = {
@@ -128,7 +121,6 @@ export default {
     AppButton,
     AppInput,
     AppScrollView,
-    AppLoader,
     CsGuardItem,
     CsItemFilters
   },
@@ -143,9 +135,8 @@ export default {
 
     process.subscribe((state) => updateTabState('Guard', state))
 
-    const guardItemsValue = computed(() => roundNumber(
-      [...guardItems.value.values()].reduce(((a, item) => a + item.$price), 0),
-      3
+    const guardItemsValue = computed(() => round(
+      [...guardItems.value.values()].reduce(((a, item) => a + item.$price), 0)
     ))
 
     return {

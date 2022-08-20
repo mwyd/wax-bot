@@ -1,43 +1,46 @@
 <template>
-  <div class="wxb-flex wxb-flex-col wxb-h-full wxb-p-4">
-    <h4 class="wxb-mt-0 wxb-flex wxb-justify-between">
+  <AppTabWrapper>
+    <template #header>
       <span>
         Items - {{ itemsCount }}
       </span>
       <span>
         $ {{ itemsValue.accepted }} / {{ itemsValue.total }}
       </span>
-    </h4>
-    <CsItemFilters
-      :default-filters="defaultFilters"
-      :items="[...pendingItems.values(), ...finishedItems]"
-      @filter="items => filteredItems = items"
-    />
-    <div class="wxb-flex wxb-py-2">
-      <div class="wxb-w-full wxb-px-2">Name</div>
-      <div class="wxb-flex-lg wxb-px-2">Price</div>
-      <div class="wxb-flex-lg wxb-px-2">Status</div>
-      <div class="wxb-flex-lg wxb-px-2">Date</div>
-    </div>
-    <AppScrollView>
-      <CsTradeItem
-        v-for="item in filteredItems"
-        :key="item.item_id"
-        :item="item"
+    </template>
+    <template #body>
+      <CsItemFilters
+        :default-filters="defaultFilters"
+        :items="[...pendingItems.values(), ...finishedItems]"
+        @filter="items => filteredItems = items"
       />
-    </AppScrollView>
-  </div>
+      <div class="wxb-flex wxb-py-2">
+        <div class="wxb-w-full wxb-px-2">Name</div>
+        <div class="wxb-flex-lg wxb-px-2">Price</div>
+        <div class="wxb-flex-lg wxb-px-2">Status</div>
+        <div class="wxb-flex-lg wxb-px-2">Date</div>
+      </div>
+      <AppScrollView>
+        <CsTradeItem
+          v-for="item in filteredItems"
+          :key="item.item_id"
+          :item="item"
+        />
+      </AppScrollView>
+    </template>
+  </AppTabWrapper>
 </template>
 
 <script>
 import { computed, ref } from 'vue'
 import AppScrollView from '@/components/ui/AppScrollView'
+import AppTabWrapper from '@/components/ui/AppTabWrapper'
 import CsTradeItem from '@/components/cs/CsTradeItem'
 import CsItemFilters from '@/components/cs/CsItemFilters'
 import { pendingItems, finishedItems } from '@/stores/botStore'
 import { process } from '@/stores/botStore'
 import { updateTabState } from '@/stores/tabsStore'
-import { roundNumber } from '@/utils'
+import { round } from '@/utils'
 import csItemSortEnum from '@/enums/csItemSortEnum'
 import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
 
@@ -48,6 +51,7 @@ const defaultFilters = {
 export default {
   components: {
     AppScrollView,
+    AppTabWrapper,
     CsTradeItem,
     CsItemFilters
   },
@@ -73,8 +77,8 @@ export default {
       }
 
       return {
-        accepted: roundNumber(acceptedValue, 3),
-        total: roundNumber(pendingValue + finishedValue, 3)
+        accepted: round(acceptedValue),
+        total: round(pendingValue + finishedValue)
       }
     })
 

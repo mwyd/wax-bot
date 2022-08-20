@@ -88,13 +88,7 @@
       :disabled="isTerminating"
       @click="toggle"
     >
-      <AppLoader
-        v-if="isTerminating"
-        class="wxb-mx-auto"
-      />
-      <span v-else>
-        {{ !isTerminated ? 'Stop' : 'Start' }}
-      </span>
+      {{ !isTerminated ? 'Stop' : 'Start' }}
     </AppButton>
   </div>
 </template>
@@ -104,7 +98,6 @@ import { ref, computed, onUnmounted } from 'vue'
 import AppProcessIndicator from '@/components/ui/AppProcessIndicator'
 import AppInput from '@/components/ui/AppInput'
 import AppButton from '@/components/ui/AppButton'
-import AppLoader from '@/components/ui/AppLoader'
 import { getBotConfig, deleteBotInstance, registerBotInstance } from '@/stores/botStore'
 import useBot from '@/composables/useBot'
 import processStateEnum from '@/enums/processStateEnum'
@@ -113,8 +106,7 @@ export default {
   components: {
     AppProcessIndicator,
     AppInput,
-    AppButton,
-    AppLoader
+    AppButton
   },
   props: {
     id: {
