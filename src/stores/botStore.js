@@ -107,7 +107,7 @@ const updatePendingItems = async () => {
     const tradeItem = trades.find(trade => trade.id === item.$trade_id)
 
     if (!tradeItem) {
-      return
+      continue
     }
 
     if ([waxpeerCsItemStatusEnum.CANCELED, waxpeerCsItemStatusEnum.ACCEPTED].indexOf(tradeItem.status) > -1) {
@@ -153,14 +153,14 @@ const buyItem = async (item) => {
     const { success, id, msg } = data
 
     const alert = {
-      type: success ? alertTypeEnum.SUCCESS : alertTypeEnum.ERROR,
       title: 'Waxpeer'
     }
 
     if (success) {
-      alert.body = 'Successful purchase'
-
       item.$trade_id = id
+
+      alert.type = alertTypeEnum.SUCCESS
+      alert.body = 'Successful purchase'
 
       if (process.is(processStateEnum.TERMINATED)) {
         timestamp = waxpeerDate()
@@ -170,6 +170,7 @@ const buyItem = async (item) => {
 
       notificationSound.play()
     } else {
+      alert.type = alertTypeEnum.ERROR
       alert.body = msg
 
       pendingItems.delete(item.item_id)
