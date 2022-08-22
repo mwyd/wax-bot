@@ -1,6 +1,6 @@
 {
   "name": "wax-bot",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "private": true,
   "scripts": {
     "hot": "vue-cli-service build --mode development --watch",
