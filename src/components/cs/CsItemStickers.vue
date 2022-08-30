@@ -1,7 +1,7 @@
 <template>
   <div class="wxb-bg-gray-700 wxb-flex wxb-shrink-0 wxb-grow-0">
     <img
-      class="wxb-h-6"
+      class="wxb-h-10"
       v-for="(sticker, i) in stickersWithImage"
       :key="`${sticker.id}-${i}`"
       :alt="sticker.name"

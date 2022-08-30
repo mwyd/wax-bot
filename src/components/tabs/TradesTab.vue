@@ -14,11 +14,11 @@
         :items="[...pendingItems.values(), ...finishedItems]"
         @filter="items => filteredItems = items"
       />
-      <div class="wxb-flex wxb-py-2">
-        <div class="wxb-w-full wxb-px-2">Name</div>
-        <div class="wxb-flex-lg wxb-px-2">Price</div>
-        <div class="wxb-flex-lg wxb-px-2">Status</div>
-        <div class="wxb-flex-lg wxb-px-2">Date</div>
+      <div class="wxb-flex wxb-py-3.5">
+        <div class="wxb-w-full wxb-px-3.5">Name</div>
+        <div class="wxb-flex-lg wxb-px-3.5">Price</div>
+        <div class="wxb-flex-lg wxb-px-3.5">Status</div>
+        <div class="wxb-flex-lg wxb-px-3.5">Date</div>
       </div>
       <AppScrollView>
         <CsTradeItem

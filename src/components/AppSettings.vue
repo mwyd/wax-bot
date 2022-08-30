@@ -1,27 +1,21 @@
 <template>
-  <div class="wxb-settings wxb-p-2 wxb-shadow-md">
+  <div class="wxb-settings wxb-p-3.5 wxb-shadow-md">
     <div class="wxb-settings-corner"></div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        Conduit
-      </label>
+    <AppInputWrapper label="Conduit">
       <AppInput
         v-model="token"
         type="password"
         placeholder="Api key..."
       />
-    </div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        Target market
-      </label>
+    </AppInputWrapper>
+    <AppInputWrapper label="Target market">
       <AppHorizontalSelect
         :options="Object.values(targetMarketEnum)"
         v-model="userPreferences.targetMarket"
       />
-    </div>
+    </AppInputWrapper>
     <AppButton
-      class="wxb-btn-big wxb-mt-2"
+      class="wxb-btn-big wxb-mt-3.5"
       @click="authenticateConduit"
     >
       Save
@@ -33,6 +27,7 @@
 import { computed } from 'vue'
 import { session, authenticateConduit, userPreferences } from '@/stores/userStore'
 import AppInput from '@/components/ui/AppInput'
+import AppInputWrapper from '@/components/ui/AppInputWrapper'
 import AppButton from '@/components/ui/AppButton'
 import AppHorizontalSelect from '@/components/ui/AppHorizontalSelect'
 import targetMarketEnum from '@/enums/targetMarketEnum'
@@ -40,6 +35,7 @@ import targetMarketEnum from '@/enums/targetMarketEnum'
 export default {
   components: {
     AppInput,
+    AppInputWrapper,
     AppButton,
     AppHorizontalSelect
   },

@@ -1,6 +1,6 @@
 <template>
   <CsItem :item="item">
-    <div class="wxb-flex wxb-items-center wxb-flex-sm wxb-px-2">
+    <div class="wxb-flex wxb-items-center wxb-flex-sm wxb-px-3.5">
       <AppButton
         class="wxb-btn-big"
         :disabled="buyBtnDisabled"

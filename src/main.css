@@ -4,19 +4,20 @@
 .wxb-btn-big {
   font-size: 12px;
   width: 100%;
-  height: 30px;
+  height: 32px;
 }
 
 .wxb-input {
   display: block;
-  height: 30px;
-  border-radius: 2px;
+  height: 32px !important;
   width: 100%;
-  padding: 4px;
-  color: inherit;
+  padding: 5px 10px !important;
+  color: inherit !important;
+  border-radius: 2px !important;
+  transition: .3s;
   font-size: inherit;
   @apply wxb-bg-gray-800;
-  @apply wxb-border wxb-border-gray-900;
+  @apply wxb-border wxb-border-solid wxb-border-gray-900 !important;
 }
 
 .wxb-variant {

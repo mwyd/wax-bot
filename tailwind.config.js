@@ -26,11 +26,11 @@ module.exports = {
     },
     extend: {
       'flex': {
-        '2xl': '0 0 16rem',
-        'lg': '0 0 10rem',
-        'md': '0 0 7.5rem',
-        'sm': '0 0 6.25rem',
-        'xs': '0 0 2rem'
+        '2xl': '0 0 26rem',
+        'lg': '0 0 16rem',
+        'md': '0 0 12rem',
+        'sm': '0 0 10rem',
+        'xs': '0 0 3.2rem'
       }
     }
   },

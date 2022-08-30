@@ -1,10 +1,10 @@
 <template>
-  <div class="wxb-header wxb-pl-9 wxb-pr-4">
+  <div class="wxb-header wxb-pl-14 wxb-pr-6">
     <div class="wxb-uppercase">
       <span class="wxb-font-bold">
         wax-bot
       </span>
-      <sup class="wxb-pl-1">
+      <sup class="wxb-pl-1.5">
         {{ version }}
       </sup>
     </div>
@@ -16,7 +16,7 @@
         @click="$emit('tabChange', key)"
       >
         <AppProcessIndicator
-          class="wxb-absolute wxb-left-1 wxb-top-1"
+          class="wxb-absolute wxb-left-1.5 wxb-top-1.5"
           :state="tab.state"
         />
         {{ key }}
@@ -68,7 +68,7 @@ export default {
 
     const tabClass = (tab) => [
       'wxb-header-tab',
-      'wxb-px-2',
+      'wxb-px-3.5',
       'wxb-cursor-pointer',
       tab === activeTab.value ? 'wxb-header-tab-active' : ''
     ]

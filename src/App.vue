@@ -70,7 +70,9 @@ export default {
   height: 0;
   z-index: 1000;
   color: white;
-  font-family: Montserrat, sans-serif;
+  font-weight: 300;
+  font-family: Commissioner, sans-serif;
+  font-size: 1.4rem;
 }
 
 #wxb-root * {

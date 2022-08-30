@@ -5,7 +5,7 @@
     </template>
     <template #body>
       <AppScrollView>
-        <div class="wxb-grid wxb-grid-cols-4 xl:wxb-grid-cols-5 wxb-gap-2">
+        <div class="wxb-grid wxb-grid-cols-4 xl:wxb-grid-cols-5 wxb-gap-3.5">
           <BotInstance
             v-for="id in botInstancesIds"
             :key="id"
@@ -14,7 +14,7 @@
         </div>
       </AppScrollView>
       <AppActionsBar
-        class="wxb-mt-4"
+        class="wxb-mt-6"
         :actions="actions"
       />
     </template>

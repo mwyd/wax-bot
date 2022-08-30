@@ -3,7 +3,7 @@
     <div :class="statusClass">
       {{ status }}
     </div>
-    <div class="wxb-flex wxb-items-center wxb-flex-lg wxb-px-2">
+    <div class="wxb-flex wxb-items-center wxb-flex-lg wxb-px-3.5">
       {{ boughtDateTime }}
     </div>
   </CsItem>
@@ -48,7 +48,7 @@ export default {
       'wxb-flex',
       'wxb-items-center',
       'wxb-flex-lg',
-      'wxb-px-2',
+      'wxb-px-3.5',
       `wxb-status-${status.value}`
     ])
 

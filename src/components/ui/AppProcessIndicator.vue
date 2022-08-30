@@ -14,8 +14,8 @@ export default {
   },
   setup(props) {
     const indicatorClass = computed(() => [
-      'wxb-h-2',
-      'wxb-w-2',
+      'wxb-h-3.5',
+      'wxb-w-3.5',
       'wxb-rounded-full',
       'wxb-transition-none',
       `wxb-indicator-${props.state}`

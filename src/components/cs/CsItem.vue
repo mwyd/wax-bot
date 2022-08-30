@@ -1,10 +1,10 @@
 <template>
-  <div class="wxb-py-1">
-    <div class="wxb-bg-gray-700 wxb-p-1 wxb-flex">
-      <div class="wxb-w-full wxb-flex wxb-items-center wxb-px-2">
+  <div class="wxb-py-1.5">
+    <div class="wxb-bg-gray-700 wxb-p-1.5 wxb-flex">
+      <div class="wxb-w-full wxb-flex wxb-items-center wxb-px-3.5">
         <div class="wxb-w-full wxb-flex wxb-items-center wxb-overflow-hidden wxb-text-ellipsis wxb-whitespace-nowrap">
           <img
-            class="wxb-h-12 wxb-pr-2"
+            class="wxb-h-20 wxb-pr-3.5"
             :alt="item.item_id"
             :src="item.image"
           />
@@ -23,11 +23,11 @@
           :stickers="item.inspect_item?.stickers"
         />
       </div>
-      <div class="wxb-flex wxb-flex-lg wxb-items-center wxb-px-2 wxb-overflow-hidden wxb-whitespace-nowrap">
+      <div class="wxb-flex wxb-flex-lg wxb-items-center wxb-px-3.5 wxb-overflow-hidden wxb-whitespace-nowrap">
         <span>
           $ {{ item.$price }}
           <sup
-            class="wxb-text-orange-500 wxb-font-bold wxb-text-sm"
+            class="wxb-text-orange-500 wxb-font-bold wxb-text-xl"
           >
             {{ discount }}
           </sup>

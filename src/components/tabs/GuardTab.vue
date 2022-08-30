@@ -1,61 +1,49 @@
 <template>
-  <div class="wxb-flex wxb-h-full wxb-p-2">
-    <div class="wxb-right-border wxb-flex-2xl wxb-p-2 wxb-pr-4 wxb-flex wxb-flex-col">
-      <h4 class="wxb-mt-0">
+  <div class="wxb-flex wxb-h-full wxb-p-3.5">
+    <div class="wxb-right-border wxb-flex-2xl wxb-p-3.5 wxb-pr-6 wxb-flex wxb-flex-col">
+      <h4 class="wxb-mt-0 wxb-mb-3.5">
         Manage
       </h4>
       <AppScrollView>
-        <div class="wxb-py-2">
-          <label class="wxb-block wxb-pb-2">
-            $ Bid step
-          </label>
+        <AppInputWrapper label="$ Bid step">
           <AppInput
             v-model.number="config.bidStep"
             type="number"
             :validator="value => (value > 0 && value < 100)"
           />
-        </div>
-        <div class="wxb-py-2">
-          <label class="wxb-block wxb-pb-2">
-            % Safe discount
-          </label>
+        </AppInputWrapper>
+        <AppInputWrapper label="% Safe discount">
           <AppInput
             v-model.number="config.safeDiscount"
             type="number"
             :validator="value => (value > 0 && value < 10)"
           />
-        </div>
-        <div class="wxb-py-2">
-          <label class="wxb-block wxb-pb-2">
-            Pages
-          </label>
+        </AppInputWrapper>
+        <AppInputWrapper label="Pages">
           <AppInput
             v-model.number="config.pages"
             type="number"
             :validator="value => (value >= 1 && value <= 10)"
           />
-        </div>
-        <div class="wxb-py-2">
-          <label class="wxb-block wxb-pb-2">
-            Update delay
-          </label>
+        </AppInputWrapper>
+        <AppInputWrapper label="Update delay">
           <AppInput
             v-model.number="config.updateDelay"
             type="number"
             :validator="value => (value >= 0 && value <= 300)"
           />
-        </div>
+        </AppInputWrapper>
       </AppScrollView>
       <AppButton
-        class="wxb-btn-big wxb-mt-2 wxb-flex-xs"
+        class="wxb-btn-big wxb-mt-3.5 wxb-flex-xs"
         :disabled="isTerminating"
         @click="toggle"
       >
         {{ !isTerminated ? 'Stop' : 'Start' }}
       </AppButton>
     </div>
-    <div class="wxb-p-2 wxb-pl-4 wxb-w-full wxb-flex wxb-flex-col">
-      <h4 class="wxb-mt-0 wxb-flex wxb-justify-between">
+    <div class="wxb-p-3.5 wxb-pl-6 wxb-w-full wxb-flex wxb-flex-col">
+      <h4 class="wxb-mt-0 wxb-mb-6 wxb-flex wxb-justify-between">
         <span>
           Items - {{ guardItems.size }}
         </span>
@@ -68,12 +56,12 @@
         :items="[...guardItems.values()]"
         @filter="items => filteredItems = items"
       />
-      <div class="wxb-flex wxb-py-2">
-        <div class="wxb-w-full wxb-px-2">Name</div>
-        <div class="wxb-flex-lg wxb-px-2">Price</div>
-        <div class="wxb-flex-md wxb-px-2">Min price</div>
-        <div class="wxb-flex-md wxb-px-2">Max price</div>
-        <div class="wxb-flex-sm wxb-px-2">Status</div>
+      <div class="wxb-flex wxb-py-3.5">
+        <div class="wxb-w-full wxb-px-3.5">Name</div>
+        <div class="wxb-flex-lg wxb-px-3.5">Price</div>
+        <div class="wxb-flex-md wxb-px-3.5">Min price</div>
+        <div class="wxb-flex-md wxb-px-3.5">Max price</div>
+        <div class="wxb-flex-sm wxb-px-3.5">Status</div>
       </div>
       <AppScrollView>
         <CsGuardItem
@@ -83,7 +71,7 @@
         />
       </AppScrollView>
       <AppActionsBar
-        class="wxb-mt-4"
+        class="wxb-mt-6"
         :actions="actions"
       />
     </div>
@@ -95,6 +83,7 @@ import { computed, ref } from 'vue'
 import AppActionsBar from '@/components/ui/AppActionsBar'
 import AppButton from '@/components/ui/AppButton'
 import AppInput from '@/components/ui/AppInput'
+import AppInputWrapper from '@/components/ui/AppInputWrapper'
 import AppScrollView from '@/components/ui/AppScrollView'
 import CsGuardItem from '@/components/cs/CsGuardItem'
 import CsItemFilters from '@/components/cs/CsItemFilters'
@@ -120,6 +109,7 @@ export default {
     AppActionsBar,
     AppButton,
     AppInput,
+    AppInputWrapper,
     AppScrollView,
     CsGuardItem,
     CsItemFilters

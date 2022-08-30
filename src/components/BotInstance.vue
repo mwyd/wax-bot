@@ -1,5 +1,5 @@
 <template>
-  <div class="wxb-bg-gray-700 wxb-p-2">
+  <div class="wxb-bg-gray-700 wxb-p-3.5">
     <div class="wxb-flex wxb-justify-between wxb-items-center">
       <AppProcessIndicator :state="state"/>
       <span
@@ -9,11 +9,8 @@
         -
       </span>
     </div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        % Deal
-      </label>
-      <div class="wxb-flex wxb-gap-2">
+    <AppInputWrapper label="% Deal">
+      <div class="wxb-flex wxb-gap-3.5">
         <AppInput
           v-model.number="config.deal"
           type="number"
@@ -25,12 +22,9 @@
           :validator="value => (value >= -config.deal && value <= 1000 - config.deal)"
         />
       </div>
-    </div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        $ Price
-      </label>
-      <div class="wxb-flex wxb-gap-2">
+    </AppInputWrapper>
+    <AppInputWrapper label="$ Price">
+      <div class="wxb-flex wxb-gap-3.5">
         <AppInput
           v-model.number="config.minPrice"
           type="number"
@@ -42,49 +36,37 @@
           :validator="value => (value >= config.minPrice && value <= 1000000)"
         />
       </div>
-    </div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        Search
-      </label>
+    </AppInputWrapper>
+    <AppInputWrapper label="Search">
       <AppInput
         v-model="config.search"
         type="text"
         placeholder="Item name..."
       />
-    </div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        Pages
-      </label>
+    </AppInputWrapper>
+    <AppInputWrapper label="Pages">
       <AppInput
         v-model.number="config.pages"
         type="number"
         :validator="value => (value >= 1 && value <= 10)"
       />
-    </div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        Volume
-      </label>
+    </AppInputWrapper>
+    <AppInputWrapper label="Volume">
       <AppInput
         v-model.number="config.volume"
         type="number"
         :validator="value => (value >= 0 && value <= 10000)"
       />
-    </div>
-    <div class="wxb-py-2">
-      <label class="wxb-block wxb-pb-2">
-        Update delay
-      </label>
+    </AppInputWrapper>
+    <AppInputWrapper label="Update delay">
       <AppInput
         v-model.number="config.updateDelay"
         type="number"
         :validator="value => (value >= 0 && value <= 300)"
       />
-    </div>
+    </AppInputWrapper>
     <AppButton
-      class="wxb-btn-big wxb-mt-2 wxb-flex-xs"
+      class="wxb-btn-big wxb-mt-3.5 wxb-flex-xs"
       :disabled="isTerminating"
       @click="toggle"
     >
@@ -97,6 +79,7 @@
 import { ref, computed, onUnmounted } from 'vue'
 import AppProcessIndicator from '@/components/ui/AppProcessIndicator'
 import AppInput from '@/components/ui/AppInput'
+import AppInputWrapper from '@/components/ui/AppInputWrapper'
 import AppButton from '@/components/ui/AppButton'
 import { getBotConfig, deleteBotInstance, registerBotInstance } from '@/stores/botStore'
 import useBot from '@/composables/useBot'
@@ -106,6 +89,7 @@ export default {
   components: {
     AppProcessIndicator,
     AppInput,
+    AppInputWrapper,
     AppButton
   },
   props: {

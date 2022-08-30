@@ -9,7 +9,7 @@
     <div
       v-if="body"
       v-html="body"
-      class="wxb-w-full wxb-h-full wxb-overflow-auto wxb-break-words wxb-mt-2"
+      class="wxb-w-full wxb-h-full wxb-overflow-auto wxb-break-words wxb-mt-3.5"
     >
     </div>
   </div>
@@ -43,8 +43,8 @@ export default {
 
     const alertClass = computed(() => [
       'wxb-alert',
-      'wxb-p-2',
-      'wxb-m-2',
+      'wxb-p-3.5',
+      'wxb-m-3.5',
       'wxb-cursor-pointer',
       `wxb-alert-${type.value}`
     ])

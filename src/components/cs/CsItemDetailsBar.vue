@@ -1,5 +1,5 @@
 <template>
-  <div class="wxb-bg-gray-600 wxb-w-full wxb-p-1 wxb-flex wxb-flex-wrap wxb-items-center">
+  <div class="wxb-bg-gray-600 wxb-w-full wxb-p-1.5 wxb-flex wxb-flex-wrap wxb-items-center">
     <CsItemDetail
       v-for="(detail, i) in existingDetails"
       :key="`${detail.name}-${i}`"

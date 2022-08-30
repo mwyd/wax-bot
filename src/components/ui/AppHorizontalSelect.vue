@@ -33,7 +33,7 @@ export default {
     const modelValue = toRef(props, 'modelValue')
 
     const optionClass = (isSelected) => [
-      'wxb-p-1',
+      'wxb-p-1.5',
       'wxb-w-full',
       'wxb-text-center',
       'wxb-cursor-pointer',

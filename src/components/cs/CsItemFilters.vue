@@ -1,11 +1,11 @@
 <template>
-  <div class="wxb-mb-2 wxb-flex">
+  <div class="wxb-flex wxb-mb-3.5">
     <AppInput
       v-model="filters.search"
       type="text"
       placeholder="Search..."
     />
-    <div class="wxb-ml-2 wxb-flex-lg">
+    <div class="wxb-ml-3.5 wxb-flex-lg">
       <select
         class="wxb-input"
         v-model="filters.sortBy"
@@ -58,8 +58,8 @@ export default {
     const sortDirBtnClass = computed(() => [
       'wxb-sort-btn',
       'wxb-cursor-pointer',
-      'wxb-p-1.5',
-      'wxb-ml-2',
+      'wxb-p-2.5',
+      'wxb-ml-3.5',
       filters.sortAsc ? 'wxb-sort-btn-asc' : 'wxb-sort-btn-desc'
     ])
 
@@ -82,13 +82,14 @@ export default {
 
 <style scoped>
 .wxb-sort-btn {
-  flex: 0 0 30px;
+  flex: 0 0 32px;
   border-radius: 2px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   @apply wxb-bg-gray-800;
   @apply wxb-text-gray-900;
+  @apply wxb-border wxb-border-solid wxb-border-gray-900;
 }
 
 .wxb-sort-btn > div {
