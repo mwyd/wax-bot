@@ -1,4 +1,6 @@
 import { steamMarket, buffMarket } from '@/services/conduit'
+import { userPreferences } from '@/stores/userStore'
+import targetMarketEnum from '@/enums/targetMarketEnum'
 
 const steamMarketItemsData = new Map()
 
@@ -43,7 +45,16 @@ const getBuffMarketItemData = async (hashName) => {
   return marketData
 }
 
+const getMarketItemData = (item) => {
+  if (userPreferences.targetMarket === targetMarketEnum.BUFF) {
+    return getBuffMarketItemData(item.name)
+  }
+
+  return getSteamMarketItemData(item.$conduit_hash_name)
+}
+
 export {
   getSteamMarketItemData,
-  getBuffMarketItemData
+  getBuffMarketItemData,
+  getMarketItemData
 }

@@ -2,11 +2,13 @@ import { ref, reactive, watch } from 'vue'
 import { user as waxpeerUser } from '@/services/waxpeer'
 import { updateItemDetails, normalizeItemPrice } from '@/resources/csItem'
 import { syncStorage, round } from '@/utils'
+import { getMarketItemData } from '@/cache/conduit'
 import moment from 'moment'
 
 const config = reactive({
   bidStep: 0.01,
-  safeDiscount: 0.97,
+  lowerLimit: 0.87,
+  upperLimit: 0.97,
   pages: 1,
   updateDelay: 10
 })
@@ -65,6 +67,28 @@ function* getObservedItems() {
   }
 }
 
+const adjustObservedItems = async () => {
+  for (const item of getObservedItems()) {
+    const marketData = await getMarketItemData(item)
+
+    if (!marketData) {
+      continue
+    }
+
+    const minPrice = round(config.lowerLimit * marketData.price)
+    const maxPrice = round(config.upperLimit * marketData.price)
+
+    const guardItemData = getGuardItemData(item.$key)
+
+    if (minPrice === guardItemData.minPrice && maxPrice === guardItemData.maxPrice) {
+      continue
+    }
+
+    guardItemData.minPrice = minPrice
+    guardItemData.maxPrice = maxPrice
+  }
+}
+
 const loadGuardItems = async () => {
   const sellItems = await waxpeerUser.getAllItems({
     game: 'csgo',
@@ -87,7 +111,7 @@ const loadGuardItems = async () => {
 
     if (!itemGuardData) {
       let minPrice = item.$price
-      let maxPrice = round(item.$suggested_price * config.safeDiscount)
+      let maxPrice = item.$suggested_price
 
       if (maxPrice < minPrice) {
         maxPrice = round(minPrice + config.bidStep)
@@ -117,6 +141,7 @@ export {
   getGuardItemData,
   ignoreGuardItems,
   getObservedItems,
+  adjustObservedItems,
   loadGuardItemsData,
   loadConfig,
   loadGuardItems

@@ -12,12 +12,19 @@
             :validator="value => (value > 0 && value < 100)"
           />
         </AppInputWrapper>
-        <AppInputWrapper label="% Safe discount">
-          <AppInput
-            v-model.number="config.safeDiscount"
-            type="number"
-            :validator="value => (value > 0 && value < 10)"
-          />
+        <AppInputWrapper label="% Limit">
+          <div class="wxb-flex wxb-gap-3.5">
+            <AppInput
+              v-model.number="config.lowerLimit"
+              type="number"
+              :validator="value => (value > 0 && value <= config.upperLimit)"
+            />
+            <AppInput
+              v-model.number="config.upperLimit"
+              type="number"
+              :validator="value => (value >= config.lowerLimit && value <= 10)"
+            />
+          </div>
         </AppInputWrapper>
         <AppInputWrapper label="Pages">
           <AppInput
@@ -89,7 +96,7 @@ import CsGuardItem from '@/components/cs/CsGuardItem'
 import CsItemFilters from '@/components/cs/CsItemFilters'
 import useGuard from '@/composables/useGuard'
 import processStateEnum from '@/enums/processStateEnum'
-import { config, guardItems, loadGuardItems, ignoreGuardItems } from '@/stores/guardStore'
+import { config, guardItems, loadGuardItems, ignoreGuardItems, adjustObservedItems } from '@/stores/guardStore'
 import { updateTabState } from '@/stores/tabsStore'
 import { round } from '@/utils'
 import csItemSortEnum from '@/enums/csItemSortEnum'
@@ -100,6 +107,7 @@ const defaultFilters = {
 
 const actions = [
   { name: 'refresh', callback: loadGuardItems },
+  { name: 'adjust', callback: adjustObservedItems },
   { name: 'observe all', callback: () => ignoreGuardItems(false) },
   { name: 'ignore all', callback: () => ignoreGuardItems(true) }
 ]
