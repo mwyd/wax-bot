@@ -83,6 +83,6 @@ export default {
 
 <style scoped>
 .wxb-input-error {
-  @apply wxb-bg-red-400;
+  @apply wxb-bg-red-400 !important;
 }
 </style>
