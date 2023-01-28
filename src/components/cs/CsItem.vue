@@ -7,7 +7,7 @@
             class="wxb-h-20 wxb-pr-3.5"
             :alt="item.item_id"
             :src="item.image"
-          />
+          >
           <a
             class="wxb-text-inherit"
             :href="`https://steamcommunity.com/market/listings/730/${item.name}`"
@@ -33,7 +33,7 @@
           </sup>
         </span>
       </div>
-      <slot/>
+      <slot />
     </div>
     <CsItemDetailsBar
       :details="details"

@@ -61,16 +61,20 @@ const props = defineProps({
     required: true
   },
   steamOwner: {
-    type: String
+    type: String,
+    default: null
   },
   waxOwner: {
-    type: String
+    type: String,
+    default: null,
   },
   inspectLink: {
-    type: String
+    type: String,
+    default: null,
   },
   buffGoodId: {
-    type: Number
+    type: Number,
+    default: null,
   }
 })
 

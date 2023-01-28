@@ -8,10 +8,9 @@
     </h4>
     <div
       v-if="body"
-      v-html="body"
       class="wxb-w-full wxb-h-full wxb-overflow-auto wxb-break-words wxb-mt-3.5"
-    >
-    </div>
+      v-html="body"
+    />
   </div>
 </template>
 

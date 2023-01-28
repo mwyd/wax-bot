@@ -7,8 +7,8 @@
     />
     <div class="wxb-ml-3.5 wxb-flex-lg">
       <select
-        class="wxb-input"
         v-model="filters.sortBy"
+        class="wxb-input"
       >
         <option
           v-for="[key, variant] in Object.entries(sortVariants)"
@@ -23,9 +23,9 @@
       :class="sortDirBtnClass"
       @click="filters.sortAsc = !filters.sortAsc"
     >
-      <div></div>
-      <div></div>
-      <div></div>
+      <div />
+      <div />
+      <div />
     </div>
   </div>
 </template>

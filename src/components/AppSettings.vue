@@ -1,6 +1,6 @@
 <template>
   <div class="wxb-settings wxb-p-3.5 wxb-shadow-md">
-    <div class="wxb-settings-corner"></div>
+    <div class="wxb-settings-corner" />
     <AppInputWrapper label="Conduit">
       <AppInput
         v-model="token"
@@ -10,8 +10,8 @@
     </AppInputWrapper>
     <AppInputWrapper label="Target market">
       <AppHorizontalSelect
-        :options="Object.values(targetMarketEnum)"
         v-model="userPreferences.targetMarket"
+        :options="Object.values(targetMarketEnum)"
       />
     </AppInputWrapper>
     <AppButton

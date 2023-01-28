@@ -1,5 +1,5 @@
 <template>
-  <div :class="indicatorClass"></div>
+  <div :class="indicatorClass" />
 </template>
 
 <script setup>

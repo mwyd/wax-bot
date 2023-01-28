@@ -4,8 +4,8 @@
       <AppAlert
         v-for="[id, alert] in latestAlerts"
         v-bind="alert"
-        :key="id"
         :id="id"
+        :key="id"
       />
     </TransitionGroup>
   </div>

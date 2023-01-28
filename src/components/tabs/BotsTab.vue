@@ -8,8 +8,8 @@
         <div class="wxb-grid wxb-grid-cols-4 xl:wxb-grid-cols-5 wxb-gap-3.5">
           <BotInstance
             v-for="id in botInstancesIds"
-            :key="id"
             :id="id"
+            :key="id"
           />
         </div>
       </AppScrollView>

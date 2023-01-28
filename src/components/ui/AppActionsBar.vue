@@ -1,9 +1,9 @@
 <template>
   <div class="wxb-flex wxb-justify-end">
     <div
-      class="wxb-text-xl wxb-text-right"
       v-for="(action, i) in actions"
       :key="`action-${i}`"
+      class="wxb-text-xl wxb-text-right"
     >
       <span
         class="wxb-px-1.5 wxb-cursor-pointer wxb-text-gray-200 hover:wxb-text-white-500"

@@ -26,7 +26,7 @@
       class="wxb-header-settings-btn wxb-cursor-pointer wxb-relative wxb-z-20"
       @click="showSettings = true"
     >
-      <div :class="settingsStatusClass"></div>
+      <div :class="settingsStatusClass" />
     </div>
   </div>
   <div
@@ -34,7 +34,7 @@
     class="wxb-settings-wrapper wxb-z-20"
     @click.self="showSettings = false"
   >
-    <AppSettings/>
+    <AppSettings />
   </div>
 </template>
 

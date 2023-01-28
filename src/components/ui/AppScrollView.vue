@@ -1,7 +1,7 @@
 <template>
   <div class="wxb-h-full wxb-w-full wxb-relative">
     <div class="wxb-h-full wxb-w-full wxb-absolute wxb-overflow-y-auto">
-      <slot/>
+      <slot />
     </div>
   </div>
 </template>

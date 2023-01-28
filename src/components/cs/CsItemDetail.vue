@@ -1,16 +1,17 @@
 <template>
   <span :class="detailClass">
-      <span class="wxb-text-gray-300">
-        {{ name }}
-      </span>
-      {{ value }}
+    <span class="wxb-text-gray-300">
+      {{ name }}
+    </span>
+    {{ value }}
   </span>
 </template>
 
 <script setup>
 const props = defineProps({
   rarity: {
-    type: String
+    type: String,
+    default: null
   },
   name: {
     type: String,

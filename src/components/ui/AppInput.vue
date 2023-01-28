@@ -6,7 +6,7 @@
     :placeholder="placeholder"
     :disabled="disabled"
     @change="validateInternalModel"
-  />
+  >
 </template>
 
 <script setup>
@@ -23,6 +23,7 @@ const props = defineProps({
     required: true
   },
   modelModifiers: {
+    type: Object,
     default: () => ({})
   },
   disabled: {

@@ -1,7 +1,7 @@
 <template>
   <div class="wxb-bg-gray-700 wxb-p-3.5">
     <div class="wxb-flex wxb-justify-between wxb-items-center">
-      <AppProcessIndicator :state="state"/>
+      <AppProcessIndicator :state="state" />
       <span
         class="wxb-font-bold wxb-text-gray-300 wxb-cursor-pointer"
         @click="deleteBotInstance(id)"
@@ -88,7 +88,7 @@ import processStateEnum from '@/enums/processStateEnum'
 const props = defineProps({
   id: {
     type: String,
-    require: true
+    required: true
   }
 })
 

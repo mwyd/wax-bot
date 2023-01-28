@@ -22,6 +22,7 @@ const props = defineProps({
     required: true
   },
   modelModifiers: {
+    type: Object,
     default: () => ({})
   }
 })

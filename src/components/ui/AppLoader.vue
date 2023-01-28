@@ -1,5 +1,5 @@
 <template>
-  <div class="wxb-loader"></div>
+  <div class="wxb-loader" />
 </template>
 
 <script setup>

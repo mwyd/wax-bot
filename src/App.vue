@@ -9,13 +9,13 @@
     <AppHeader
       :tabs="tabs"
       :active-tab="activeTab"
-      @tabChange="tab => activeTab = tab"
+      @tab-change="tab => activeTab = tab"
     />
     <KeepAlive>
-      <component :is="tabs[activeTab].component"/>
+      <component :is="tabs[activeTab].component" />
     </KeepAlive>
   </div>
-  <AppAlertBox/>
+  <AppAlertBox />
 </template>
 
 <script setup>

@@ -15,10 +15,18 @@
         @filter="items => filteredItems = items"
       />
       <div class="wxb-flex wxb-py-3.5">
-        <div class="wxb-w-full wxb-px-3.5">Name</div>
-        <div class="wxb-flex-lg wxb-px-3.5">Price</div>
-        <div class="wxb-flex-lg wxb-px-3.5">Status</div>
-        <div class="wxb-flex-lg wxb-px-3.5">Date</div>
+        <div class="wxb-w-full wxb-px-3.5">
+          Name
+        </div>
+        <div class="wxb-flex-lg wxb-px-3.5">
+          Price
+        </div>
+        <div class="wxb-flex-lg wxb-px-3.5">
+          Status
+        </div>
+        <div class="wxb-flex-lg wxb-px-3.5">
+          Date
+        </div>
       </div>
       <AppScrollView>
         <CsTradeItem
