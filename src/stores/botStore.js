@@ -11,17 +11,17 @@ import alertTypeEnum from '@/enums/alertTypeEnum'
 
 let timestamp = waxpeerDate()
 
-const process = useProcess()
+export const process = useProcess()
 
-const botConfigs = ref({})
+export const botConfigs = ref({})
 
 const botInstances = reactive(new Map())
 
-const pendingItems = reactive(new Map())
+export const pendingItems = reactive(new Map())
 
-const finishedItems = ref([])
+export const finishedItems = ref([])
 
-const activeItems = computed(() => {
+export const activeItems = computed(() => {
   const items = new Map()
 
   for (const instance of botInstances.values()) {
@@ -33,15 +33,15 @@ const activeItems = computed(() => {
   return items
 })
 
-const runningBotInstances = computed(() => {
+export const runningBotInstances = computed(() => {
   return [...botInstances.values()].filter(instance => instance.state !== processStateEnum.TERMINATED)
 })
 
-const terminatedBotInstances = computed(() => {
+export const terminatedBotInstances = computed(() => {
   return [...botInstances.values()].filter(instance => instance.state === processStateEnum.TERMINATED)
 })
 
-const registerBotInstance = (id, instance) => {
+export const registerBotInstance = (id, instance) => {
   botInstances.set(id, instance)
 }
 
@@ -49,7 +49,7 @@ watch(botConfigs, () => {
   syncStorage.set({ botConfigs: botConfigs.value })
 }, { deep: true })
 
-const loadBotConfigs = async () => {
+export const loadBotConfigs = async () => {
   const data = await syncStorage.get('botConfigs')
 
   if (data instanceof Object) {
@@ -59,7 +59,7 @@ const loadBotConfigs = async () => {
   }
 }
 
-const addBotConfig = () => {
+export const addBotConfig = () => {
   if (Object.keys(botConfigs.value).length >= botConfigsLimit) {
     pushAlert({
       type: alertTypeEnum.INFO,
@@ -85,13 +85,13 @@ const addBotConfig = () => {
   }
 }
 
-const deleteBotInstance = (id) => {
+export const deleteBotInstance = (id) => {
   botInstances.delete(id)
 
   delete botConfigs.value[id]
 }
 
-const getBotConfig = (id) => {
+export const getBotConfig = (id) => {
   return botConfigs.value[id]
 }
 
@@ -130,7 +130,7 @@ const updatePendingItems = async () => {
   process.update(processStateEnum.IDLE)
 }
 
-const buyItem = async (item) => {
+export const buyItem = async (item) => {
   if (pendingItems.has(item.item_id)) {
     return
   }
@@ -184,20 +184,4 @@ const buyItem = async (item) => {
 
     WXB_LOG('Cannot buy item', err)
   }
-}
-
-export {
-  process,
-  botConfigs,
-  activeItems,
-  pendingItems,
-  finishedItems,
-  runningBotInstances,
-  terminatedBotInstances,
-  registerBotInstance,
-  loadBotConfigs,
-  addBotConfig,
-  deleteBotInstance,
-  getBotConfig,
-  buyItem
 }

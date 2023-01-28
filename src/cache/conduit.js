@@ -6,7 +6,7 @@ const steamMarketItemsData = new Map()
 
 const buffMarketItemsData = new Map()
 
-const getSteamMarketItemData = async (conduitHashName) => {
+export const getSteamMarketItemData = async (conduitHashName) => {
   let marketData = steamMarketItemsData.get(conduitHashName)
 
   if (!marketData) {
@@ -25,7 +25,7 @@ const getSteamMarketItemData = async (conduitHashName) => {
   return marketData
 }
 
-const getBuffMarketItemData = async (hashName) => {
+export const getBuffMarketItemData = async (hashName) => {
   let marketData = buffMarketItemsData.get(hashName)
 
   if (!marketData) {
@@ -45,16 +45,10 @@ const getBuffMarketItemData = async (hashName) => {
   return marketData
 }
 
-const getMarketItemData = (item) => {
+export const getMarketItemData = (item) => {
   if (userPreferences.targetMarket === targetMarketEnum.BUFF) {
     return getBuffMarketItemData(item.name)
   }
 
   return getSteamMarketItemData(item.$conduit_hash_name)
-}
-
-export {
-  getSteamMarketItemData,
-  getBuffMarketItemData,
-  getMarketItemData
 }

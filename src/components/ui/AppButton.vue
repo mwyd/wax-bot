@@ -14,24 +14,19 @@
   </button>
 </template>
 
-<script>
+<script setup>
 import AppLoader from '@/components/ui/AppLoader'
 
-export default {
-  components: {
-    AppLoader
+defineProps({
+  type: {
+    type: String,
+    default: 'button'
   },
-  props: {
-    type: {
-      type: String,
-      default: 'button'
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    }
+  disabled: {
+    type: Boolean,
+    default: false
   }
-}
+})
 </script>
 
 <style scoped>

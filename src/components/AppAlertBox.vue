@@ -11,20 +11,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { latestAlerts } from '@/stores/alertsStore'
 import AppAlert from '@/components/ui/AppAlert'
-
-export default {
-  components: {
-    AppAlert
-  },
-  setup() {
-    return {
-      latestAlerts
-    }
-  }
-}
 </script>
 
 <style scoped>

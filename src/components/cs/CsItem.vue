@@ -46,45 +46,35 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, toRef } from 'vue'
 import { userPreferences } from '@/stores/userStore'
 import CsItemDetailsBar from '@/components/cs/CsItemDetailsBar'
 import CsItemStickers from '@/components/cs/CsItemStickers'
 import useCsItemDetails from '@/composables/useCsItemDetails'
 
-export default {
-  components: {
-    CsItemDetailsBar,
-    CsItemStickers
-  },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    }
-  },
-  setup(props) {
-    const item = toRef(props, 'item')
-
-    const discount = computed(() => {
-      let content = `${item.value.$discount}%`
-
-      const target = item.value[`$${userPreferences.targetMarket}`]
-
-      if (target != null) {
-        content = `${target.discount}% | ` + content
-      }
-
-      return content
-    })
-
-    return {
-      discount,
-      ...useCsItemDetails(item)
-    }
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
   }
-}
+})
+
+const item = toRef(props, 'item')
+
+const { details } = useCsItemDetails(item)
+
+const discount = computed(() => {
+  let content = `${item.value.$discount}%`
+
+  const target = item.value[`$${userPreferences.targetMarket}`]
+
+  if (target != null) {
+    content = `${target.discount}% | ` + content
+  }
+
+  return content
+})
 </script>
 
 <style>

@@ -2,7 +2,7 @@ import * as botStore from './botStore'
 import * as guardStore from './guardStore'
 import * as userStore from './userStore'
 
-const setupStores = async () => {
+export const setupStores = async () => {
   await userStore.loadToken()
   await userStore.loadUserPreferences()
 
@@ -14,8 +14,4 @@ const setupStores = async () => {
   guardStore.loadConfig()
   guardStore.loadGuardItemsData()
   guardStore.loadGuardItems()
-}
-
-export {
-  setupStores
 }

@@ -9,58 +9,44 @@
   </CsItem>
 </template>
 
-<script>
-import { computed, toRef } from 'vue'
+<script setup>
+import { computed } from 'vue'
 import CsItem from '@/components/cs/CsItem'
 import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
 import moment from 'moment'
 
-export default {
-  components: {
-    CsItem
-  },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    }
-  },
-  setup(props) {
-    const item = toRef(props, 'item')
-
-    const status = computed(() => {
-      let status = 'pending'
-
-      switch (item.value.$status) {
-        case waxpeerCsItemStatusEnum.ACCEPTED:
-          status = 'accepted'
-          break
-
-        case waxpeerCsItemStatusEnum.CANCELED:
-          status = 'canceled'
-          break
-      }
-
-      return status
-    })
-
-    const statusClass = computed(() => [
-      'wxb-flex',
-      'wxb-items-center',
-      'wxb-flex-lg',
-      'wxb-px-3.5',
-      `wxb-status-${status.value}`
-    ])
-
-    const boughtDateTime = computed(() => moment(item.value.$bought_at).format('YYYY-MM-DD HH:mm:ss'))
-
-    return {
-      status,
-      statusClass,
-      boughtDateTime
-    }
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
   }
-}
+})
+
+const status = computed(() => {
+  let status = 'pending'
+
+  switch (props.item.$status) {
+    case waxpeerCsItemStatusEnum.ACCEPTED:
+      status = 'accepted'
+      break
+
+    case waxpeerCsItemStatusEnum.CANCELED:
+      status = 'canceled'
+      break
+  }
+
+  return status
+})
+
+const statusClass = computed(() => [
+  'wxb-flex',
+  'wxb-items-center',
+  'wxb-flex-lg',
+  'wxb-px-3.5',
+  `wxb-status-${status.value}`
+])
+
+const boughtDateTime = computed(() => moment(props.item.$bought_at).format('YYYY-MM-DD HH:mm:ss'))
 </script>
 
 <style scoped>

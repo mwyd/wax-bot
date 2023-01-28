@@ -6,17 +6,17 @@ import { pushAlert } from './alertsStore'
 import alertTypeEnum from '@/enums/alertTypeEnum'
 import targetMarketEnum from '@/enums/targetMarketEnum'
 
-const session = reactive({
+export const session = reactive({
   conduitName: null,
   token: null,
   waxpeerId: null
 })
 
-const userPreferences = reactive({
+export const userPreferences = reactive({
   targetMarket: targetMarketEnum.STEAM
 })
 
-const loadToken = async () => {
+export const loadToken = async () => {
   session.token = await syncStorage.get('token')
 }
 
@@ -24,7 +24,7 @@ watch(() => session.token, () => {
   syncStorage.set({ token: session.token })
 })
 
-const loadUserPreferences = async () => {
+export const loadUserPreferences = async () => {
   const preferences = await syncStorage.get('preferences')
 
   if (preferences instanceof Object) {
@@ -36,7 +36,7 @@ watch(userPreferences, () => {
   syncStorage.set({ preferences: userPreferences })
 })
 
-const authenticateConduit = async () => {
+export const authenticateConduit = async () => {
   const { success, data } = await conduitUser.authenticate(session.token)
 
   const alert = {
@@ -57,7 +57,7 @@ const authenticateConduit = async () => {
   pushAlert(alert)
 }
 
-const authenticateWaxpeer = async () => {
+export const authenticateWaxpeer = async () => {
   const { success, user } = await waxpeerUser.authenticate()
 
   const alert = {
@@ -74,13 +74,4 @@ const authenticateWaxpeer = async () => {
   }
 
   pushAlert(alert)
-}
-
-export {
-  session,
-  userPreferences,
-  loadToken,
-  loadUserPreferences,
-  authenticateConduit,
-  authenticateWaxpeer
 }

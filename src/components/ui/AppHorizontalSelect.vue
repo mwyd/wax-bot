@@ -11,40 +11,30 @@
   </div>
 </template>
 
-<script>
-import { toRef } from 'vue'
-
-export default {
-  props: {
-    options: {
-      type: Array,
-      required: true
-    },
-    modelValue: {
-      type: [String, Number],
-      required: true
-    },
-    modelModifiers: {
-      default: () => ({})
-    },
+<script setup>
+const props = defineProps({
+  options: {
+    type: Array,
+    required: true
   },
-  emits: ['update:modelValue'],
-  setup(props) {
-    const modelValue = toRef(props, 'modelValue')
-
-    const optionClass = (isSelected) => [
-      'wxb-p-1.5',
-      'wxb-w-full',
-      'wxb-text-center',
-      'wxb-cursor-pointer',
-      isSelected === modelValue.value ? 'wxb-h-select-option-selected' : '',
-    ]
-
-    return {
-      optionClass
-    }
+  modelValue: {
+    type: [String, Number],
+    required: true
+  },
+  modelModifiers: {
+    default: () => ({})
   }
-}
+})
+
+defineEmits(['update:modelValue'])
+
+const optionClass = (isSelected) => [
+  'wxb-p-1.5',
+  'wxb-w-full',
+  'wxb-text-center',
+  'wxb-cursor-pointer',
+  isSelected === props.modelValue ? 'wxb-h-select-option-selected' : '',
+]
 </script>
 
 <style scoped>

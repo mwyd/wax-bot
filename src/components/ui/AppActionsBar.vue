@@ -15,15 +15,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    actions: {
-      type: Array,
-      required: true
-    }
+<script setup>
+defineProps({
+  actions: {
+    type: Array,
+    required: true
   }
-}
+})
 </script>
 
 <style>

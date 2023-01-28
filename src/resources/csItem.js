@@ -82,13 +82,13 @@ const decodeInspectId = (id) => {
   }
 }
 
-const normalizeItemPrice = (item) => {
+export const normalizeItemPrice = (item) => {
   item.$price = round(item.price / 1000)
   item.$suggested_price = round(item.steam_price_number / 1000)
   item.$discount = calculateDiscount(item.price, item.steam_price_number)
 }
 
-const updateItemDetails = async (item) => {
+export const updateItemDetails = async (item) => {
   item.$phase = getDopplerPhase(item.inspect_item?.imageurl ?? '')
   item.$conduit_hash_name = item.$phase ? item.name.replace('(', `${item.$phase} (`) : item.name
   item.$searchable = item.$conduit_hash_name.toLowerCase()
@@ -143,13 +143,13 @@ const updateItemDetails = async (item) => {
   item.$paint_seed = paintseed
 }
 
-const destroyItemAlerts = (alerts) => {
+export const destroyItemAlerts = (alerts) => {
   for (const id of alerts) {
     destroyAlert(id)
   }
 }
 
-const getVolumeRarity = (volume) => {
+export const getVolumeRarity = (volume) => {
   if (isNaN(volume)) {
     return csItemDetailRarityEnum.COMMON
   }
@@ -159,13 +159,13 @@ const getVolumeRarity = (volume) => {
     : csItemDetailRarityEnum.COMMON
 }
 
-const getDopplerPhaseRarity = (phase) => {
+export const getDopplerPhaseRarity = (phase) => {
   return rareDopplerPhases.indexOf(phase) > -1
     ? csItemDetailRarityEnum.INFREQUENT
     : csItemDetailRarityEnum.COMMON
 }
 
-const getFlaotRarity = (float) => {
+export const getFloatRarity = (float) => {
   if (isNaN(float)) {
     return csItemDetailRarityEnum.COMMON
   }
@@ -183,13 +183,4 @@ const getFlaotRarity = (float) => {
   return float <= highRankFloat
     ? csItemDetailRarityEnum.RARE
     : rarity
-}
-
-export {
-  normalizeItemPrice,
-  updateItemDetails,
-  getVolumeRarity,
-  getDopplerPhaseRarity,
-  getFlaotRarity,
-  destroyItemAlerts
 }

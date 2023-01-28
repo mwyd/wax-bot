@@ -1,4 +1,4 @@
-const initRoot = () => {
+export const initRoot = () => {
   const body = document.querySelector('body')
   const root = document.createElement('div')
 
@@ -12,5 +12,3 @@ const initRoot = () => {
 
   return root
 }
-
-export { initRoot }

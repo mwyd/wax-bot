@@ -85,7 +85,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue'
 import AppActionsBar from '@/components/ui/AppActionsBar'
 import AppButton from '@/components/ui/AppButton'
@@ -112,44 +112,19 @@ const actions = [
   { name: 'ignore all', callback: () => ignoreGuardItems(true) }
 ]
 
-export default {
-  components: {
-    AppActionsBar,
-    AppButton,
-    AppInput,
-    AppInputWrapper,
-    AppScrollView,
-    CsGuardItem,
-    CsItemFilters
-  },
-  setup() {
-    const filteredItems = ref([])
+const filteredItems = ref([])
 
-    const { process, toggle } = useGuard()
+const { process, toggle } = useGuard()
 
-    const isTerminating = computed(() => process.is(processStateEnum.TERMINATING))
+const isTerminating = computed(() => process.is(processStateEnum.TERMINATING))
 
-    const isTerminated = computed(() => process.is(processStateEnum.TERMINATED))
+const isTerminated = computed(() => process.is(processStateEnum.TERMINATED))
 
-    process.subscribe((state) => updateTabState('Guard', state))
+process.subscribe((state) => updateTabState('Guard', state))
 
-    const guardItemsValue = computed(() => round(
-      [...guardItems.value.values()].reduce(((a, item) => a + item.$price), 0)
-    ))
-
-    return {
-      actions,
-      filteredItems,
-      isTerminating,
-      isTerminated,
-      guardItems,
-      guardItemsValue,
-      config,
-      toggle,
-      defaultFilters
-    }
-  }
-}
+const guardItemsValue = computed(() => round(
+  [...guardItems.value.values()].reduce(((a, item) => a + item.$price), 0)
+))
 </script>
 
 <style scoped>

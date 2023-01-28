@@ -25,7 +25,7 @@
   </AppTabWrapper>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue'
 import { activeItems } from '@/stores/botStore'
 import { userPreferences } from '@/stores/userStore'
@@ -42,23 +42,7 @@ const defaultFilters = computed(() => ({
     : csItemSortEnum.STEAM_DISCOUNT
 }))
 
-export default {
-  components: {
-    AppScrollView,
-    AppTabWrapper,
-    CsMarketItem,
-    CsItemFilters
-  },
-  setup() {
-    const filteredItems = ref([])
-
-    return {
-      defaultFilters,
-      filteredItems,
-      activeItems
-    }
-  }
-}
+const filteredItems = ref([])
 </script>
 
 <style>

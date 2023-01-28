@@ -30,54 +30,41 @@
   </div>
 </template>
 
-<script>
-import { toRefs, watch, computed } from 'vue'
+<script setup>
+import { watch, computed } from 'vue'
 import AppInput from '@/components/ui/AppInput'
 import useCsItemFilters from '@/composables/useCsItemFilters'
 
-export default {
-  components: {
-    AppInput
+const props = defineProps({
+  items: {
+    type: Array,
+    required: true
   },
-  props: {
-    items: {
-      type: Array,
-      required: true
-    },
-    defaultFilters: {
-      type: Object,
-      default: () => ({})
-    }
-  },
-  emits: ['filter'],
-  setup(props, { emit }) {
-    const { items, defaultFilters } = toRefs(props)
-
-    const { filters, sortVariants, comparator } = useCsItemFilters(defaultFilters.value)
-
-    const sortDirBtnClass = computed(() => [
-      'wxb-sort-btn',
-      'wxb-cursor-pointer',
-      'wxb-p-2.5',
-      'wxb-ml-3.5',
-      filters.sortAsc ? 'wxb-sort-btn-asc' : 'wxb-sort-btn-desc'
-    ])
-
-    watch([filters, items], () => {
-      const filtered = items.value
-        .filter(item => item.$searchable.includes(filters.search.toLowerCase()))
-        .sort(comparator)
-
-      emit('filter', filtered)
-    })
-
-    return {
-      filters,
-      sortVariants,
-      sortDirBtnClass
-    }
+  defaultFilters: {
+    type: Object,
+    default: () => ({})
   }
-}
+})
+
+const emit = defineEmits(['filter'])
+
+const { filters, sortVariants, comparator } = useCsItemFilters(props.defaultFilters)
+
+const sortDirBtnClass = computed(() => [
+  'wxb-sort-btn',
+  'wxb-cursor-pointer',
+  'wxb-p-2.5',
+  'wxb-ml-3.5',
+  filters.sortAsc ? 'wxb-sort-btn-asc' : 'wxb-sort-btn-desc'
+])
+
+watch([filters, () => props.items], () => {
+  const filtered = props.items
+    .filter(item => item.$searchable.includes(filters.search.toLowerCase()))
+    .sort(comparator)
+
+  emit('filter', filtered)
+})
 </script>
 
 <style scoped>

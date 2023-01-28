@@ -2,30 +2,23 @@
   <div :class="indicatorClass"></div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 
-export default {
-  props: {
-    state: {
-      type: String,
-      required: true
-    }
-  },
-  setup(props) {
-    const indicatorClass = computed(() => [
-      'wxb-h-3.5',
-      'wxb-w-3.5',
-      'wxb-rounded-full',
-      'wxb-transition-none',
-      `wxb-indicator-${props.state}`
-    ])
-
-    return {
-      indicatorClass
-    }
+const props = defineProps({
+  state: {
+    type: String,
+    required: true
   }
-}
+})
+
+const indicatorClass = computed(() => [
+  'wxb-h-3.5',
+  'wxb-w-3.5',
+  'wxb-rounded-full',
+  'wxb-transition-none',
+  `wxb-indicator-${props.state}`
+])
 </script>
 
 <style scoped>

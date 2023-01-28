@@ -12,39 +12,25 @@
   </CsItem>
 </template>
 
-<script>
-import { toRef, ref } from 'vue'
+<script setup>
+import { ref } from 'vue'
 import AppButton from '@/components/ui/AppButton'
 import CsItem from '@/components/cs/CsItem'
 import { buyItem } from '@/stores/botStore'
 
-export default {
-  components: {
-    AppButton,
-    CsItem
-  },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    }
-  },
-  setup(props) {
-    const item = toRef(props, 'item')
-
-    const buyBtnDisabled = ref(false)
-
-    const buy = () => {
-      buyBtnDisabled.value = true
-
-      buyItem(item.value).then(() => buyBtnDisabled.value = false)
-    }
-
-    return {
-      buyBtnDisabled,
-      buy
-    }
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
   }
+})
+
+const buyBtnDisabled = ref(false)
+
+const buy = () => {
+  buyBtnDisabled.value = true
+
+  buyItem(props.item).then(() => buyBtnDisabled.value = false)
 }
 </script>
 

@@ -5,7 +5,7 @@ import { syncStorage, round } from '@/utils'
 import { getMarketItemData } from '@/cache/conduit'
 import moment from 'moment'
 
-const config = reactive({
+export const config = reactive({
   bidStep: 0.01,
   lowerLimit: 0.87,
   upperLimit: 0.97,
@@ -13,7 +13,7 @@ const config = reactive({
   updateDelay: 10
 })
 
-const guardItems = ref(new Map())
+export const guardItems = ref(new Map())
 
 const guardItemsData = ref({})
 
@@ -25,7 +25,7 @@ watch(guardItemsData, () => {
   syncStorage.set({ guardItemsData: guardItemsData.value })
 }, { deep: true })
 
-const loadConfig = async () => {
+export const loadConfig = async () => {
   const guardConfig = await syncStorage.get('guardConfig')
 
   if (guardConfig instanceof Object) {
@@ -33,7 +33,7 @@ const loadConfig = async () => {
   }
 }
 
-const loadGuardItemsData = async () => {
+export const loadGuardItemsData = async () => {
   const data = await syncStorage.get('guardItemsData')
 
   if (data instanceof Object) {
@@ -41,23 +41,23 @@ const loadGuardItemsData = async () => {
   }
 }
 
-const deleteGuardItem = (key) => {
+export const deleteGuardItem = (key) => {
   guardItems.value.delete(key)
 
   delete guardItemsData.value[key]
 }
 
-const getGuardItemData = (key) => {
+export const getGuardItemData = (key) => {
   return guardItemsData.value[key]
 }
 
-const ignoreGuardItems = (ignore) => {
+export const ignoreGuardItems = (ignore) => {
   for (const data of Object.values(guardItemsData.value)) {
     data.ignored = ignore
   }
 }
 
-function* getObservedItems() {
+export function* getObservedItems() {
   for (const [key, item] of guardItems.value) {
     const data = guardItemsData.value[key]
 
@@ -67,7 +67,7 @@ function* getObservedItems() {
   }
 }
 
-const adjustObservedItems = async () => {
+export const adjustObservedItems = async () => {
   for (const item of getObservedItems()) {
     const marketData = await getMarketItemData(item)
 
@@ -89,7 +89,7 @@ const adjustObservedItems = async () => {
   }
 }
 
-const loadGuardItems = async () => {
+export const loadGuardItems = async () => {
   const sellItems = await waxpeerUser.getAllItems({
     game: 'csgo',
     sort: 'desc'
@@ -132,17 +132,4 @@ const loadGuardItems = async () => {
   guardItems.value = updatedGuardItems
 
   guardItemsData.value = updatedGuardItemsData
-}
-
-export {
-  config,
-  guardItems,
-  deleteGuardItem,
-  getGuardItemData,
-  ignoreGuardItems,
-  getObservedItems,
-  adjustObservedItems,
-  loadGuardItemsData,
-  loadConfig,
-  loadGuardItems
 }

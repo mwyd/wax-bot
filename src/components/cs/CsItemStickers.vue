@@ -11,26 +11,19 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 
-export default {
-  props: {
-    stickers: {
-      type: Array,
-      required: true
-    }
-  },
-  setup(props) {
-    const stickersWithImage = computed(() => {
-      return props.stickers.filter(sticker => (sticker?.steam_price?.img || '').indexOf('https://') > -1)
-    })
-
-    return {
-      stickersWithImage
-    }
+const props = defineProps({
+  stickers: {
+    type: Array,
+    required: true
   }
-}
+})
+
+const stickersWithImage = computed(() => {
+  return props.stickers.filter(sticker => (sticker?.steam_price?.img || '').indexOf('https://') > -1)
+})
 </script>
 
 <style>

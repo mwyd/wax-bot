@@ -7,15 +7,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    label: {
-      type: String,
-      required: true
-    }
+<script setup>
+defineProps({
+  label: {
+    type: String,
+    required: true
   }
-}
+})
 </script>
 
 <style>

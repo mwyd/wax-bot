@@ -9,10 +9,6 @@ const defaults = {
   }
 }
 
-const market = useMarket(defaults)
-const user = useUser(defaults)
+export const market = useMarket(defaults)
 
-export {
-  market,
-  user
-}
+export const user = useUser(defaults)

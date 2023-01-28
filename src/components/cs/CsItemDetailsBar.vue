@@ -46,54 +46,40 @@
   </div>
 </template>
 
-<script>
-import { computed, toRefs } from 'vue'
+<script setup>
+import { computed } from 'vue'
 import { copyToClipboard } from '@/utils'
 import CsItemDetail from '@/components/cs/CsItemDetail'
 
-export default {
-  components: {
-    CsItemDetail
+const props = defineProps({
+  details: {
+    type: Array,
+    required: true
   },
-  props: {
-    details: {
-      type: Array,
-      required: true
-    },
-    hashName: {
-      type: String,
-      required: true
-    },
-    steamOwner: {
-      type: String
-    },
-    waxOwner: {
-      type: String
-    },
-    inspectLink: {
-      type: String
-    },
-    buffGoodId: {
-      type: Number
-    }
+  hashName: {
+    type: String,
+    required: true
   },
-  setup(props) {
-    const { details, hashName, buffGoodId } = toRefs(props)
-
-    const existingDetails = computed(() => details.value.filter(e => e.value != null))
-
-    const buffMarketLink = computed(() => buffGoodId.value
-      ? 'https://buff.163.com/goods/' + buffGoodId.value
-      : 'https://buff.163.com/market/csgo#search=' + hashName.value
-    )
-
-    return {
-      existingDetails,
-      copyToClipboard,
-      buffMarketLink
-    }
+  steamOwner: {
+    type: String
+  },
+  waxOwner: {
+    type: String
+  },
+  inspectLink: {
+    type: String
+  },
+  buffGoodId: {
+    type: Number
   }
-}
+})
+
+const existingDetails = computed(() => props.details.filter(e => e.value != null))
+
+const buffMarketLink = computed(() => props.buffGoodId
+  ? 'https://buff.163.com/goods/' + props.buffGoodId
+  : 'https://buff.163.com/market/csgo#search=' + props.hashName
+)
 </script>
 
 <style>

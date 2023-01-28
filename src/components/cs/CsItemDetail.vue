@@ -7,33 +7,26 @@
   </span>
 </template>
 
-<script>
-export default {
-  props: {
-    rarity: {
-      type: String
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    value: {
-      type: [String, Number],
-      required: true
-    }
+<script setup>
+const props = defineProps({
+  rarity: {
+    type: String
   },
-  setup(props) {
-    const detailClass = [
-      'wxb-px-3.5',
-      'wxb-py-1.5',
-      props.rarity ? `wxb-rarity-${props.rarity}` : ''
-    ]
-
-    return {
-      detailClass
-    }
+  name: {
+    type: String,
+    required: true
+  },
+  value: {
+    type: [String, Number],
+    required: true
   }
-}
+})
+
+const detailClass = [
+  'wxb-px-3.5',
+  'wxb-py-1.5',
+  props.rarity ? `wxb-rarity-${props.rarity}` : ''
+]
 </script>
 
 <style scoped>

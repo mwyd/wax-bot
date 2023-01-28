@@ -25,32 +25,20 @@
   </CsItem>
 </template>
 
-<script>
+<script setup>
 import AppButton from '@/components/ui/AppButton'
 import AppInput from '@/components/ui/AppInput'
 import CsItem from '@/components/cs/CsItem'
 import { getGuardItemData } from '@/stores/guardStore'
 
-export default {
-  components: {
-    AppInput,
-    AppButton,
-    CsItem
-  },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    }
-  },
-  setup(props) {
-    const guardData = getGuardItemData(props.item.$key)
-
-    return {
-      guardData
-    }
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
   }
-}
+})
+
+const guardData = getGuardItemData(props.item.$key)
 </script>
 
 <style>

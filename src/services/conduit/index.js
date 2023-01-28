@@ -9,14 +9,10 @@ const defaults = {
   service: externalServiceEnum.CONDUIT
 }
 
-const buffMarket = useBuffMarket(defaults)
-const steamMarket = useSteamMarket(defaults)
-const user = useUser(defaults)
-const csItem = useCsItem(defaults)
+export const buffMarket = useBuffMarket(defaults)
 
-export {
-  buffMarket,
-  steamMarket,
-  user,
-  csItem
-}
+export const steamMarket = useSteamMarket(defaults)
+
+export const user = useUser(defaults)
+
+export const csItem = useCsItem(defaults)

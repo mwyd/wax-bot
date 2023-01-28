@@ -31,7 +31,7 @@
   </AppTabWrapper>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue'
 import AppScrollView from '@/components/ui/AppScrollView'
 import AppTabWrapper from '@/components/ui/AppTabWrapper'
@@ -48,50 +48,31 @@ const defaultFilters = {
   sortBy: csItemSortEnum.DATE
 }
 
-export default {
-  components: {
-    AppScrollView,
-    AppTabWrapper,
-    CsTradeItem,
-    CsItemFilters
-  },
-  setup() {
-    const filteredItems = ref([])
+const filteredItems = ref([])
 
-    const itemsCount = computed(() => pendingItems.size + finishedItems.value.length)
+const itemsCount = computed(() => pendingItems.size + finishedItems.value.length)
 
-    process.subscribe((state) => updateTabState('Trades', state))
+process.subscribe((state) => updateTabState('Trades', state))
 
-    const itemsValue = computed(() => {
-      const pendingValue = [...pendingItems.values()].reduce((a, item) => a + item.$price, 0)
+const itemsValue = computed(() => {
+  const pendingValue = [...pendingItems.values()].reduce((a, item) => a + item.$price, 0)
 
-      let acceptedValue = 0
-      let finishedValue = 0
+  let acceptedValue = 0
+  let finishedValue = 0
 
-      for (const item of finishedItems.value) {
-        if (item.$status === waxpeerCsItemStatusEnum.ACCEPTED) {
-          acceptedValue += item.$price
-        }
-
-        finishedValue += item.$price
-      }
-
-      return {
-        accepted: round(acceptedValue),
-        total: round(pendingValue + finishedValue)
-      }
-    })
-
-    return {
-      filteredItems,
-      pendingItems,
-      finishedItems,
-      itemsValue,
-      itemsCount,
-      defaultFilters
+  for (const item of finishedItems.value) {
+    if (item.$status === waxpeerCsItemStatusEnum.ACCEPTED) {
+      acceptedValue += item.$price
     }
+
+    finishedValue += item.$price
   }
-}
+
+  return {
+    accepted: round(acceptedValue),
+    total: round(pendingValue + finishedValue)
+  }
+})
 </script>
 
 <style>

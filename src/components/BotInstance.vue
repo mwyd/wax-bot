@@ -75,7 +75,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onUnmounted } from 'vue'
 import AppProcessIndicator from '@/components/ui/AppProcessIndicator'
 import AppInput from '@/components/ui/AppInput'
@@ -85,51 +85,32 @@ import { getBotConfig, deleteBotInstance, registerBotInstance } from '@/stores/b
 import useBot from '@/composables/useBot'
 import processStateEnum from '@/enums/processStateEnum'
 
-export default {
-  components: {
-    AppProcessIndicator,
-    AppInput,
-    AppInputWrapper,
-    AppButton
-  },
-  props: {
-    id: {
-      type: String,
-      require: true
-    }
-  },
-  setup(props) {
-    const config = getBotConfig(props.id)
-
-    const state = ref(processStateEnum.TERMINATED)
-
-    const { process, activeItems, computedDealMargin, toggle } = useBot(config)
-
-    const isTerminating = computed(() => process.is(processStateEnum.TERMINATING))
-
-    const isTerminated = computed(() => process.is(processStateEnum.TERMINATED))
-
-    process.subscribe((newState) => state.value = newState)
-
-    onUnmounted(() => (!isTerminated.value && !isTerminating.value) && toggle())
-
-    registerBotInstance(props.id, {
-      state,
-      activeItems,
-      toggle
-    })
-
-    return {
-      config,
-      state,
-      isTerminating,
-      isTerminated,
-      toggle,
-      computedDealMargin,
-      deleteBotInstance
-    }
+const props = defineProps({
+  id: {
+    type: String,
+    require: true
   }
-}
+})
+
+const config = getBotConfig(props.id)
+
+const state = ref(processStateEnum.TERMINATED)
+
+const { process, activeItems, computedDealMargin, toggle } = useBot(config)
+
+const isTerminating = computed(() => process.is(processStateEnum.TERMINATING))
+
+const isTerminated = computed(() => process.is(processStateEnum.TERMINATED))
+
+process.subscribe((newState) => state.value = newState)
+
+onUnmounted(() => (!isTerminated.value && !isTerminating.value) && toggle())
+
+registerBotInstance(props.id, {
+  state,
+  activeItems,
+  toggle
+})
 </script>
 
 <style>

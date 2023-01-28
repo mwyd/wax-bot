@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { getDopplerPhaseRarity, getVolumeRarity, getFlaotRarity } from '@/resources/csItem'
+import { getDopplerPhaseRarity, getVolumeRarity, getFloatRarity } from '@/resources/csItem'
 import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
 
 export default function useCsItemDetails(item) {
@@ -17,7 +17,7 @@ export default function useCsItemDetails(item) {
     {
       name: 'Float',
       value: item.value.$float || null,
-      rarity: getFlaotRarity(item.value.$float)
+      rarity: getFloatRarity(item.value.$float)
     },
     {
       name: 'Paint seed',

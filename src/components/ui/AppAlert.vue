@@ -15,46 +15,36 @@
   </div>
 </template>
 
-<script>
-import { computed, toRef } from 'vue'
+<script setup>
+import { computed } from 'vue'
 import { destroyAlert } from '@/stores/alertsStore'
 
-export default {
-  props: {
-    id: {
-      type: [String, Number],
-      required: true
-    },
-    type: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    body: {
-      type: String,
-      default: ''
-    }
+const props = defineProps({
+  id: {
+    type: [String, Number],
+    required: true
   },
-  setup(props) {
-    const type = toRef(props, 'type')
-
-    const alertClass = computed(() => [
-      'wxb-alert',
-      'wxb-p-3.5',
-      'wxb-m-3.5',
-      'wxb-cursor-pointer',
-      `wxb-alert-${type.value}`
-    ])
-
-    return {
-      alertClass,
-      destroyAlert
-    }
+  type: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  body: {
+    type: String,
+    default: ''
   }
-}
+})
+
+const alertClass = computed(() => [
+  'wxb-alert',
+  'wxb-p-3.5',
+  'wxb-m-3.5',
+  'wxb-cursor-pointer',
+  `wxb-alert-${props.type}`
+])
 </script>
 
 <style scoped>

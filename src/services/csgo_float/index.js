@@ -6,8 +6,4 @@ const defaults = {
   service: externalServiceEnum.CSGO_FLOAT
 }
 
-const inspectTool = useInspectTool(defaults)
-
-export {
-  inspectTool
-}
+export const inspectTool = useInspectTool(defaults)

@@ -21,7 +21,7 @@
   </AppTabWrapper>
 </template>
 
-<script>
+<script setup>
 import { computed, watch } from 'vue'
 import AppActionsBar from '@/components/ui/AppActionsBar'
 import AppScrollView from '@/components/ui/AppScrollView'
@@ -37,26 +37,11 @@ const actions = [
   { name: 'stop all', callback: () => runningBotInstances.value.forEach(instance => instance.toggle()) }
 ]
 
-export default {
-  components: {
-    AppActionsBar,
-    AppScrollView,
-    AppTabWrapper,
-    BotInstance
-  },
-  setup() {
-    const botInstancesIds = computed(() => Object.keys(botConfigs.value))
+const botInstancesIds = computed(() => Object.keys(botConfigs.value))
 
-    watch(() => runningBotInstances.value.length, (value) => {
-      updateTabState('Bots', value ? processStateEnum.RUNNING : processStateEnum.TERMINATED)
-    })
-
-    return {
-      botInstancesIds,
-      actions
-    }
-  }
-}
+watch(() => runningBotInstances.value.length, (value) => {
+  updateTabState('Bots', value ? processStateEnum.RUNNING : processStateEnum.TERMINATED)
+})
 </script>
 
 <style>

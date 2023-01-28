@@ -38,55 +38,40 @@
   </div>
 </template>
 
-<script>
-import { toRefs, ref, computed } from 'vue'
+<script setup>
+import { ref, computed } from 'vue'
 import { version } from '@/config'
 import { session } from '@/stores/userStore'
 import AppProcessIndicator from '@/components/ui/AppProcessIndicator'
 import AppSettings from '@/components/AppSettings'
 
-export default {
-  components: {
-    AppProcessIndicator,
-    AppSettings
+const props = defineProps({
+  tabs: {
+    type: Object,
+    required: true
   },
-  props: {
-    tabs: {
-      type: Object,
-      required: true
-    },
-    activeTab: {
-      type: String,
-      required: true
-    }
-  },
-  emits: ['tabChange'],
-  setup(props) {
-    const { activeTab } = toRefs(props)
-
-    const showSettings = ref(false)
-
-    const tabClass = (tab) => [
-      'wxb-header-tab',
-      'wxb-px-3.5',
-      'wxb-cursor-pointer',
-      tab === activeTab.value ? 'wxb-header-tab-active' : ''
-    ]
-
-    const settingsStatusClass = computed(() => [
-      'wxb-settings-status',
-      'wxb-rounded-full',
-      session.conduitName != null ? 'wxb-settings-status-ok' : 'wxb-settings-status-fail'
-    ])
-
-    return {
-      version,
-      showSettings,
-      tabClass,
-      settingsStatusClass
-    }
+  activeTab: {
+    type: String,
+    required: true
   }
-}
+})
+
+defineEmits(['tabChange'])
+
+const showSettings = ref(false)
+
+const tabClass = (tab) => [
+  'wxb-header-tab',
+  'wxb-px-3.5',
+  'wxb-cursor-pointer',
+  tab === props.activeTab ? 'wxb-header-tab-active' : ''
+]
+
+const settingsStatusClass = computed(() => [
+  'wxb-settings-status',
+  'wxb-rounded-full',
+  session.conduitName != null ? 'wxb-settings-status-ok' : 'wxb-settings-status-fail'
+])
 </script>
 
 <style scoped>

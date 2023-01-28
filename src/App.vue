@@ -12,53 +12,28 @@
       @tabChange="tab => activeTab = tab"
     />
     <KeepAlive>
-      <component :is="tabs[activeTab].componentName"/>
+      <component :is="tabs[activeTab].component"/>
     </KeepAlive>
   </div>
   <AppAlertBox/>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted } from 'vue'
 import { tabs, activeTab, initializeTabsCache } from '@/stores/tabsStore'
-import GuardTab from '@/components/tabs/GuardTab'
-import MarketTab from '@/components/tabs/MarketTab'
-import TradesTab from '@/components/tabs/TradesTab'
-import BotsTab from '@/components/tabs/BotsTab'
 import AppHeader from '@/components/AppHeader'
 import AppButton from '@/components/ui/AppButton'
 import AppAlertBox from '@/components/AppAlertBox'
 
-export default {
-  components: {
-    GuardTab,
-    MarketTab,
-    TradesTab,
-    BotsTab,
-    AppHeader,
-    AppButton,
-    AppAlertBox
-  },
-  setup() {
-    const isHidden = ref(true)
+const isHidden = ref(true)
 
-    const appClass = computed(() => [
-      'wxb-shadow-md',
-      'wxb-app',
-      isHidden.value ? 'wxb-app-hidden' : ''
-    ])
+const appClass = computed(() => [
+  'wxb-shadow-md',
+  'wxb-app',
+  isHidden.value ? 'wxb-app-hidden' : ''
+])
 
-    onMounted(initializeTabsCache)
-
-    return {
-      tabs,
-      activeTab,
-      isHidden,
-      appClass
-    }
-  }
-}
-
+onMounted(initializeTabsCache)
 </script>
 
 <style>

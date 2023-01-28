@@ -1,32 +1,36 @@
-import { ref, reactive, nextTick } from 'vue'
+import { ref, shallowReactive, nextTick } from 'vue'
 import processStateEnum from '@/enums/processStateEnum'
+import MarketTab from '@/components/tabs/MarketTab'
+import BotsTab from '@/components/tabs/BotsTab'
+import TradesTab from '@/components/tabs/TradesTab'
+import GuardTab from '@/components/tabs/GuardTab'
 
-const tabs = reactive({
-  'Market': {
-    componentName: 'MarketTab',
+export const tabs = {
+  'Market': shallowReactive({
+    component: MarketTab,
     state: processStateEnum.TERMINATED
-  },
-  'Bots': {
-    componentName: 'BotsTab',
+  }),
+  'Bots': shallowReactive({
+    component: BotsTab,
     state: processStateEnum.TERMINATED
-  },
-  'Trades': {
-    componentName: 'TradesTab',
+  }),
+  'Trades': shallowReactive({
+    component: TradesTab,
     state: processStateEnum.TERMINATED
-  },
-  'Guard': {
-    componentName: 'GuardTab',
+  }),
+  'Guard': shallowReactive({
+    component: GuardTab,
     state: processStateEnum.TERMINATED
-  }
-})
+  })
+}
 
-const activeTab = ref('Market')
+export const activeTab = ref('Market')
 
-const updateTabState = (key, state) => {
+export const updateTabState = (key, state) => {
   tabs[key].state = state
 }
 
-const initializeTabsCache = async () => {
+export const initializeTabsCache = async () => {
   const initialTab = activeTab.value
 
   for (const key in tabs) {
@@ -40,11 +44,4 @@ const initializeTabsCache = async () => {
   }
 
   activeTab.value = initialTab
-}
-
-export {
-  tabs,
-  activeTab,
-  updateTabState,
-  initializeTabsCache
 }

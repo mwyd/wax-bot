@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import { session, authenticateConduit, userPreferences } from '@/stores/userStore'
 import AppInput from '@/components/ui/AppInput'
@@ -32,31 +32,14 @@ import AppButton from '@/components/ui/AppButton'
 import AppHorizontalSelect from '@/components/ui/AppHorizontalSelect'
 import targetMarketEnum from '@/enums/targetMarketEnum'
 
-export default {
-  components: {
-    AppInput,
-    AppInputWrapper,
-    AppButton,
-    AppHorizontalSelect
+const token = computed({
+  get() {
+    return session.token || ''
   },
-  setup() {
-    const token = computed({
-      get() {
-        return session.token || ''
-      },
-      set(value) {
-        session.token = value
-      }
-    })
-
-    return {
-      userPreferences,
-      token,
-      authenticateConduit,
-      targetMarketEnum
-    }
+  set(value) {
+    session.token = value
   }
-}
+})
 </script>
 
 <style scoped>
