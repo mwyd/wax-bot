@@ -3,7 +3,6 @@ import { user as waxpeerUser } from '@/services/waxpeer'
 import { updateItemDetails, normalizeItemPrice } from '@/resources/csItem'
 import { syncStorage, round } from '@/utils'
 import { getMarketItemData } from '@/cache/conduit'
-import moment from 'moment'
 
 export const config = reactive({
   bidStep: 0.01,
@@ -100,7 +99,7 @@ export const loadGuardItems = async () => {
   const updatedGuardItemsData = {}
 
   for (const item of ref(sellItems).value) {
-    item.$key = `${item.item_id}_${moment(item.date).format('X')}`
+    item.$key = `${item.item_id}_${Date.parse(item.date)}`
     item.steam_price_number = item.steam_price?.average ?? item.price
 
     normalizeItemPrice(item)

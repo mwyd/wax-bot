@@ -1,6 +1,7 @@
-import moment from 'moment'
+import dateFormat from 'dateformat'
 import { pushAlert } from '@/stores/alertsStore'
 import alertTypeEnum from '@/enums/alertTypeEnum'
+import { botDateFormat } from '@/config'
 
 export const syncStorage = {
   set: (data) => chrome.storage.sync.set(data),
@@ -8,7 +9,7 @@ export const syncStorage = {
 }
 
 export const WXB_LOG = (message, data) => {
-  console.log(`[${moment().format('YYYY-MM-DD HH:mm:ss')}] [WAX-BOT] ${message}`, data)
+  console.log(`[${dateFormat(Date.now(), botDateFormat)}] [WAX-BOT] ${message}`, data)
 }
 
 export const fetchBackground = (message) => {
@@ -21,8 +22,8 @@ export const calculateDiscount = (a, b, round = true) => {
   return round ? Math.round(discount) : discount
 }
 
-export const waxpeerDate = () => {
-  return moment().subtract(2, 'hours')
+export const waxpeerTimestamp = () => {
+  return Date.now() - 1000 * 60 * 60 * 2
 }
 
 export const round = (number, decimals = 3) => {

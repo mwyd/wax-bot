@@ -1,15 +1,16 @@
 import { reactive, ref, watch, computed } from 'vue'
-import { syncStorage, waxpeerDate, WXB_LOG } from '@/utils'
+import { syncStorage, waxpeerTimestamp, WXB_LOG } from '@/utils'
 import { user as waxpeerUser, market as waxpeerMarket } from '@/services/waxpeer'
-import { updateTradesDelay, notificationSound, botConfigsLimit } from '@/config'
+import { updateTradesDelay, notificationSound, botConfigsLimit, botDateFormat } from '@/config'
 import { pushAlert } from './alertsStore'
 import { v4 as uuidv4 } from 'uuid'
+import dateFormat from 'dateformat'
 import useProcess from '@/composables/useProcess'
 import processStateEnum from '@/enums/processStateEnum'
 import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
 import alertTypeEnum from '@/enums/alertTypeEnum'
 
-let timestamp = waxpeerDate()
+let timestamp = waxpeerTimestamp()
 
 export const process = useProcess()
 
@@ -100,7 +101,7 @@ const updatePendingItems = async () => {
 
   const trades = await waxpeerUser.getAllTrades({
     page: 'steam_trades',
-    start: timestamp.format('YYYY-MM-DD HH:mm:ss')
+    start: dateFormat(timestamp, botDateFormat)
   })
 
   for (const [id, item] of pendingItems) {
@@ -163,7 +164,7 @@ export const buyItem = async (item) => {
       alert.body = 'Successful purchase'
 
       if (process.is(processStateEnum.TERMINATED)) {
-        timestamp = waxpeerDate()
+        timestamp = waxpeerTimestamp()
 
         updatePendingItems()
       }

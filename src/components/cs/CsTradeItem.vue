@@ -11,9 +11,10 @@
 
 <script setup>
 import { computed } from 'vue'
+import dateFormat from 'dateformat'
+import { botDateFormat } from '@/config'
 import CsItem from '@/components/cs/CsItem'
 import waxpeerCsItemStatusEnum from '@/enums/waxpeerCsItemStatusEnum'
-import moment from 'moment'
 
 const props = defineProps({
   item: {
@@ -46,7 +47,7 @@ const statusClass = computed(() => [
   `wxb-status-${status.value}`
 ])
 
-const boughtDateTime = computed(() => moment(props.item.$bought_at).format('YYYY-MM-DD HH:mm:ss'))
+const boughtDateTime = computed(() => dateFormat(props.item.$bought_at, botDateFormat))
 </script>
 
 <style scoped>

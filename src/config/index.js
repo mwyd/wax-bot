@@ -15,3 +15,5 @@ export const notificationSound = new Audio(chrome.runtime.getURL('/assets/audio/
 export const inputHighlightTimeout = 0.25
 
 export const botConfigsLimit = 20
+
+export const botDateFormat = 'yyyy-mm-dd HH:MM:ss'
