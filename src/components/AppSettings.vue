@@ -14,6 +14,14 @@
         :options="Object.values(targetMarketEnum)"
       />
     </AppInputWrapper>
+    <AppInputWrapper label="Notification volume">
+      <AppInput
+        v-model="userPreferences.notificationVolume"
+        type="range"
+        :validator="value => value >= 0 && value <= 100"
+        @click="notificationSound.play()"
+      />
+    </AppInputWrapper>
     <AppButton
       class="wxb-btn-big wxb-mt-3.5"
       @click="authenticateConduit"
@@ -26,6 +34,7 @@
 <script setup>
 import { computed } from 'vue'
 import { session, authenticateConduit, userPreferences } from '@/stores/userStore'
+import { notificationSound } from '@/config'
 import AppInput from '@/components/ui/AppInput'
 import AppInputWrapper from '@/components/ui/AppInputWrapper'
 import AppButton from '@/components/ui/AppButton'

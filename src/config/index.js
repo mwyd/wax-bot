@@ -10,7 +10,9 @@ export const marketResultLimit = 50
 
 export const steamBuffDiscountOffset = 30
 
-export const notificationSound = new Audio(chrome.runtime.getURL('/assets/audio/witam.mp3'))
+export const notificationSound = new Audio(chrome.runtime.getURL('/assets/audio/notification.mp3'))
+
+export const defaultNotificationVolume = 50
 
 export const inputHighlightTimeout = 0.25
 

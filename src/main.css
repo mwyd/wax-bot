@@ -20,6 +20,10 @@
   @apply wxb-border wxb-border-solid wxb-border-gray-900 !important;
 }
 
+.wxb-input[type="range"] {
+  padding: 5px 0 !important;
+}
+
 .wxb-variant {
   font-weight: bold;
   @apply wxb-text-yellow-500;

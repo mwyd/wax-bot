@@ -3,6 +3,7 @@ import { user as conduitUser } from '@/services/conduit'
 import { user as waxpeerUser } from '@/services/waxpeer'
 import { syncStorage } from '@/utils'
 import { pushAlert } from './alertsStore'
+import { defaultNotificationVolume, notificationSound } from '@/config'
 import alertTypeEnum from '@/enums/alertTypeEnum'
 import targetMarketEnum from '@/enums/targetMarketEnum'
 
@@ -13,7 +14,8 @@ export const session = reactive({
 })
 
 export const userPreferences = reactive({
-  targetMarket: targetMarketEnum.STEAM
+  targetMarket: targetMarketEnum.STEAM,
+  notificationVolume: defaultNotificationVolume
 })
 
 export const loadToken = async () => {
@@ -34,6 +36,10 @@ export const loadUserPreferences = async () => {
 
 watch(userPreferences, () => {
   syncStorage.set({ preferences: userPreferences })
+})
+
+watch(() => userPreferences.notificationVolume, (value) => {
+  notificationSound.volume = value / 100
 })
 
 export const authenticateConduit = async () => {
