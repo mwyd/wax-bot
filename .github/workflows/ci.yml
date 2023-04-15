@@ -1,0 +1,33 @@
+name: 'ci'
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to the repository
+        uses: actions/checkout@v3
+
+      - name: Set node version to 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run eslint
+        run: npm run lint
+
+      - name: Create build
+        run: npm run build
