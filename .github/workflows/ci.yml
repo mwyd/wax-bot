@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set node version to 18
         uses: actions/setup-node@v3
@@ -25,6 +25,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Run prettier
+        run: npm run prettier:check
 
       - name: Run eslint
         run: npm run lint
