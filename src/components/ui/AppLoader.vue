@@ -2,8 +2,7 @@
   <div class="wxb-loader" />
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style scoped>
 .wxb-loader {

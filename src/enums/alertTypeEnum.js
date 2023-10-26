@@ -1,5 +1,5 @@
 export default Object.freeze({
-  SUCCESS: 'success',
-  INFO: 'info',
-  ERROR: 'error'
-})
+  SUCCESS: "success",
+  INFO: "info",
+  ERROR: "error",
+});

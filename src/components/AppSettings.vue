@@ -18,7 +18,7 @@
       <AppInput
         v-model="userPreferences.notificationVolume"
         type="range"
-        :validator="value => value >= 0 && value <= 100"
+        :validator="(value) => value >= 0 && value <= 100"
         @click="notificationSound.play()"
       />
     </AppInputWrapper>
@@ -32,23 +32,27 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { session, authenticateConduit, userPreferences } from '@/stores/userStore'
-import { notificationSound } from '@/config'
-import AppInput from '@/components/ui/AppInput'
-import AppInputWrapper from '@/components/ui/AppInputWrapper'
-import AppButton from '@/components/ui/AppButton'
-import AppHorizontalSelect from '@/components/ui/AppHorizontalSelect'
-import targetMarketEnum from '@/enums/targetMarketEnum'
+import { computed } from "vue";
+import {
+  session,
+  authenticateConduit,
+  userPreferences,
+} from "@/stores/userStore";
+import { notificationSound } from "@/config";
+import AppInput from "@/components/ui/AppInput";
+import AppInputWrapper from "@/components/ui/AppInputWrapper";
+import AppButton from "@/components/ui/AppButton";
+import AppHorizontalSelect from "@/components/ui/AppHorizontalSelect";
+import targetMarketEnum from "@/enums/targetMarketEnum";
 
 const token = computed({
   get() {
-    return session.token || ''
+    return session.token || "";
   },
   set(value) {
-    session.token = value
-  }
-})
+    session.token = value;
+  },
+});
 </script>
 
 <style scoped>

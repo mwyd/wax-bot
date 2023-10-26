@@ -1,62 +1,66 @@
-import { computed } from 'vue'
-import { getDopplerPhaseRarity, getVolumeRarity, getFloatRarity } from '@/resources/csItem'
-import csItemDetailRarityEnum from '@/enums/csItemDetailRarityEnum'
+import { computed } from "vue";
+import {
+  getDopplerPhaseRarity,
+  getVolumeRarity,
+  getFloatRarity,
+} from "@/resources/csItem";
+import csItemDetailRarityEnum from "@/enums/csItemDetailRarityEnum";
 
 export default function useCsItemDetails(item) {
   const details = computed(() => [
     {
-      name: 'Position',
+      name: "Position",
       value: item.value.position,
-      rarity: csItemDetailRarityEnum.COMMON
+      rarity: csItemDetailRarityEnum.COMMON,
     },
     {
-      name: 'Variant',
+      name: "Variant",
       value: item.value.$variant,
-      rarity: csItemDetailRarityEnum.RARE
+      rarity: csItemDetailRarityEnum.RARE,
     },
     {
-      name: 'Float',
+      name: "Float",
       value: item.value.$float || null,
-      rarity: getFloatRarity(item.value.$float)
+      rarity: getFloatRarity(item.value.$float),
     },
     {
-      name: 'Paint seed',
+      name: "Paint seed",
       value: item.value.$paint_seed || null,
-      rarity: csItemDetailRarityEnum.COMMON
+      rarity: csItemDetailRarityEnum.COMMON,
     },
     {
-      name: 'Phase',
+      name: "Phase",
       value: item.value.$phase,
-      rarity: getDopplerPhaseRarity(item.value.$phase)
+      rarity: getDopplerPhaseRarity(item.value.$phase),
     },
     {
-      name: 'Suggested price $',
+      name: "Suggested price $",
       value: item.value.$suggested_price,
-      rarity: csItemDetailRarityEnum.COMMON
+      rarity: csItemDetailRarityEnum.COMMON,
     },
     {
-      name: 'Steam price $',
+      name: "Steam price $",
       value: item.value.$steam?.price,
-      rarity: csItemDetailRarityEnum.COMMON
+      rarity: csItemDetailRarityEnum.COMMON,
     },
     {
-      name: 'Steam volume',
+      name: "Steam volume",
       value: item.value.$steam?.volume,
-      rarity: getVolumeRarity(item.value.$steam?.volume)
+      rarity: getVolumeRarity(item.value.$steam?.volume),
     },
     {
-      name: 'Buff price $',
+      name: "Buff price $",
       value: item.value.$buff?.price,
-      rarity: csItemDetailRarityEnum.COMMON
+      rarity: csItemDetailRarityEnum.COMMON,
     },
     {
-      name: 'Buff volume',
+      name: "Buff volume",
       value: item.value.$buff?.volume,
-      rarity: getVolumeRarity(item.value.$buff?.volume)
-    }
-  ])
+      rarity: getVolumeRarity(item.value.$buff?.volume),
+    },
+  ]);
 
   return {
-    details
-  }
+    details,
+  };
 }

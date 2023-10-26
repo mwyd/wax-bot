@@ -1,6 +1,8 @@
 <template>
   <div class="wxb-flex wxb-h-full wxb-p-3.5">
-    <div class="wxb-right-border wxb-flex-2xl wxb-p-3.5 wxb-pr-6 wxb-flex wxb-flex-col">
+    <div
+      class="wxb-right-border wxb-flex-2xl wxb-p-3.5 wxb-pr-6 wxb-flex wxb-flex-col"
+    >
       <h4 class="wxb-mt-0 wxb-mb-3.5">
         Manage
       </h4>
@@ -9,7 +11,7 @@
           <AppInput
             v-model.number="config.bidStep"
             type="number"
-            :validator="value => (value > 0 && value < 100)"
+            :validator="(value) => value > 0 && value < 100"
           />
         </AppInputWrapper>
         <AppInputWrapper label="% Limit">
@@ -17,12 +19,12 @@
             <AppInput
               v-model.number="config.lowerLimit"
               type="number"
-              :validator="value => (value > 0 && value <= config.upperLimit)"
+              :validator="(value) => value > 0 && value <= config.upperLimit"
             />
             <AppInput
               v-model.number="config.upperLimit"
               type="number"
-              :validator="value => (value >= config.lowerLimit && value <= 10)"
+              :validator="(value) => value >= config.lowerLimit && value <= 10"
             />
           </div>
         </AppInputWrapper>
@@ -30,14 +32,14 @@
           <AppInput
             v-model.number="config.pages"
             type="number"
-            :validator="value => (value >= 1 && value <= 10)"
+            :validator="(value) => value >= 1 && value <= 10"
           />
         </AppInputWrapper>
         <AppInputWrapper label="Update delay">
           <AppInput
             v-model.number="config.updateDelay"
             type="number"
-            :validator="value => (value >= 0 && value <= 300)"
+            :validator="(value) => value >= 0 && value <= 300"
           />
         </AppInputWrapper>
       </AppScrollView>
@@ -46,22 +48,18 @@
         :disabled="isTerminating"
         @click="toggle"
       >
-        {{ !isTerminated ? 'Stop' : 'Start' }}
+        {{ !isTerminated ? "Stop" : "Start" }}
       </AppButton>
     </div>
     <div class="wxb-p-3.5 wxb-pl-6 wxb-w-full wxb-flex wxb-flex-col">
       <h4 class="wxb-mt-0 wxb-mb-6 wxb-flex wxb-justify-between">
-        <span>
-          Items - {{ guardItems.size }}
-        </span>
-        <span>
-          $ {{ guardItemsValue }}
-        </span>
+        <span> Items - {{ guardItems.size }} </span>
+        <span> $ {{ guardItemsValue }} </span>
       </h4>
       <CsItemFilters
         :default-filters="defaultFilters"
         :items="[...guardItems.values()]"
-        @filter="items => filteredItems = items"
+        @filter="(items) => (filteredItems = items)"
       />
       <div class="wxb-flex wxb-py-3.5">
         <div class="wxb-w-full wxb-px-3.5">
@@ -96,45 +94,51 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import AppActionsBar from '@/components/ui/AppActionsBar'
-import AppButton from '@/components/ui/AppButton'
-import AppInput from '@/components/ui/AppInput'
-import AppInputWrapper from '@/components/ui/AppInputWrapper'
-import AppScrollView from '@/components/ui/AppScrollView'
-import CsGuardItem from '@/components/cs/CsGuardItem'
-import CsItemFilters from '@/components/cs/CsItemFilters'
-import useGuard from '@/composables/useGuard'
-import processStateEnum from '@/enums/processStateEnum'
-import { config, guardItems, loadGuardItems, ignoreGuardItems, adjustObservedItems } from '@/stores/guardStore'
-import { updateTabState } from '@/stores/tabsStore'
-import { round } from '@/utils'
-import csItemSortEnum from '@/enums/csItemSortEnum'
+import { computed, ref } from "vue";
+import AppActionsBar from "@/components/ui/AppActionsBar";
+import AppButton from "@/components/ui/AppButton";
+import AppInput from "@/components/ui/AppInput";
+import AppInputWrapper from "@/components/ui/AppInputWrapper";
+import AppScrollView from "@/components/ui/AppScrollView";
+import CsGuardItem from "@/components/cs/CsGuardItem";
+import CsItemFilters from "@/components/cs/CsItemFilters";
+import useGuard from "@/composables/useGuard";
+import processStateEnum from "@/enums/processStateEnum";
+import {
+  config,
+  guardItems,
+  loadGuardItems,
+  ignoreGuardItems,
+  adjustObservedItems,
+} from "@/stores/guardStore";
+import { updateTabState } from "@/stores/tabsStore";
+import { round } from "@/utils";
+import csItemSortEnum from "@/enums/csItemSortEnum";
 
 const defaultFilters = {
-  sortBy: csItemSortEnum.MARKET_PRICE
-}
+  sortBy: csItemSortEnum.MARKET_PRICE,
+};
 
 const actions = [
-  { name: 'refresh', callback: loadGuardItems },
-  { name: 'adjust', callback: adjustObservedItems },
-  { name: 'observe all', callback: () => ignoreGuardItems(false) },
-  { name: 'ignore all', callback: () => ignoreGuardItems(true) }
-]
+  { name: "refresh", callback: loadGuardItems },
+  { name: "adjust", callback: adjustObservedItems },
+  { name: "observe all", callback: () => ignoreGuardItems(false) },
+  { name: "ignore all", callback: () => ignoreGuardItems(true) },
+];
 
-const filteredItems = ref([])
+const filteredItems = ref([]);
 
-const { process, toggle } = useGuard()
+const { process, toggle } = useGuard();
 
-const isTerminating = computed(() => process.is(processStateEnum.TERMINATING))
+const isTerminating = computed(() => process.is(processStateEnum.TERMINATING));
 
-const isTerminated = computed(() => process.is(processStateEnum.TERMINATED))
+const isTerminated = computed(() => process.is(processStateEnum.TERMINATED));
 
-process.subscribe((state) => updateTabState('Guard', state))
+process.subscribe((state) => updateTabState("Guard", state));
 
-const guardItemsValue = computed(() => round(
-  [...guardItems.value.values()].reduce(((a, item) => a + item.$price), 0)
-))
+const guardItemsValue = computed(() =>
+  round([...guardItems.value.values()].reduce((a, item) => a + item.$price, 0)),
+);
 </script>
 
 <style scoped>

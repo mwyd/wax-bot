@@ -22,28 +22,45 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
-import AppActionsBar from '@/components/ui/AppActionsBar'
-import AppScrollView from '@/components/ui/AppScrollView'
-import AppTabWrapper from '@/components/ui/AppTabWrapper'
-import BotInstance from '@/components/BotInstance'
-import { botConfigs, addBotConfig, runningBotInstances, terminatedBotInstances } from '@/stores/botStore'
-import { updateTabState } from '@/stores/tabsStore'
-import processStateEnum from '@/enums/processStateEnum'
+import { computed, watch } from "vue";
+import AppActionsBar from "@/components/ui/AppActionsBar";
+import AppScrollView from "@/components/ui/AppScrollView";
+import AppTabWrapper from "@/components/ui/AppTabWrapper";
+import BotInstance from "@/components/BotInstance";
+import {
+  botConfigs,
+  addBotConfig,
+  runningBotInstances,
+  terminatedBotInstances,
+} from "@/stores/botStore";
+import { updateTabState } from "@/stores/tabsStore";
+import processStateEnum from "@/enums/processStateEnum";
 
 const actions = [
-  { name: 'add', callback: addBotConfig },
-  { name: 'start all', callback: () => terminatedBotInstances.value.forEach(instance => instance.toggle()) },
-  { name: 'stop all', callback: () => runningBotInstances.value.forEach(instance => instance.toggle()) }
-]
+  { name: "add", callback: addBotConfig },
+  {
+    name: "start all",
+    callback: () =>
+      terminatedBotInstances.value.forEach((instance) => instance.toggle()),
+  },
+  {
+    name: "stop all",
+    callback: () =>
+      runningBotInstances.value.forEach((instance) => instance.toggle()),
+  },
+];
 
-const botInstancesIds = computed(() => Object.keys(botConfigs.value))
+const botInstancesIds = computed(() => Object.keys(botConfigs.value));
 
-watch(() => runningBotInstances.value.length, (value) => {
-  updateTabState('Bots', value ? processStateEnum.RUNNING : processStateEnum.TERMINATED)
-})
+watch(
+  () => runningBotInstances.value.length,
+  (value) => {
+    updateTabState(
+      "Bots",
+      value ? processStateEnum.RUNNING : processStateEnum.TERMINATED,
+    );
+  },
+);
 </script>
 
-<style>
-
-</style>
+<style></style>

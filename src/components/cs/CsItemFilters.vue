@@ -31,40 +31,42 @@
 </template>
 
 <script setup>
-import { watch, computed } from 'vue'
-import AppInput from '@/components/ui/AppInput'
-import useCsItemFilters from '@/composables/useCsItemFilters'
+import { watch, computed } from "vue";
+import AppInput from "@/components/ui/AppInput";
+import useCsItemFilters from "@/composables/useCsItemFilters";
 
 const props = defineProps({
   items: {
     type: Array,
-    required: true
+    required: true,
   },
   defaultFilters: {
     type: Object,
-    default: () => ({})
-  }
-})
+    default: () => ({}),
+  },
+});
 
-const emit = defineEmits(['filter'])
+const emit = defineEmits(["filter"]);
 
-const { filters, sortVariants, comparator } = useCsItemFilters(props.defaultFilters)
+const { filters, sortVariants, comparator } = useCsItemFilters(
+  props.defaultFilters,
+);
 
 const sortDirBtnClass = computed(() => [
-  'wxb-sort-btn',
-  'wxb-cursor-pointer',
-  'wxb-p-2.5',
-  'wxb-ml-3.5',
-  filters.sortAsc ? 'wxb-sort-btn-asc' : 'wxb-sort-btn-desc'
-])
+  "wxb-sort-btn",
+  "wxb-cursor-pointer",
+  "wxb-p-2.5",
+  "wxb-ml-3.5",
+  filters.sortAsc ? "wxb-sort-btn-asc" : "wxb-sort-btn-desc",
+]);
 
 watch([filters, () => props.items], () => {
   const filtered = props.items
-    .filter(item => item.$searchable.includes(filters.search.toLowerCase()))
-    .sort(comparator)
+    .filter((item) => item.$searchable.includes(filters.search.toLowerCase()))
+    .sort(comparator);
 
-  emit('filter', filtered)
-})
+  emit("filter", filtered);
+});
 </script>
 
 <style scoped>

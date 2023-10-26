@@ -1,9 +1,7 @@
 <template>
   <div class="wxb-header wxb-pl-14 wxb-pr-6">
     <div class="wxb-uppercase">
-      <span class="wxb-font-bold">
-        wax-bot
-      </span>
+      <span class="wxb-font-bold"> wax-bot </span>
       <sup class="wxb-pl-1.5">
         {{ version }}
       </sup>
@@ -39,39 +37,41 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { version } from '@/config'
-import { session } from '@/stores/userStore'
-import AppProcessIndicator from '@/components/ui/AppProcessIndicator'
-import AppSettings from '@/components/AppSettings'
+import { ref, computed } from "vue";
+import { version } from "@/config";
+import { session } from "@/stores/userStore";
+import AppProcessIndicator from "@/components/ui/AppProcessIndicator";
+import AppSettings from "@/components/AppSettings";
 
 const props = defineProps({
   tabs: {
     type: Object,
-    required: true
+    required: true,
   },
   activeTab: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-defineEmits(['tabChange'])
+defineEmits(["tabChange"]);
 
-const showSettings = ref(false)
+const showSettings = ref(false);
 
 const tabClass = (tab) => [
-  'wxb-header-tab',
-  'wxb-px-3.5',
-  'wxb-cursor-pointer',
-  tab === props.activeTab ? 'wxb-header-tab-active' : ''
-]
+  "wxb-header-tab",
+  "wxb-px-3.5",
+  "wxb-cursor-pointer",
+  tab === props.activeTab ? "wxb-header-tab-active" : "",
+];
 
 const settingsStatusClass = computed(() => [
-  'wxb-settings-status',
-  'wxb-rounded-full',
-  session.conduitName != null ? 'wxb-settings-status-ok' : 'wxb-settings-status-fail'
-])
+  "wxb-settings-status",
+  "wxb-rounded-full",
+  session.conduitName != null
+    ? "wxb-settings-status-ok"
+    : "wxb-settings-status-fail",
+]);
 </script>
 
 <style scoped>
@@ -90,7 +90,7 @@ const settingsStatusClass = computed(() => [
   justify-content: center;
   align-items: center;
   width: 100px;
-  height: 100%
+  height: 100%;
 }
 
 .wxb-header-tab-active {
@@ -100,7 +100,7 @@ const settingsStatusClass = computed(() => [
 .wxb-header-settings-btn {
   width: 16px;
   height: 16px;
-  background-image: url('chrome-extension://__MSG_@@extension_id__/assets/img/settings.png');
+  background-image: url("chrome-extension://__MSG_@@extension_id__/assets/img/settings.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;

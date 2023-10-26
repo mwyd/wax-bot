@@ -1,5 +1,7 @@
 <template>
-  <div class="wxb-bg-gray-600 wxb-w-full wxb-p-1.5 wxb-flex wxb-flex-wrap wxb-items-center">
+  <div
+    class="wxb-bg-gray-600 wxb-w-full wxb-p-1.5 wxb-flex wxb-flex-wrap wxb-items-center"
+  >
     <CsItemDetail
       v-for="(detail, i) in existingDetails"
       :key="`${detail.name}-${i}`"
@@ -47,22 +49,22 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { copyToClipboard } from '@/utils'
-import CsItemDetail from '@/components/cs/CsItemDetail'
+import { computed } from "vue";
+import { copyToClipboard } from "@/utils";
+import CsItemDetail from "@/components/cs/CsItemDetail";
 
 const props = defineProps({
   details: {
     type: Array,
-    required: true
+    required: true,
   },
   hashName: {
     type: String,
-    required: true
+    required: true,
   },
   steamOwner: {
     type: String,
-    default: null
+    default: null,
   },
   waxOwner: {
     type: String,
@@ -75,17 +77,18 @@ const props = defineProps({
   buffGoodId: {
     type: Number,
     default: null,
-  }
-})
+  },
+});
 
-const existingDetails = computed(() => props.details.filter(e => e.value != null))
+const existingDetails = computed(() =>
+  props.details.filter((e) => e.value != null),
+);
 
-const buffMarketLink = computed(() => props.buffGoodId
-  ? 'https://buff.163.com/goods/' + props.buffGoodId
-  : 'https://buff.163.com/market/csgo#search=' + props.hashName
-)
+const buffMarketLink = computed(() =>
+  props.buffGoodId
+    ? "https://buff.163.com/goods/" + props.buffGoodId
+    : "https://buff.163.com/market/csgo#search=" + props.hashName,
+);
 </script>
 
-<style>
-
-</style>
+<style></style>

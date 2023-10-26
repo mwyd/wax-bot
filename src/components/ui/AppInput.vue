@@ -10,8 +10,8 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
-import { inputHighlightTimeout } from '@/config'
+import { computed, ref, watch } from "vue";
+import { inputHighlightTimeout } from "@/config";
 
 const props = defineProps({
   type: {
@@ -20,56 +20,59 @@ const props = defineProps({
   },
   modelValue: {
     type: [String, Number],
-    required: true
+    required: true,
   },
   modelModifiers: {
     type: Object,
-    default: () => ({})
+    default: () => ({}),
   },
   disabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   placeholder: {
     type: String,
-    default: ''
+    default: "",
   },
   validator: {
     type: Function,
-    default: () => true
-  }
-})
+    default: () => true,
+  },
+});
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(["update:modelValue"]);
 
-const internalModel = ref(props.modelValue)
+const internalModel = ref(props.modelValue);
 
-const errorOccurred = ref(false)
+const errorOccurred = ref(false);
 
 const inputClass = computed(() => [
-  'wxb-input',
-  errorOccurred.value ? 'wxb-input-error' : ''
-])
+  "wxb-input",
+  errorOccurred.value ? "wxb-input-error" : "",
+]);
 
-watch(() => props.modelValue, (newValue) => internalModel.value = newValue)
+watch(
+  () => props.modelValue,
+  (newValue) => (internalModel.value = newValue),
+);
 
-const updateModelValue = () => emit('update:modelValue', internalModel.value)
+const updateModelValue = () => emit("update:modelValue", internalModel.value);
 
 const validateInternalModel = () => {
   if (!props.validator(internalModel.value)) {
-    errorOccurred.value = true
+    errorOccurred.value = true;
 
     setTimeout(() => {
-      internalModel.value = props.modelValue
+      internalModel.value = props.modelValue;
 
-      errorOccurred.value = false
-    }, inputHighlightTimeout * 1000)
+      errorOccurred.value = false;
+    }, inputHighlightTimeout * 1000);
 
-    return
+    return;
   }
 
-  updateModelValue()
-}
+  updateModelValue();
+};
 </script>
 
 <style scoped>

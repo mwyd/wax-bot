@@ -13,27 +13,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import AppButton from '@/components/ui/AppButton'
-import CsItem from '@/components/cs/CsItem'
-import { buyItem } from '@/stores/botStore'
+import { ref } from "vue";
+import AppButton from "@/components/ui/AppButton";
+import CsItem from "@/components/cs/CsItem";
+import { buyItem } from "@/stores/botStore";
 
 const props = defineProps({
   item: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const buyBtnDisabled = ref(false)
+const buyBtnDisabled = ref(false);
 
 const buy = () => {
-  buyBtnDisabled.value = true
+  buyBtnDisabled.value = true;
 
-  buyItem(props.item).then(() => buyBtnDisabled.value = false)
-}
+  buyItem(props.item).then(() => (buyBtnDisabled.value = false));
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

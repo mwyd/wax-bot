@@ -1,4 +1,4 @@
 export default Object.freeze({
-  BUFF: 'buff',
-  STEAM: 'steam'
-})
+  BUFF: "buff",
+  STEAM: "steam",
+});

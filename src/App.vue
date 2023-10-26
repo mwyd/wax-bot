@@ -3,13 +3,13 @@
     class="wxb-toggle-btn"
     @click="isHidden = !isHidden"
   >
-    {{ isHidden ? '›' : '‹' }}
+    {{ isHidden ? "›" : "‹" }}
   </AppButton>
   <div :class="appClass">
     <AppHeader
       :tabs="tabs"
       :active-tab="activeTab"
-      @tab-change="tab => activeTab = tab"
+      @tab-change="(tab) => (activeTab = tab)"
     />
     <KeepAlive>
       <component :is="tabs[activeTab].component" />
@@ -19,21 +19,21 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { tabs, activeTab, initializeTabsCache } from '@/stores/tabsStore'
-import AppHeader from '@/components/AppHeader'
-import AppButton from '@/components/ui/AppButton'
-import AppAlertBox from '@/components/AppAlertBox'
+import { ref, computed, onMounted } from "vue";
+import { tabs, activeTab, initializeTabsCache } from "@/stores/tabsStore";
+import AppHeader from "@/components/AppHeader";
+import AppButton from "@/components/ui/AppButton";
+import AppAlertBox from "@/components/AppAlertBox";
 
-const isHidden = ref(true)
+const isHidden = ref(true);
 
 const appClass = computed(() => [
-  'wxb-shadow-md',
-  'wxb-app',
-  isHidden.value ? 'wxb-app-hidden' : ''
-])
+  "wxb-shadow-md",
+  "wxb-app",
+  isHidden.value ? "wxb-app-hidden" : "",
+]);
 
-onMounted(initializeTabsCache)
+onMounted(initializeTabsCache);
 </script>
 
 <style>

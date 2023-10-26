@@ -1,14 +1,14 @@
-import useMarket from "./useMarket"
-import useUser from "./useUser"
+import useMarket from "./useMarket";
+import useUser from "./useUser";
 
 const defaults = {
-  baseUrl: 'https://waxpeer.com/api',
-  credentials: 'include',
+  baseUrl: "https://waxpeer.com/api",
+  credentials: "include",
   headers: {
-    'Accept': 'application/json'
-  }
-}
+    Accept: "application/json",
+  },
+};
 
-export const market = useMarket(defaults)
+export const market = useMarket(defaults);
 
-export const user = useUser(defaults)
+export const user = useUser(defaults);

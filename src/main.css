@@ -14,7 +14,7 @@
   padding: 5px 10px !important;
   color: inherit !important;
   border-radius: 2px !important;
-  transition: .3s;
+  transition: 0.3s;
   font-size: inherit;
   @apply wxb-bg-gray-800;
   @apply wxb-border wxb-border-solid wxb-border-gray-900 !important;
