@@ -91,9 +91,14 @@ export const updateItemDetails = async (item) => {
 
   let { id, floatvalue, paintseed } = item.inspect_item;
 
-  const { S, inspectLink } = decodeInspectId(id);
+  let S = null;
+  let inspectLink = null;
 
-  if (floatvalue === null) {
+  if (id !== undefined) {
+    ({ S, inspectLink } = decodeInspectId(id));
+  }
+
+  if (floatvalue === null && inspectLink !== null) {
     const { success, data } = await inspectTool.itemInfo(inspectLink);
 
     if (success && data.iteminfo) {
