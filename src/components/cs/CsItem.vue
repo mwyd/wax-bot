@@ -2,7 +2,9 @@
   <div class="wxb-py-1.5">
     <div class="wxb-bg-gray-700 wxb-p-1.5 wxb-flex">
       <div class="wxb-w-full wxb-flex wxb-items-center wxb-px-3.5">
-        <div class="wxb-w-full wxb-flex wxb-items-center wxb-overflow-hidden wxb-text-ellipsis wxb-whitespace-nowrap">
+        <div
+          class="wxb-w-full wxb-flex wxb-items-center wxb-overflow-hidden wxb-text-ellipsis wxb-whitespace-nowrap"
+        >
           <img
             class="wxb-h-20 wxb-pr-3.5"
             :alt="item.item_id"
@@ -23,12 +25,12 @@
           :stickers="item.inspect_item?.stickers"
         />
       </div>
-      <div class="wxb-flex wxb-flex-lg wxb-items-center wxb-px-3.5 wxb-overflow-hidden wxb-whitespace-nowrap">
+      <div
+        class="wxb-flex wxb-flex-lg wxb-items-center wxb-px-3.5 wxb-overflow-hidden wxb-whitespace-nowrap"
+      >
         <span>
           $ {{ item.$price }}
-          <sup
-            class="wxb-text-orange-500 wxb-font-bold wxb-text-xl"
-          >
+          <sup class="wxb-text-orange-500 wxb-font-bold wxb-text-xl">
             {{ discount }}
           </sup>
         </span>
@@ -47,36 +49,34 @@
 </template>
 
 <script setup>
-import { computed, toRef } from 'vue'
-import { userPreferences } from '@/stores/userStore'
-import CsItemDetailsBar from '@/components/cs/CsItemDetailsBar'
-import CsItemStickers from '@/components/cs/CsItemStickers'
-import useCsItemDetails from '@/composables/useCsItemDetails'
+import { computed, toRef } from "vue";
+import { userPreferences } from "@/stores/userStore";
+import CsItemDetailsBar from "@/components/cs/CsItemDetailsBar";
+import CsItemStickers from "@/components/cs/CsItemStickers";
+import useCsItemDetails from "@/composables/useCsItemDetails";
 
 const props = defineProps({
   item: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const item = toRef(props, 'item')
+const item = toRef(props, "item");
 
-const { details } = useCsItemDetails(item)
+const { details } = useCsItemDetails(item);
 
 const discount = computed(() => {
-  let content = `${item.value.$discount}%`
+  let content = `${item.value.$discount}%`;
 
-  const target = item.value[`$${userPreferences.targetMarket}`]
+  const target = item.value[`$${userPreferences.targetMarket}`];
 
   if (target != null) {
-    content = `${target.discount}% | ` + content
+    content = `${target.discount}% | ` + content;
   }
 
-  return content
-})
+  return content;
+});
 </script>
 
-<style>
-
-</style>
+<style></style>

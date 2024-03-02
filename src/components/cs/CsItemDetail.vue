@@ -11,23 +11,23 @@
 const props = defineProps({
   rarity: {
     type: String,
-    default: null
+    default: null,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   value: {
     type: [String, Number],
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const detailClass = [
-  'wxb-px-3.5',
-  'wxb-py-1.5',
-  props.rarity ? `wxb-rarity-${props.rarity}` : ''
-]
+  "wxb-px-3.5",
+  "wxb-py-1.5",
+  props.rarity ? `wxb-rarity-${props.rarity}` : "",
+];
 </script>
 
 <style scoped>

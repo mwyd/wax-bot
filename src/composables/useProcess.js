@@ -1,18 +1,18 @@
-import { ref, watchEffect } from 'vue'
-import processStateEnum from '@/enums/processStateEnum'
+import { ref, watchEffect } from "vue";
+import processStateEnum from "@/enums/processStateEnum";
 
 export default function useProcess() {
-  const state = ref(processStateEnum.TERMINATED)
+  const state = ref(processStateEnum.TERMINATED);
 
-  const is = (processState) => state.value === processState
+  const is = (processState) => state.value === processState;
 
-  const update = (processState) => state.value = processState
+  const update = (processState) => (state.value = processState);
 
-  const subscribe = (callback) => watchEffect(() => callback(state.value))
+  const subscribe = (callback) => watchEffect(() => callback(state.value));
 
   return {
     is,
     update,
-    subscribe
-  }
+    subscribe,
+  };
 }

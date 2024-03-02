@@ -1,14 +1,14 @@
 export const initRoot = () => {
-  const body = document.querySelector('body')
-  const root = document.createElement('div')
+  const body = document.querySelector("body");
+  const root = document.createElement("div");
 
-  root.setAttribute('id', 'wxb-root')
+  root.setAttribute("id", "wxb-root");
 
   if (!body) {
-    throw 'Missing body element'
+    throw "Missing body element";
   }
 
-  body.appendChild(root)
+  body.appendChild(root);
 
-  return root
-}
+  return root;
+};

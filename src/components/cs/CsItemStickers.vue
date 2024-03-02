@@ -12,20 +12,20 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from "vue";
 
 const props = defineProps({
   stickers: {
     type: Array,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const stickersWithImage = computed(() => {
-  return props.stickers.filter(sticker => (sticker?.steam_price?.img || '').indexOf('https://') > -1)
-})
+  return props.stickers.filter(
+    (sticker) => (sticker?.steam_price?.img || "").indexOf("https://") > -1,
+  );
+});
 </script>
 
-<style>
-
-</style>
+<style></style>

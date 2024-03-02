@@ -15,35 +15,35 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { destroyAlert } from '@/stores/alertsStore'
+import { computed } from "vue";
+import { destroyAlert } from "@/stores/alertsStore";
 
 const props = defineProps({
   id: {
     type: [String, Number],
-    required: true
+    required: true,
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   body: {
     type: String,
-    default: ''
-  }
-})
+    default: "",
+  },
+});
 
 const alertClass = computed(() => [
-  'wxb-alert',
-  'wxb-p-3.5',
-  'wxb-m-3.5',
-  'wxb-cursor-pointer',
-  `wxb-alert-${props.type}`
-])
+  "wxb-alert",
+  "wxb-p-3.5",
+  "wxb-m-3.5",
+  "wxb-cursor-pointer",
+  `wxb-alert-${props.type}`,
+]);
 </script>
 
 <style scoped>

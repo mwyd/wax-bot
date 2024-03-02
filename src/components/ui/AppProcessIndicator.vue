@@ -3,22 +3,22 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from "vue";
 
 const props = defineProps({
   state: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const indicatorClass = computed(() => [
-  'wxb-h-3.5',
-  'wxb-w-3.5',
-  'wxb-rounded-full',
-  'wxb-transition-none',
-  `wxb-indicator-${props.state}`
-])
+  "wxb-h-3.5",
+  "wxb-w-3.5",
+  "wxb-rounded-full",
+  "wxb-transition-none",
+  `wxb-indicator-${props.state}`,
+]);
 </script>
 
 <style scoped>

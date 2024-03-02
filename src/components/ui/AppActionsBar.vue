@@ -19,11 +19,9 @@
 defineProps({
   actions: {
     type: Array,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 </script>
 
-<style>
-
-</style>
+<style></style>

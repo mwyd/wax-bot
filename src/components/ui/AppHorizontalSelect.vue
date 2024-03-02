@@ -15,27 +15,27 @@
 const props = defineProps({
   options: {
     type: Array,
-    required: true
+    required: true,
   },
   modelValue: {
     type: [String, Number],
-    required: true
+    required: true,
   },
   modelModifiers: {
     type: Object,
-    default: () => ({})
-  }
-})
+    default: () => ({}),
+  },
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(["update:modelValue"]);
 
 const optionClass = (isSelected) => [
-  'wxb-p-1.5',
-  'wxb-w-full',
-  'wxb-text-center',
-  'wxb-cursor-pointer',
-  isSelected === props.modelValue ? 'wxb-h-select-option-selected' : '',
-]
+  "wxb-p-1.5",
+  "wxb-w-full",
+  "wxb-text-center",
+  "wxb-cursor-pointer",
+  isSelected === props.modelValue ? "wxb-h-select-option-selected" : "",
+];
 </script>
 
 <style scoped>

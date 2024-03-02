@@ -7,7 +7,7 @@
       <CsItemFilters
         :default-filters="defaultFilters"
         :items="[...activeItems.values()]"
-        @filter="items => filteredItems = items"
+        @filter="(items) => (filteredItems = items)"
       />
       <div class="wxb-flex wxb-py-3.5">
         <div class="wxb-w-full wxb-px-3.5">
@@ -32,25 +32,24 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { activeItems } from '@/stores/botStore'
-import { userPreferences } from '@/stores/userStore'
-import AppScrollView from '@/components/ui/AppScrollView'
-import AppTabWrapper from '@/components/ui/AppTabWrapper'
-import CsMarketItem from '@/components/cs/CsMarketItem'
-import CsItemFilters from '@/components/cs/CsItemFilters'
-import targetMarketEnum from '@/enums/targetMarketEnum'
-import csItemSortEnum from '@/enums/csItemSortEnum'
+import { computed, ref } from "vue";
+import { activeItems } from "@/stores/botStore";
+import { userPreferences } from "@/stores/userStore";
+import AppScrollView from "@/components/ui/AppScrollView";
+import AppTabWrapper from "@/components/ui/AppTabWrapper";
+import CsMarketItem from "@/components/cs/CsMarketItem";
+import CsItemFilters from "@/components/cs/CsItemFilters";
+import targetMarketEnum from "@/enums/targetMarketEnum";
+import csItemSortEnum from "@/enums/csItemSortEnum";
 
 const defaultFilters = computed(() => ({
-  sortBy: userPreferences.targetMarket === targetMarketEnum.BUFF
-    ? csItemSortEnum.BUFF_DISCOUNT
-    : csItemSortEnum.STEAM_DISCOUNT
-}))
+  sortBy:
+    userPreferences.targetMarket === targetMarketEnum.BUFF
+      ? csItemSortEnum.BUFF_DISCOUNT
+      : csItemSortEnum.STEAM_DISCOUNT,
+}));
 
-const filteredItems = ref([])
+const filteredItems = ref([]);
 </script>
 
-<style>
-
-</style>
+<style></style>

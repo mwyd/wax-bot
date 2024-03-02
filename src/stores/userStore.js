@@ -1,83 +1,89 @@
-import { reactive, watch } from 'vue'
-import { user as conduitUser } from '@/services/conduit'
-import { user as waxpeerUser } from '@/services/waxpeer'
-import { syncStorage } from '@/utils'
-import { pushAlert } from './alertsStore'
-import { defaultNotificationVolume, notificationSound } from '@/config'
-import alertTypeEnum from '@/enums/alertTypeEnum'
-import targetMarketEnum from '@/enums/targetMarketEnum'
+import { reactive, watch } from "vue";
+import { user as conduitUser } from "@/services/conduit";
+import { user as waxpeerUser } from "@/services/waxpeer";
+import { syncStorage } from "@/utils";
+import { pushAlert } from "./alertsStore";
+import { defaultNotificationVolume, notificationSound } from "@/config";
+import alertTypeEnum from "@/enums/alertTypeEnum";
+import targetMarketEnum from "@/enums/targetMarketEnum";
 
 export const session = reactive({
   conduitName: null,
   token: null,
-  waxpeerId: null
-})
+  waxpeerId: null,
+});
 
 export const userPreferences = reactive({
   targetMarket: targetMarketEnum.STEAM,
-  notificationVolume: defaultNotificationVolume
-})
+  notificationVolume: defaultNotificationVolume,
+});
 
 export const loadToken = async () => {
-  session.token = await syncStorage.get('token')
-}
+  session.token = await syncStorage.get("token");
+};
 
-watch(() => session.token, () => {
-  syncStorage.set({ token: session.token })
-})
+watch(
+  () => session.token,
+  () => {
+    syncStorage.set({ token: session.token });
+  },
+);
 
 export const loadUserPreferences = async () => {
-  const preferences = await syncStorage.get('preferences')
+  const preferences = await syncStorage.get("preferences");
 
   if (preferences instanceof Object) {
-    Object.assign(userPreferences, preferences)
+    Object.assign(userPreferences, preferences);
   }
-}
+};
 
 watch(userPreferences, () => {
-  syncStorage.set({ preferences: userPreferences })
-})
+  syncStorage.set({ preferences: userPreferences });
+});
 
-watch(() => userPreferences.notificationVolume, (value) => {
-  notificationSound.volume = value / 100
-})
+watch(
+  () => userPreferences.notificationVolume,
+  (value) => {
+    notificationSound.volume = value / 100;
+  },
+);
 
 export const authenticateConduit = async () => {
-  const { success, data } = await conduitUser.authenticate(session.token)
+  const { success, data } = await conduitUser.authenticate(session.token);
 
   const alert = {
     type: alertTypeEnum.SUCCESS,
-    title: 'Conduit',
-    body: 'Authenticated'
-  }
+    title: "Conduit",
+    body: "Authenticated",
+  };
 
   if (success) {
-    session.conduitName = data.name
+    session.conduitName = data.name;
   } else {
-    session.conduitName = null
+    session.conduitName = null;
 
-    alert.type = alertTypeEnum.ERROR
-    alert.body = 'Unauthenticated'
+    alert.type = alertTypeEnum.ERROR;
+    alert.body = "Unauthenticated";
   }
 
-  pushAlert(alert)
-}
+  pushAlert(alert);
+};
 
 export const authenticateWaxpeer = async () => {
-  const { success, user } = await waxpeerUser.authenticate()
+  const { success, user } = await waxpeerUser.authenticate();
 
   const alert = {
     type: alertTypeEnum.SUCCESS,
-    title: 'Waxpeer',
-    body: 'Authenticated'
-  }
+    title: "Waxpeer",
+    body: "Authenticated",
+  };
 
   if (success) {
-    session.waxpeerId = user.id
+    session.waxpeerId = user.id;
   } else {
-    alert.type = alertTypeEnum.ERROR
-    alert.body = 'Unauthenticated'
+    alert.type = alertTypeEnum.ERROR;
+    alert.body = "Unauthenticated";
   }
 
-  pushAlert(alert)
-}
+  pushAlert(alert);
+};
