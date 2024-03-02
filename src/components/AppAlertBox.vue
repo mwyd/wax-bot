@@ -1,10 +1,10 @@
 <template>
   <div
-    class="wxb-fixed wxb-top-0 wxb-right-0 wxb-z-40 wxb-max-h-full wxb-overflow-y-auto wxb-overflow-x-hidden"
+    class="wxb-fixed wxb-bottom-0 wxb-right-0 wxb-z-40 wxb-max-h-full wxb-overflow-y-auto wxb-overflow-x-hidden"
   >
     <TransitionGroup name="wxb-alerts">
       <AppAlert
-        v-for="[id, alert] in latestAlerts"
+        v-for="[id, alert] in alerts"
         v-bind="alert"
         :id="id"
         :key="id"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { latestAlerts } from "@/stores/alertsStore";
+import { alerts } from "@/stores/alertsStore";
 import AppAlert from "@/components/ui/AppAlert";
 </script>
 

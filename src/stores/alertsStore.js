@@ -1,9 +1,7 @@
-import { computed, reactive } from "vue";
+import { reactive } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
-const alerts = reactive(new Map());
-
-export const latestAlerts = computed(() => [...alerts.entries()].reverse());
+export const alerts = reactive(new Map());
 
 export const pushAlert = (alert, lifetime = 2 * 1000) => {
   const uuid = uuidv4();
