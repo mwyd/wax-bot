@@ -1,4 +1,4 @@
-export const version = "1.1.10";
+export const version = "1.1.11";
 
 export const updateTradesDelay = 10;
 
